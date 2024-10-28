@@ -1,0 +1,430 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* Wrapper Styling */
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+}
+
+/* General Header Styling */
+.header {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 98%;
+    background-color: #141450;
+    padding: 20px;
+    margin-right: 80px;
+    top: 0;
+    z-index: 1000;
+}
+
+/* .header {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    margin-right: 80px;
+    background-color: #000000;
+    color: #fff;
+    z-index: 1000;
+} */
+
+.header .logo img {
+    width: 150px; /* Sesuaikan dengan ukuran logo Anda */
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    position: relative;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: white; /* Warna teks link */
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 8px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #FFBD59; /* Warna teks saat hover */
+    border-radius: 8px;
+}
+
+/* Styling for Login Button */
+.navbar .btn {
+    background-color: #FFBD59;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar .btn:hover {
+    border-radius: 15px;
+    background-color: #ffffff;
+    color: #FFA931;
+}
+
+/* Profile Image Styling */
+.profile-picture {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    transition: transform 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.1);
+}
+
+.content-wrapper {
+    width: 100%;
+    max-width: 1200px; /* Batas lebar maksimum untuk tampilan lebar */
+    margin: 0 auto; /* Pusatkan konten */
+    padding: 20px; /* Ruang di sekeliling konten */
+    box-sizing: border-box; /* Pastikan padding tidak menambah ukuran elemen */
+}
+
+
+/* Welcome Section */
+.welcome-section {
+    position: relative;
+    text-align: center;
+    color: white;
+    margin-top: 60px;
+    padding: 80px 0;
+    background-color: #1C305C;
+    background-image: url('img/banner.png'); /* Ganti 'img/banner.png' dengan path gambar Anda */
+    background-size: cover; /* Mengatur agar gambar memenuhi seluruh area */
+    background-position: center; /* Menyusun gambar di tengah */
+    background-repeat: no-repeat; /* Menghindari gambar berulang */
+}
+
+.welcome-section .background img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+.welcome-section .welcome-text h1 {
+    font-size: 3rem;
+    font-weight: 900;
+}
+
+.welcome-section .welcome-text p {
+    font-weight: 300;
+    font-size: 1.2rem;
+    margin-top: 10px;
+}
+
+/* slider */
+.container-kat {
+    margin: 30% 50% 0;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 80vh;
+    background: #f5f5f5;
+    box-shadow: 0 30px 50px #dbdbdb;
+    overflow: hidden;
+    position: relative;
+}
+
+.container-kat .slide .item {
+    width: 200px;
+    height: 300px;
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    border-radius: 20px;
+    box-shadow: 0 30px 50px #505050;
+    background-position: 50% 50%;
+    background-size: cover;
+    display: inline-block;
+    transition: 0.5s;
+}
+
+.slide .item:nth-child(1),
+.slide .item:nth-child(2) {
+    top: 0;
+    left: 0;
+    transform: translate(0, 0);
+    border-radius: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.slide .item:nth-child(3) {
+    left: 50%;
+}
+
+.slide .item:nth-child(4) {
+    left: calc(50% + 220px);
+}
+
+.slide .item:nth-child(5) {
+    left: calc(50% + 440px);
+}
+
+.slide .item:nth-child(n + 6) {
+    left: calc(50% + 660px);
+    opacity: 0;
+}
+
+.item .content {
+    position: absolute;
+    top: 50%;
+    left: 100px;
+    width: 500px;
+    text-align: left;
+    color: #eee;
+    transform: translate(0, -50%);
+    font-family: system-ui;
+    display: none;
+}
+
+.slide .item:nth-child(2) .content {
+    display: block;
+}
+
+.content .name {
+    font-size: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    opacity: 0;
+    animation: animate 1s ease-in-out 1 forwards;
+}
+
+.content .desc {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    opacity: 0;
+    animation: animate 1s ease-in-out 0.3s 1 forwards;
+}
+
+@keyframes animate {
+    from {
+        opacity: 0;
+        transform: translate(0, 100px);
+        filter: blur(33px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0);
+        filter: blur(0);
+    }
+}
+
+.button {
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+}
+
+.button button {
+    width: 40px;
+    height: 35px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    margin: 0 5px;
+    border: 1px solid #000;
+    transition: 0.3s;
+}
+
+.button button:hover {
+    background: #ababab;
+    color: #fff;
+}
+
+.item1 {
+    background-image: url('img/aurora.png');
+}
+
+.item2 {
+    background-image: url('img/aurora1.png');
+}
+
+.item3 {
+    background-image: url('img/aurora.png');
+}
+
+.item4 {
+    background-image: url('img/aurora1.png');
+}
+
+.item5 {
+    background-image: url('img/aurora.png');
+}
+
+.item6 {
+    background-image: url('img/aurora1.png');
+}
+
+/* Task Grid */
+.recommended-tasks {
+    text-align: center;
+    padding: 40px;
+    background-color: white;
+}
+
+.recommended-tasks h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.task-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 100px;
+}
+
+.task-card {
+    margin: 0 10px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-5px);
+}
+
+.task-card .card-header {
+    background: #1C305C;
+    color: white;
+    padding: 10px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.task-card .task-image {
+    width: 100%;
+    height: auto;
+    padding: 10px;
+}
+
+.task-card .card-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.task-card .card-body h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.task-card .card-footer {
+    text-align: center;
+    padding: 10px 0;
+    background-color: #f7f7f7;
+}
+
+.task-card .btn {
+    background-color: #FFBD59;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.task-card .btn:hover {
+    background-color: #FFA931;
+}
+
+
+footer {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    background-color: #ffffff;
+    color: #141450;
+    padding: 40px 20px;
+    border-top: 3px #141450 !important;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px; /* Minimum lebar untuk setiap section */
+    margin: 10px;
+}
+
+.footer-section h4 {
+    margin-bottom: 15px;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #141450; /* Warna tautan */
+    text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+    text-decoration: underline; /* Garis bawah saat hover */
+}
+
+.social-media {
+    display: flex;
+    gap: 10px; /* Jarak antar ikon */
+}
+
+.social-media a {
+    color: #141450;
+    font-size: 20px; /* Ukuran ikon */
+}
+
+.footer-bottom {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
