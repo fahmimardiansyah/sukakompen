@@ -10,6 +10,7 @@
             <li><a href="{{ url('akumulasi') }}">Akumulasi</a></li>
             <li><a href="{{ url('/tugas') }}">Tugas</a></li>
             <li><a href="{{ url('history') }}">History</a></li>
+            <li><a href="{{ url('/notif') }}">Message</a></li>
   
             <!-- Periksa apakah pengguna sudah login -->
             @if (Auth::check())
