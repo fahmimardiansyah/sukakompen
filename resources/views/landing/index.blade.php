@@ -1,20 +1,17 @@
 @extends('kompen.template')
 
 @section('content')
-    <section class="welcome-section">
-        <div class="background">
-            {{-- <img src="{{ asset('img/banner.png') }}" alt="Background"> --}}
-        </div>
-        <div class="welcome-text">
-            <h1>Selamat Datang di Suka Kompen</h1>
-            <p>Mau ngurangin jam alpa kamu? yuk kompenin aja</p>
-        </div>
-    </section>
+<div class="welcome-banner">
+    <div class="welcome-content">
+        <h1>SELAMAT DATANG DI SUKA KOMPEN</h1>
+        <p>Mau ngurangin jam alpa kamu? yuk kompenin aja</p>
+        <a href="/tugas" class="start-button">Start Now</a>
+    </div>
+</div>
 
+<div class="background-kat">
     <div class="container-kat">
-
         <div class="slide">
-    
             <div class="item item1">
                 <div class="content">
                     <div class="name">Pistol</div>
@@ -62,6 +59,8 @@
     </div>
     
     <script src="{{ asset('js/kat.js') }}"></script>
+</div>
+
 
     <section class="recommended-tasks">
         <h2>Rekomendasi Tugas</h2>

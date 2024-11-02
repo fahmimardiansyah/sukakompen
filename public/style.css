@@ -19,10 +19,9 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 98%;
+    width: 100%;
     background-color: #141450;
     padding: 20px;
-    margin-right: 80px;
     top: 0;
     z-index: 1000;
 }
@@ -111,40 +110,59 @@ html, body {
 }
 
 
-/* Welcome Section */
-.welcome-section {
-    position: relative;
-    text-align: center;
-    color: white;
-    margin-top: 60px;
-    padding: 80px 0;
-    background-color: #1C305C;
-    background-image: url('img/urban.jpg'); /* Ganti 'img/banner.png' dengan path gambar Anda */
-    background-size: cover; /* Mengatur agar gambar memenuhi seluruh area */
-    background-position: center; /* Menyusun gambar di tengah */
-    background-repeat: no-repeat; /* Menghindari gambar berulang */
+/* Banner Styling */
+.welcome-banner {
+position: relative;
+width: 100%;
+height: 600px;
+background-image: url('img/work.jpg'); /* Ganti dengan path gambar Anda */
+background-size: cover;
+background-position: center;
+display: flex;
+align-items: center;
+justify-content: center;
+color: #141450;
 }
 
-.welcome-section .background img {
-    width: 100%;
-    height: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
+.welcome-content {
+background: rgba(255, 255, 255, 0.8); /* Putih dengan transparansi */
+padding: 20px;
+border-radius: 20px;
+text-align: center;
+max-width: 300px;
 }
 
-.welcome-section .welcome-text h1 {
-    font-size: 3rem;
-    font-weight: 900;
+.welcome-content h1 {
+font-size: 1.5rem;
+font-weight: 600;
+color: #141450;
+margin-bottom: 10px;
 }
 
-.welcome-section .welcome-text p {
-    font-weight: 300;
-    font-size: 1.2rem;
-    margin-top: 10px;
+.welcome-content p {
+font-size: 1rem;
+color: #141450;
+margin-bottom: 20px;
 }
 
+.start-button {
+background-color: #FFBD59;
+color: white;
+padding: 10px 20px;
+border-radius: 20px;
+text-decoration: none;
+font-weight: 600;
+transition: background-color 0.3s;
+}
+
+.start-button:hover {
+background-color: #e5a84f;
+}
+
+/* KATEGORI KOMPETENSI */
+.background-kat {
+background-color: #141450;
+}
 /* slider */
 .container-kat {
     margin: 30% 50% 0;
@@ -365,6 +383,77 @@ html, body {
 
 .task-card .btn:hover {
     background-color: #FFA931;
+}
+
+/* akumulasi */
+
+/* Container for Akumulasi Page */
+.akumulasi-container {
+width: 90%;
+max-width: 1200px;
+margin: 0 auto;
+padding-top: 80px;
+text-align: center;
+}
+
+/* Title Styling */
+h1 {
+font-size: 2rem;
+margin-bottom: 20px;
+        }
+
+/* Table Styling */
+.akumulasi-table {
+width: 100%;
+border-collapse: collapse;
+margin-top: 20px;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.col-tugas {
+    width: 70%;
+}
+.col-status {
+    width: 15%;
+}
+.col-cetak {
+    width: 15%;
+}
+
+.akumulasi-table th, .akumulasi-table td {
+border: 1px solid #c3c3c3;
+padding: 15px;
+text-align: left;
+border-bottom: 1px solid #ddd;
+}
+
+.akumulasi-table th {
+background-color: #141450;
+color: white;
+font-weight: 600;
+}
+
+.akumulasi-table td {
+background-color: white;
+}
+
+/* Add some spacing on each row */
+.akumulasi-table tr:last-child td {
+border-bottom: none;
+}
+
+/* Styling for the print button */
+.print-btn {
+padding: 8px 12px;
+color: #fff;
+background-color: #34B5FA; /* Warna hijau */
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+    
+.print-btn:hover {
+background-color: #344efa; /* Warna saat hover */
 }
 
 /* notif page */

@@ -2,6 +2,11 @@
 
 @section('content')
 
+<div class="hero">
+    <h1>
+     Tugas
+    </h1>
+   </div>
     <section class="recommended-tasks">
         <h2>Rekomendasi Tugas</h2>
         <div class="task-grid">
