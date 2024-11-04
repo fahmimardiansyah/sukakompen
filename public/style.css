@@ -286,27 +286,27 @@ background-color: #141450;
 }
 
 .item1 {
-    background-image: url('img/aurora.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/teknis.jpeg');
 }
 
 .item2 {
-    background-image: url('img/aurora1.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/pengabdian.jpeg');
 }
 
 .item3 {
-    background-image: url('img/aurora.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/penelitian.jpeg');
 }
 
 .item4 {
-    background-image: url('img/aurora1.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/teknis.jpeg');
 }
 
 .item5 {
-    background-image: url('img/aurora.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/pengabdian.jpeg');
 }
 
 .item6 {
-    background-image: url('img/aurora1.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/penelitian.jpeg');
 }
 
 /* Task Grid */
@@ -384,6 +384,86 @@ background-color: #141450;
 .task-card .btn:hover {
     background-color: #FFA931;
 }
+
+/* DESKRIPSI TUGAS */
+
+.task-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.task-cont {
+    width: 80vw;
+    max-width: 900px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+.task-image img {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.task-content h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.task-tags .tag {
+    display: inline-block;
+    padding: 0.3rem 0.6rem;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.tag.offline { background-color: #333; }
+.tag.teknis { background-color: #FFD700; }
+.tag.writing { background-color: #32CD32; }
+
+.task-description {
+    font-size: 1rem;
+    color: #555;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.task-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+}
+
+.request-button {
+    display: block;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #FFD700;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.request-button:hover {
+    background-color: #f2c200;
+}
+
 
 /* akumulasi */
 
