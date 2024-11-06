@@ -12554,9 +12554,14 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
 }
 
 .main-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px; /* Sesuaikan dengan lebar sidebar */
   height: 100vh;
-  overflow-y: hidden;
+  overflow-y: auto;
   z-index: 1038;
+  background-color: #141450;
 }
 
 .main-sidebar a:-moz-focusring {
@@ -12574,6 +12579,7 @@ body:not(.layout-fixed) .main-sidebar .sidebar {
   padding-top: 0;
   scrollbar-color: #a9a9a9 transparent;
   scrollbar-width: none;
+  background-color: #141450; /* Atur warna background sesuai keinginan */
 }
 
 .sidebar::-webkit-scrollbar-thumb {
@@ -53008,85 +53014,5 @@ a.text-muted:hover {
 
 .dark-mode .border-dark {
   border-color: #4b545c !important;
-}
-
-.cont {
-  max-width: 1200px; /* Batas maksimal lebar kontainer */
-  margin: 20px auto; /* Otomatis di tengah dengan margin atas dan bawah */
-  padding: 20px; /* Ruang dalam di sekeliling konten */
-  background-color: #fff; /* Warna latar belakang konten */
-  border-radius: 10px; /* Membuat sudut konten melengkung */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Efek bayangan */
-}
-
-.cont-header {
-  display: flex;
-  justify-content: space-between; /* Menempatkan judul di kiri dan tombol di kanan */
-  align-items: center;
-  margin-bottom: 20px; /* Jarak bawah untuk memberi ruang antara header dan konten */
-}
-
-.cont-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333; /* Warna teks */
-}
-
-.cont-tools {
-  display: flex;
-  gap: 10px; /* Jarak antar tombol */
-}
-
-.cont-body {
-  padding: 10px; /* Ruang dalam di sekeliling body konten */
-  border-top: 1px solid #ddd; /* Garis pembatas antara header dan body */
-}
-
-/* Style untuk tabel */
-#table-stok {
-  width: 100%; /* Tabel penuh mengikuti lebar kontainer */
-  border-collapse: collapse; /* Menghilangkan jarak antar border sel */
-}
-
-#table-stok th, #table-stok td {
-  padding: 10px;
-  text-align: left; /* Perataan teks dalam tabel */
-  border: 1px solid #ddd; /* Border di sekitar sel */
-}
-
-#table-stok th {
-  background-color: #f4f4f4; /* Warna latar belakang untuk header tabel */
-  font-weight: bold;
-}
-
-#table-stok tr:hover {
-  background-color: #f1f1f1; /* Warna saat baris tabel dihover */
-}
-
-/* Style untuk modal */
-#myModal {
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-}
-
-/* Responsiveness */
-@media (max-width: 768px) {
-  .cont-header {
-      flex-direction: column;
-      align-items: flex-start; /* Judul dan tombol tidak lagi berjejer, tapi bertumpuk */
-  }
-
-  .cont-tools {
-      margin-top: 10px; /* Jarak antar tombol saat beralih ke kolom */
-      width: 100%; /* Tombol akan memenuhi lebar */
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-  }
-
-  .cont-tools a, .cont-tools button {
-      width: 100%; /* Tombol penuh saat tampilan kecil */
-  }
 }
 /*# sourceMappingURL=adminlte.css.map */

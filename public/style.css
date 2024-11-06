@@ -13,6 +13,17 @@ html, body {
     /* min-height: 100vh;  */
 }
 
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* Sesuaikan dengan lebar sidebar Anda */
+    height: 100vh; /* Memastikan sidebar menempati seluruh tinggi viewport */
+    background-color: #141450; /* Atur warna background sesuai keinginan */
+    z-index: 1000;
+    overflow-y: auto; /* Tambahkan ini jika sidebar memiliki konten panjang */
+}
+
 /* General Header Styling */
 .header {
     position: fixed;
@@ -103,10 +114,11 @@ html, body {
 
 .content-wrapper {
     width: 100%;
-    max-width: 1200px; /* Batas lebar maksimum untuk tampilan lebar */
-    margin: 0 auto; /* Pusatkan konten */
-    padding: 20px; /* Ruang di sekeliling konten */
-    box-sizing: border-box; /* Pastikan padding tidak menambah ukuran elemen */
+    max-width: 1440px; 
+    margin: 0 auto; 
+    margin-left: 250px;
+    padding: 20px; 
+    box-sizing: border-box; 
 }
 
 
@@ -160,9 +172,20 @@ background-color: #e5a84f;
 }
 
 /* KATEGORI KOMPETENSI */
-.background-kat {
-background-color: #141450;
+.kat {
+    text-align: center;
+    /* padding: 40px; */
+    background-color: white;
 }
+
+.kat h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+/* .background-kat {
+background-color: #141450;
+} */
 /* slider */
 .container-kat {
     margin: 30% 50% 0;
