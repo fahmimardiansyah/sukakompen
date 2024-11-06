@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('m_mahasiswa', function (Blueprint $table) {
-            //
+        Schema::create('m_mahasiswa', function (Blueprint $table) {
+            $table->id('mahasiswa_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('nim')->unique();
+            $table->string('mahasiswa_nama');
+            $table->integer('jumlah_alpa');
+            $table->string('prodi');
+            $table->integer('semester');
+            $table->timestamps();
+
+            $table->foreign(columns: 'user_id')->references('user_id')->on('m_user');
         });
     }
 
@@ -22,7 +31,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('m_mahasiswa', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('m_mahasiswa');
         });
     }
 };

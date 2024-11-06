@@ -9,7 +9,13 @@ class TugasController extends Controller
 {
     public function index()
     {
+        $breadcrumb = (object) [
+            'title' => 'Tugas Page',
+            'list' => ['Home', 'Tugas']
+        ];
 
-        return view('tugas.index');
+        $activeMenu = 'tugas';
+
+        return view('tugas.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }
