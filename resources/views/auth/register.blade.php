@@ -15,40 +15,76 @@
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{{ asset('register.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
 </head>
 
-<body>
-    <div class="register-container">
-        <form class="register-form" action="/register" method="POST">
-            <h2>Register</h2>
-            <div class="form-group">
-                <label>Level Pengguna</label>
-                <select name="level_id" id="level_id" class="form-control" required>
-                    <option value="">- Pilih Level -</option>
-                    @foreach ($level as $l)
-                        <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
-                    @endforeach
-                </select>
-                <small id="error-level_id" class="error-text form-text text-danger"></small>
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <div class="card card-outline card-primary">
+            <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a></div>
+            <div class="card-body">
+                <p class="login-box-msg">Sign up to start your session</p>
+                <form action="{{ url('register') }}" method="POST" id="form-register">
+                    @csrf
+                    <div class="form-group"> 
+                        <label>Level Pengguna</label> 
+                        <select name="level_id" id="level_id" class="form-control" required> 
+                            <option value="">- Pilih Level -</option> 
+                            @foreach($level as $l) 
+                                <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option> 
+                            @endforeach 
+                        </select> 
+                        <small id="error-level_id" class="error-text form-text text-danger"></small> 
+                    </div> 
+                    
+                    <div class="input-group mb-3">
+                        <input type="text" id="username" name="username" class="form-control"
+                            placeholder="Username">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        <small id="error-username" class="error-text text-danger"></small>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="text" id="nama" name="nama" class="form-control"
+                            placeholder="Nama">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                        <small id="error-nama" class="error-text text-danger"></small>
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <input type="password" id="password" name="password" class="form-control"
+                            placeholder="Password">
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-lock"></span>
+                            </div>
+                        </div>
+                        <small id="error-password" class="error-text text-danger"></small>
+                    </div>
+                    <div class="row">
+                        <!-- /.col -->
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('login') }}">Sign in</a></p>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="text" name="text" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit" class="btn">Register</button>
-            <p class="login">Already have an account? <a href="/login">Login</a></p>
-        </form>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
     </div>
-</body>
+
+{{-- 0895001794957 --}}
 
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
