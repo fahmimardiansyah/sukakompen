@@ -22,4 +22,3 @@ class LevelSeeder extends Seeder
         DB::table('m_level')->insert($data);
     }
 }
-
