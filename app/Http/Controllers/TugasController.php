@@ -14,39 +14,35 @@ use Illuminate\Support\Str;
 class TugasController extends Controller
 {
     public function index()
-    {
-        $breadcrumb = (object) [
-            'title' => 'Tugas Page',
-            'list' => ['Home', 'Tugas']
-        ];
+{
+    $breadcrumb = (object) [
+        'title' => 'Tugas Page',
+        'list' => ['Home', 'Tugas']
+    ];
 
-        $activeMenu = 'tugas';
+    $activeMenu = 'tugas';
 
-        return view('tugas.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
-    }
+    $tugasAdmin = TugasModel::whereHas('users', function ($query) {
+        $query->where('level_id', 1); 
+    })->get();
 
-    public function list(Request $request)
-    {
-        $barang = TugasModel::select('tugas_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'kategori_id')
-                    ->with('kategori');
+    $tugasDosen = TugasModel::whereHas('users', function ($query) {
+        $query->where('level_id', 2); 
+    })->get();
 
-        $kategori_id = $request->input('filter_kategori');
-        if(!empty($kategori_id)){
-            $barang->where('kategori_id', $kategori_id);
-        }
+    $tugasTendik = TugasModel::whereHas('users', function ($query) {
+        $query->where('level_id', 3);
+    })->get();
 
-        return DataTables::of($barang)
-            ->addIndexColumn()
-            ->addColumn('aksi', function ($brg) {
-            $btn = '<button onclick="modalAction(\''.url('/barang/' . $brg->barang_id . '/show_ajax').'\')" class="btn btn-info btn-sm">Detail</button> ';
-            $btn .= '<button onclick="modalAction(\''.url('/barang/' . $brg->barang_id . '/edit_ajax').'\')" class="btn btn-warning btn-sm">Edit</button> ';
-            $btn .= '<button onclick="modalAction(\''.url('/barang/' . $brg->barang_id . '/delete_ajax').'\')" class="btn btn-danger btn-sm">Hapus</button> ';
+    return view('tugas.index', [
+        'breadcrumb' => $breadcrumb,
+        'activeMenu' => $activeMenu,
+        'tugasAdmin' => $tugasAdmin,
+        'tugasDosen' => $tugasDosen,
+        'tugasTendik' => $tugasTendik
+    ]);
+}
 
-            return $btn;
-        })
-        ->rawColumns(['aksi'])
-        ->make(true);
-    }
 
     public function create_ajax() {
         $jenis = JenisModel::select('jenis_id', 'jenis_nama')->get();
