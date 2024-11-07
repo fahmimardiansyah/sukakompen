@@ -24,7 +24,8 @@
 <div class="content">
     <div class="tabs">
         <button class="tab active" onclick="showTab('admin')">Admin</button>
-        <button class="tab" onclick="showTab('dosen')">Dosen/Tendik</button>
+        <button class="tab" onclick="showTab('dosen')">Dosen</button>
+        <button class="tab" onclick="showTab('tendik')">Tendik</button>
     </div>
     
     <!-- Tombol "Tambah Tugas" -->
@@ -37,42 +38,63 @@
         <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
             <div class="task-grid">
-                @for ($i = 0; $i < 8; $i++)
+                @foreach ($tugasAdmin as $item)
                     <div class="task-card">
                         <div class="card-header">
                             <span class="task-category">Admin Task</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                            <h3>Arsip Absensi</h3>
-                            <p>Mengarsip ketidakhadiran dalam satu jam untuk menghindari denda di satu jurusan.</p>
+                            <h3>{{ $item->tugas_nama }}</h3>
+                            <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a class="btn">Kerjakan</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
         </div>
 
-        <!-- Dosen/Tendik Tab Content -->
+        <!-- Dosen Tab Content -->
         <div id="dosen" class="tab-content">
             <div class="task-grid">
-                @for ($i = 0; $i < 8; $i++)
+                @foreach ($tugasDosen as $item)
                     <div class="task-card">
                         <div class="card-header">
-                            <span class="task-category">Dosen/Tendik Task</span>
+                            <span class="task-category">Dosen Task</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                            <h3>Review Absensi</h3>
-                            <p>Memeriksa dan mengkonfirmasi absensi mahasiswa untuk menghindari denda.</p>
+                            <h3>{{ $item->tugas_nama }}</h3>
+                            <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a class="btn">Kerjakan</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
                         </div>
                     </div>
-                @endfor
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Tendik Tab Content -->
+        <div id="tendik" class="tab-content">
+            <div class="task-grid">
+                @foreach ($tugasTendik as $item)
+                    <div class="task-card">
+                        <div class="card-header">
+                            <span class="task-category">Tendik Task</span>
+                        </div>
+                        <div class="card-body">
+                            <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
+                            <h3>{{ $item->tugas_nama }}</h3>
+                            <p>{{ $item->tugas_deskripsi }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -88,6 +110,11 @@
             $('#myModal').load(url, function() {
                 $('#myModal').modal('show');
             });
+        }
+
+        function showTab(tabName) {
+            $('.tab-content').removeClass('active');
+            $('#' + tabName).addClass('active');
         }
     </script>
 @endpush

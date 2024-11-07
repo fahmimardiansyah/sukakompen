@@ -51,6 +51,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{id}/delete_ajax', [KompetensiController::class, 'confirm_ajax']);  
         Route::delete('/{id}/delete_ajax', [KompetensiController::class, 'delete_ajax']);
 
+
+
     });
 
     Route::group(['prefix' => 'pesan'], function () {
