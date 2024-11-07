@@ -57,11 +57,11 @@ class TugasController extends Controller
                     ->with('jenis', $jenis);
     }
 
-    public function store_ajax(Request $request) {
-
-        if($request->ajax() || $request->wantsJson()) {
+    public function store_ajax(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'tugas_nama' => ['required', 'string', 'man:10'],
+                'tugas_nama' => ['required', 'string', 'max:10'],
                 'jenis_id' => ['required', 'integer', 'exists:m_jenis,jenis_id'],
                 'tugas_tipe' => ['required', 'in:' . implode(',', TugasModel::TIPE_ENUM)],
                 'tugas_deskripsi' => ['required', 'string', 'max:500'],
@@ -70,29 +70,37 @@ class TugasController extends Controller
                 'tugas_tenggat' => ['required', 'date'],
                 'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id']
             ];
-
+    
             $validator = Validator::make($request->all(), $rules);
-
-            if($validator->fails()) {
+    
+            if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Validasi Gagal',
                     'msgField' => $validator->errors(),
                 ]);
             }
-
-            $data = $request->all();
-            $data['tugas_No'] = Str::uuid();
-            $data['user_id'] = auth()->user()->user_id;
-
-            TugasModel::create($data);
-            return response()->json([
-                'status' => true,
-                'message' => 'Data barang berhasil disimpan'
-            ]);
+    
+            try {
+                $data = $request->all();
+                $data['tugas_No'] = (string) Str::uuid();
+                $data['user_id'] = auth()->user()->user_id ?? null; // Tambahkan null check untuk user_id
+    
+                TugasModel::create($data);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data tugas berhasil disimpan'
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
+                ], 500);
+            }
         }
-        redirect('/');
+        return redirect('/');
     }
+    
 
     public function kompetensi($jenis_id)
     {
