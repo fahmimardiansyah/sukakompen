@@ -73,6 +73,18 @@
                     <p>Manage Kompen</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('/jenis') }}" class="nav-link {{ $activeMenu == 'jenis' ? 'active' : '' }} ">
+                    <i class="nav-icon far fa-list-alt"></i>
+                    <p>Jenis Tugas</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/kompetensi') }}" class="nav-link {{ $activeMenu == 'kompetensi' ? 'active' : '' }} ">
+                    <i class="nav-icon far fa-list-alt"></i>
+                    <p>Kompetensi Tugas</p>
+                </a>
+            </li>
         </ul>
     </nav>
 </div>
