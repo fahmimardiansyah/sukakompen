@@ -61,7 +61,7 @@ class TugasController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'tugas_nama' => ['required', 'string', 'max:10'],
+                'tugas_nama' => ['required', 'string', 'min:3', 'max:100'],
                 'jenis_id' => ['required', 'integer', 'exists:m_jenis,jenis_id'],
                 'tugas_tipe' => ['required', 'in:' . implode(',', TugasModel::TIPE_ENUM)],
                 'tugas_deskripsi' => ['required', 'string', 'max:500'],
@@ -84,8 +84,8 @@ class TugasController extends Controller
             try {
                 $data = $request->all();
                 $data['tugas_No'] = (string) Str::uuid();
-                $data['user_id'] = auth()->user()->user_id ?? null; // Tambahkan null check untuk user_id
-    
+                $data['user_id'] = auth()->user()->user_id ?? null; 
+                
                 TugasModel::create($data);
                 return response()->json([
                     'status' => true,

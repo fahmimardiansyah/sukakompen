@@ -30,16 +30,16 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'jenis'], function () {
         Route::get('/', [JenisController::class, 'index']);
         Route::get('/create_ajax', [JenisController::class, 'create_ajax']);
+        Route::post('/ajax', [JenisController::class, 'store_ajax']);
+        Route::get('/{id}/edit_ajax', [JenisController::class, 'edit_ajax']);     
+        Route::put('/{id}/update_ajax', [JenisController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [JenisController::class, 'confirm_ajax']);  
+        Route::delete('/{id}/delete_ajax', [JenisController::class, 'delete_ajax']);
     });
 
     Route::group(['prefix' => 'kompetensi'], function () {
         Route::get('/', [KompetensiController::class, 'index']);
         Route::get('/create_ajax', [KompetensiController::class, 'create_ajax']);
-
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
-
-
-
     });
-    //update
 });
