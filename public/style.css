@@ -640,6 +640,57 @@ background-color: #141450;
             color: white;
         }
 
+        /* kompetensi */
+.container {
+    padding: 20px;
+}
+.titles {
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+        .kompeten-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+        }
+        .kompeten-card img {
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .kompeten-card .kompeten-info {
+            flex-grow: 1;
+        }
+        .kompeten-card .kompeten-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .kompeten-card .kompeten-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        .kompeten-card .kompeten-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .kompeten-card .kompeten-actions button {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .kompeten-card .kompeten-actions .edit-btn {
+            background-color: #1e88e5;
+            color: white;
+        }
+        .kompeten-card .kompeten-actions .delete-btn {
+            background-color: #e53935;
+            color: white;
+        }
 /* akumulasi */
 
 /* pesan */

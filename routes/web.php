@@ -45,6 +45,11 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'kompetensi'], function () {
         Route::get('/', [KompetensiController::class, 'index']);
         Route::get('/create_ajax', [KompetensiController::class, 'create_ajax']);
+        Route::post('/ajax', [KompetensiController::class, 'store_ajax']);
+        Route::get('/{id}/edit_ajax', [KompetensiController::class, 'edit_ajax']);     
+        Route::put('/{id}/update_ajax', [KompetensiController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [KompetensiController::class, 'confirm_ajax']);  
+        Route::delete('/{id}/delete_ajax', [KompetensiController::class, 'delete_ajax']);
 
     });
 
