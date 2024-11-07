@@ -22,7 +22,6 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'tugas'], function () {
         Route::get('/', [TugasController::class, 'index']);
-
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
         Route::post('/ajax', [TugasController::class, 'store_ajax']);
         Route::get('/kompetensi/{jenis_id}', [TugasController::class, 'kompetensi']);

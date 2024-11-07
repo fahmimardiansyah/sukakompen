@@ -80,6 +80,8 @@
     </div>
 </form>
 
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
 <script>
     $.ajaxSetup({
         headers: {
@@ -116,18 +118,21 @@
             rules: {
                 tugas_nama: { required: true, minlength: 3, maxlength: 100 },
                 jenis_id: { required: true, number: true },
-                tugas_tipe: { required: true },
+                tugas_tipe: { required: true},
                 tugas_deskripsi: { required: true, minlength: 10 },
                 tugas_kuota: { required: true, number: true, max: 10 },
                 tugas_jam_kompen: { required: true, number: true, max: 50 },
-                tugas_tenggat: { required: true },
+                tugas_tenggat: { required: true},
                 kompetensi_id: { required: true, number: true }
             },
             submitHandler: function(form) {
                 $.ajax({
                     url: form.action,
-                    type: form.method,
+                    type: 'POST',
                     data: $(form).serialize(),
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
                     success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
