@@ -51,46 +51,45 @@ class AuthController extends Controller
         return redirect('login');
     }
 
-        // Membuat Ajax
-        public function register()
-        {
-            $level = LevelModel::select('level_id', 'level_nama')->get();
+    public function register()
+    {
+        $level = LevelModel::select('level_id', 'level_nama')->get();
     
-            return view('auth.register')
-                ->with('level', $level);
-        }
+        return view('auth.register')
+            ->with('level', $level);
+    }
     
         // Membuat fungsi store Ajax
-        public function postregister(Request $request)
-        {
-            //cek apakah request berupa ajax
-            if ($request->ajax() || $request->wantsJson()) {
-                $rules = [
-                    'level_id' => 'required|integer',
-                    'username' => 'required|string|min:3|unique:m_user,username',
-                    'nama'     => 'required|string|max:100',
-                    'password' => 'required|min:6'
-                ];
+    public function postregister(Request $request)
+    {
+        //cek apakah request berupa ajax
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'level_id' => 'required|integer',
+                'username' => 'required|string|min:3|unique:m_user,username',
+                'nama'     => 'required|string|max:100',
+                'password' => 'required|min:6'
+            ];
     
-                //use Illumintae\support\Facades\Validator;
-                $validator = Validator::make($request->all(), $rules);
+            //use Illumintae\support\Facades\Validator;
+            $validator = Validator::make($request->all(), $rules);
     
-                if ($validator->fails()) {
-                    return response()->json([
-                        'status' => false, //response status, false: error/gagal, true: berhasil
-                        'message' => 'Validasi Gagal',
-                        'msgField' => $validator->errors(), //pesan error validasi
-                    ]);
-                }
-    
-                UserModel::create($request->all());
+            if ($validator->fails()) {
                 return response()->json([
-                    'status' => true,
-                    'message' => 'Data user berhasil disimpan',
-                    redirect('login')
+                    'status' => false, //response status, false: error/gagal, true: berhasil
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(), //pesan error validasi
                 ]);
-
-                return redirect('login');
             }
+    
+            UserModel::create($request->all());
+            return response()->json([
+                'status' => true,
+                'message' => 'Data user berhasil disimpan',
+                redirect('login')
+            ]);
+
+            return redirect('login');
         }
+    }
 }
