@@ -10,5 +10,17 @@
     </ul>
 
     <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Navbar Search -->
+      @if (Auth::check())
+      <li>
+          <a href="{{ url('profile') }}">
+            <img src="{{ asset('img/ian.jpg') }}" alt="Profile" class="profile-picture">
+          </a>
+      </li>
+  @else
+      <!-- Tampilkan tombol login jika belum login -->
+      <li><a href="{{ url('login') }}" class="btn">Login</a></li>
+  @endif
   </nav>
   <!-- /.navbar -->

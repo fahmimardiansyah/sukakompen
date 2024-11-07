@@ -7,6 +7,10 @@ use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KompetensiController;
+use App\Http\Controllers\PesanController;
+use App\Http\Controllers\AlpaController;
+use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\DetailController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -19,6 +23,7 @@ Route::post('register', [AuthController::class,'postregister']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
+
 
     Route::group(['prefix' => 'tugas'], function () {
         Route::get('/', [TugasController::class, 'index']);
@@ -41,4 +46,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [KompetensiController::class, 'index']);
         Route::get('/create_ajax', [KompetensiController::class, 'create_ajax']);
     });
+
+    Route::group(['prefix' => 'pesan'], function () {
+        Route::get('/', [PesanController::class, 'index']);
+        Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
+    });
+
+    Route::group(['prefix' => 'alpa'], function () {
+        Route::get('/', [PesanController::class, 'index']);
+        Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
+    });
+
 });

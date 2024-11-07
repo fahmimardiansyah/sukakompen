@@ -112,7 +112,7 @@ html, body {
     transform: scale(1.1);
 }
 
-.content-wrapper {
+/* .content-wrapper {
     width: 100%;
     max-width: 1440px; 
     margin: 0 auto; 
@@ -120,7 +120,7 @@ html, body {
     padding: 20px; 
     box-sizing: border-box; 
     background-color: white;
-}
+} */
 
 
 /* Banner Styling */
@@ -505,7 +505,7 @@ background-color: #141450;
     margin-bottom: 20px;
     margin-right: 30px;
     cursor: pointer;
-    width: 100%; 
+    width: 97%; 
     display: block;
 }
 
@@ -641,6 +641,40 @@ background-color: #141450;
         }
 
 /* akumulasi */
+
+/* pesan */
+.container {
+    padding: 20px;
+}
+.titles {
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+        .pesan-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+        }
+        .pesan-card img {
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .pesan-card .pesan-info {
+            flex-grow: 1;
+        }
+        .pesan-card .pesan-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .pesan-card .pesan-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
 
 /* Container for Akumulasi Page */
 .akumulasi-container {
