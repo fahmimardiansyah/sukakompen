@@ -25,5 +25,5 @@ Route::middleware('auth')->group(function () {
 
 
     });
-    // Route::group(['prefix' => 'user'], function () {
+    //update
 });
