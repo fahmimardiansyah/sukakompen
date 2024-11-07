@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('t_tugas', function (Blueprint $table) {
             $table->id('tugas_id');
+            $table->unsignedBigInteger('user_id');
             $table->uuid('tugas_No', )->unique();
             $table->string('tugas_nama');
             $table->unsignedBigInteger('jenis_id');
@@ -26,6 +27,7 @@ return new class extends Migration
 
             $table->foreign('jenis_id')->references('jenis_id')->on('m_jenis');
             $table->foreign('kompetensi_id')->references('kompetensi_id')->on('t_kompetensi');
+            $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
 
