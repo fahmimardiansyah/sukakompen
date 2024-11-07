@@ -78,31 +78,16 @@
     </section>
 </div>
 
-<!-- Modal for Create Task -->
-<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <!-- Konten form akan dimuat disini -->
-        </div>
-    </div>
-</div>
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 
 @endsection
 
-@section('scripts')
-<script>
-    function modalAction(url = '') {
-        $('#myModal .modal-content').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-
-    function showTab(tabName) {
-        // Mengubah tampilan tab dan konten aktif
-        $('.tab').removeClass('active');
-        $('.tab-content').removeClass('active');
-        $('#' + tabName).addClass('active');
-        $("button.tab:contains('" + tabName + "')").addClass('active');
-    }
-</script>
-@endsection
+@push('js')
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+    </script>
+@endpush

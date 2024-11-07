@@ -20,10 +20,9 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'tugas'], function () {
         Route::get('/', [TugasController::class, 'index']);
-<<<<<<< HEAD
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
-=======
->>>>>>> 0e738f6aa434eb8bd26021e12205e19fff9926fc
+        Route::post('/ajax', [TugasController::class, 'store_ajax']);
+        Route::get('/kompetensi/{jenis_id}', [TugasController::class, 'kompetensi']);
     });
     
 });
