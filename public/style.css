@@ -119,6 +119,7 @@ html, body {
     margin-left: 250px;
     padding: 20px; 
     box-sizing: border-box; 
+    background-color: white;
 }
 
 
@@ -500,8 +501,12 @@ background-color: #141450;
     padding: 15px;
     text-align: center;
     border-radius: 5px;
+    margin: 20px;
     margin-bottom: 20px;
+    margin-right: 30px;
     cursor: pointer;
+    width: 100%; 
+    display: block;
 }
 
 /* DESKRIPSI TUGAS */
@@ -583,6 +588,57 @@ background-color: #141450;
     background-color: #f2c200;
 }
 
+/* jenis */
+.container {
+    padding: 20px;
+}
+.titles {
+    font-size: 1.5em;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+        .jenis-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 50px;
+            display: flex;
+            align-items: center;
+        }
+        .jenis-card img {
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+        .jenis-card .jenis-info {
+            flex-grow: 1;
+        }
+        .jenis-card .jenis-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .jenis-card .jenis-info p {
+            margin: 5px 0 0;
+            color: #666;
+        }
+        .jenis-card .jenis-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .jenis-card .jenis-actions button {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .jenis-card .jenis-actions .edit-btn {
+            background-color: #1e88e5;
+            color: white;
+        }
+        .jenis-card .jenis-actions .delete-btn {
+            background-color: #e53935;
+            color: white;
+        }
 
 /* akumulasi */
 
@@ -663,7 +719,7 @@ background-color: #344efa; /* Warna saat hover */
     color: white;
     text-align: center;
     padding: 100px 20px;
-    margin-top: 60px;
+    /* margin-top: 60px; */
     /* border-radius: 20px;
     overflow: hidden; */
 }
