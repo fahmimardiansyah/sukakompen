@@ -40,6 +40,5 @@ Route::middleware('auth')->group(function () {
     Route::group(['prefix' => 'kompetensi'], function () {
         Route::get('/', [KompetensiController::class, 'index']);
         Route::get('/create_ajax', [KompetensiController::class, 'create_ajax']);
-        Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
     });
 });
