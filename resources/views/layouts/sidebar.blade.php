@@ -47,22 +47,26 @@
             </li>
             <li class="nav-header">Data Pengguna</li>
             <li class="nav-item">
-                <a href="{{ url('/level') }}" class="nav-link {{ $activeMenu == 'level' ? 'active' : '' }} ">
-                    <i class="nav-icon fas fa-layer-group"></i>
-                    <p>Level User</p>
-                </a>
-            </li>
-            <li class="nav-item">
                 <a href="{{ url('/user') }}" class="nav-link {{ $activeMenu == 'user' ? 'active' : '' }}">
                     <i class="nav-icon far fa-user"></i>
                     <p>Data User</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('/penjualan') }}" class="nav-link {{ $activeMenu == 'penjualan' ? 'active' : '' }}">
+                    <i class="nav-icon far fa-user"></i>
+                    <p>Alpa Mahasiswa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/kompens') }}" class="nav-link {{ $activeMenu == 'kompens' ? 'active' : '' }}">
+                    <i class="nav-icon far fa-user"></i>
+                    <p>Kompen Mahasiswa</p>
+                </a>
+            </li>
             <li class="nav-header">Kompen</li>
             <li class="nav-item">
-                <a href="{{ url('/tugas') }}" class="nav-link {{ $activeMenu == 'kategori' ? 'active' : '' }} ">
                 <a href="{{ url('/tugas') }}" class="nav-link {{ $activeMenu == 'tugas' ? 'active' : '' }} ">
-
                     <i class="nav-icon far fa-bookmark"></i>
                     <p>Tugas Kompen</p>
                 </a>
@@ -83,6 +87,18 @@
                 <a href="{{ url('/kompetensi') }}" class="nav-link {{ $activeMenu == 'kompetensi' ? 'active' : '' }} ">
                     <i class="nav-icon far fa-list-alt"></i>
                     <p>Kompetensi Tugas</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('pesan') }}" class="nav-link {{ $activeMenu == 'pesan' ? 'active' : '' }} ">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Pesan</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }} ">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Profile</p>
                 </a>
             </li>
         </ul>
