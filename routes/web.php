@@ -5,6 +5,8 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\JenisController;
+use App\Http\Controllers\KompetensiController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -20,10 +22,17 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'tugas'], function () {
         Route::get('/', [TugasController::class, 'index']);
-<<<<<<< HEAD
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
-=======
->>>>>>> 0e738f6aa434eb8bd26021e12205e19fff9926fc
+    });
+
+    Route::group(['prefix' => 'jenis'], function () {
+        Route::get('/', [JenisController::class, 'index']);
+        Route::get('/create_ajax', [JenisController::class, 'create_ajax']);
+    });
+
+    Route::group(['prefix' => 'kompetensi'], function () {
+        Route::get('/', [KompetensiController::class, 'index']);
+        Route::get('/create_ajax', [KompetensiController::class, 'create_ajax']);
     });
     
 });
