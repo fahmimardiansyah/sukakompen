@@ -10,14 +10,14 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label>kompetensi Tugas</label>
-                    <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
+                    <label>Jenis Kompetensi</label>
+                    <select name="jenis_id" id="jenis_id" class="form-control" required>
                         <option value="">- Pilih Jenis -</option>
-                        @foreach ($kompetensi as $j)
-                            <option value="{{ $j->kompetensi_id }}">{{ $j->kompetensi_nama }}</option>
+                        @foreach($jenis as $j)
+                            <option value="{{ $j->jenis_id }}">{{ $j->jenis_nama }}</option>
                         @endforeach
                     </select>
-                    <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
+                    <small id="error-jenis_id" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Kode</label>
@@ -46,7 +46,7 @@
     $(document).ready(function() {
         $("#form-tambah").validate({
             rules: {
-                jenis_id: {required: true, number: true }
+                jenis_id: {required: true, number: true},
                 kompetensi_kode: {required: true, minlength: 3, maxlength: 20},
                 kompetensi_nama: {required: true, minlength: 3, maxlength: 100},
                 kompetensi_deskripsi: {required: true, minlength: 10, maxlength: 500}
@@ -76,6 +76,16 @@
                                 text: response.message
                             });
                         }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Status: " + status);
+                        console.error("Error: " + error);
+                        console.error("Response: " + xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Terjadi Kesalahan',
+                            text: 'Gagal mengirim data.'
+                        });
                     }
                 });
                 return false;

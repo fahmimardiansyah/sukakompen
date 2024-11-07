@@ -3,8 +3,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger">
@@ -27,17 +26,17 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="form-group">
-                    <label>kompetensi Tugas</label>
-                    <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
-                        <option value="">- Pilih Jenis -</option>
-                        @foreach ($kompetensi as $j)
-                            <option value="{{ $j->kompetensi_id }}">{{ $j->kompetensi_nama }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
-                </div>
                 <div class="modal-body">
+                    <div class="form-group">
+                        <label>Jenis Kompetensi</label>
+                        <select name="jenis_id" id="jenis_id" class="form-control" required>
+                            <option value="">- Pilih Level -</option>
+                            @foreach ($jenis as $j)
+                                <option {{ $j->jenis_id == $kompetensi->jenis_id ? 'selected' : '' }} value="{{ $j->jenis_id }}">{{ $j->jenis_nama }}</option>
+                            @endforeach
+                        </select>
+                        <small id="error-jenis_id" class="error-text form-text text-danger"></small>
+                    </div>
                     <div class="form-group">
                         <label>Kode</label>
                         <input value="{{ $kompetensi->kompetensi_kode }}" type="text" name="kompetensi_kode" id="kompetensi_kode" class="form-control" required>
@@ -65,6 +64,7 @@
         $(document).ready(function() {
             $("#form-edit").validate({
                 rules: {
+                    jenis_id: {required: true, number: true},
                     kompetensi_kode: {required: true, minlength: 3, maxlength: 20},
                     kompetensi_nama: {required: true, minlength: 3, maxlength: 100},
                     kompetensi_deskripsi: {required: true, minlength: 10, maxlength: 500}
