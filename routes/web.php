@@ -25,5 +25,5 @@ Route::middleware('auth')->group(function () {
 
 
     });
-    //test
+    // Route::group(['prefix' => 'user'], function () {
 });
