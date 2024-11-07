@@ -18,4 +18,9 @@ class TugasController extends Controller
 
         return view('tugas.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
+
+    public function create_ajax()
+    {
+        return view('tugas.create_ajax'); // Pastikan file view ini ada di resources/views/tugas/
+    }
 }
