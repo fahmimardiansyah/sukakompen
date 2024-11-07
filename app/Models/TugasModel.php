@@ -4,59 +4,34 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TugasModel extends Model
 {
     use HasFactory;
 
-    protected $table = 't_tugas';  // Table name
-
-    protected $primaryKey = 'tugas_id';  // Primary key
-
-    public $incrementing = true;  // Primary key auto-increment
-    protected $keyType = 'int';
-
+    protected $table = 't_tugas';
+    protected $primaryKey = 'tugas_id'; 
     protected $fillable = [
-        'tugas_No',
-        'tugas_nama',
-        'jenis_id',
-        'tugas_tipe',
-        'tugas_deskripsi',
-        'tugas_kuota',
-        'tugas_jam_kompen',
-        'tugas_tenggat',
-        'kompetensi_id'
+        'tugas_No', 'tugas_nama', 'jenis_id', 'tugas_tipe', 'tugas_deskripsi', 
+        'tugas_kuota', 'tugas_jam_kompen', 'tugas_tenggat', 'kompetensi_id', 'user_id'
     ];
+    
 
-    /**
-     * Boot function to automatically generate a UUID for 'tugas_No' when creating a new record.
-     */
-    protected static function boot()
+    const TIPE_ENUM = ['Online', 'Offline'];
+
+    public function users() : BelongsTo
     {
-        parent::boot();
-        
-        // Automatically generate UUID for tugas_No
-        static::creating(function ($model) {
-            $model->tugas_No = Str::uuid();
-        });
+        return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
     }
 
-    /**
-     * Relationship with the Jenis model.
-     * Assuming 'JenisModel' represents the model for 'm_jenis' table.
-     */
-    public function jenis()
+    public function jenis() : BelongsTo
     {
-        return $this->belongsTo(JenisModel::class, 'jenis_id', 'jenis_id');
+        return $this->belongsTo(UserModel::class, 'jenis_id', 'jenis_id');
     }
 
-    /**
-     * Relationship with the Kompetensi model.
-     * Assuming 'KompetensiModel' represents the model for 't_kompetensi' table.
-     */
-    public function kompetensi()
+    public function kompetensi() : BelongsTo
     {
-        return $this->belongsTo(KompetensiModel::class, 'kompetensi_id', 'kompetensi_id');
+        return $this->belongsTo(UserModel::class, 'kompetensi_id', 'kompetensi_id');
     }
 }
