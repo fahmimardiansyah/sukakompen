@@ -96,7 +96,7 @@
 
             if (jenisId) {
                 $.ajax({
-                    url: `/tugas/kompetensi/${jenisId}`,
+                    url: `/tugas/getkompetensi/${jenisId}`,
                     type: 'GET',
                     success: function(response) {
                         response.forEach(function(kompetensi) {

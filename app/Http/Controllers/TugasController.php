@@ -104,4 +104,11 @@ class TugasController extends Controller
 
         return response()->json($kompetensi);
     }
+
+    public function detail($id)
+{
+    $description = TugasModel::findOrFail($id);
+
+    return view('tugas.detail', ['description' => $description]);
+}
 }

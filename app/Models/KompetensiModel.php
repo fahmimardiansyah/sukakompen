@@ -12,7 +12,7 @@ class KompetensiModel extends Model
 
     protected $table = 't_kompetensi';      
     protected $primaryKey = 'kompetensi_id';  
-    protected $fillable = ['jenis_id', 'kompetensi_kode', 'kompetensi_nama', 'kompetensi_deskrips'];
+    protected $fillable = ['jenis_id', 'kompetensi_kode', 'kompetensi_nama', 'kompetensi_deskripsi'];
 
     public function jenis()
     {

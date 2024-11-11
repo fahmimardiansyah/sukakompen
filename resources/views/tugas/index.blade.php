@@ -49,7 +49,13 @@
                             <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
+                            <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')">Delete</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
@@ -70,7 +76,13 @@
                             <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Buka</a>
+                            <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')">Delete</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach
@@ -91,7 +103,13 @@
                             <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Kerjakan</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Buka</a>
+                            <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')">Delete</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach

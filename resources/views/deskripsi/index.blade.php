@@ -1,4 +1,4 @@
-@extends('layouts.app') <!-- Atur layout yang sesuai di aplikasi kamu -->
+@extends('layouts.template') <!-- Atur layout yang sesuai di aplikasi kamu -->
 
 @section('content')
 <div class="deskripsi-container">
