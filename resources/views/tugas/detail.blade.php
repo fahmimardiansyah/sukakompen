@@ -4,7 +4,7 @@
 <div class="deskripsi-container">
     <div class="deskripsi-cont">
         <div class="deskripsi-image">
-            <img src="{{ asset($description->image ?? 'images/penelitian.jpg') }}" alt="Deskripsi Image">
+            <img src="{{ asset($description->image ?? 'img/penelitian.jpeg') }}" alt="Deskripsi Image">
         </div>
         <div class="deskripsi-content">
             <h2>{{ $description->tugas_nama }}</h2>
@@ -24,11 +24,12 @@
                     <span>Jam Kompen: {{ $description->tugas_jam_kompen }}</span>
                     <span>Kompetensi ID: {{ $description->kompetensi_id }}</span>
                 </div>
+                
                 <div class="deskripsi-deadline">
                     <span><i class="fas fa-calendar-alt"></i> Tenggat: {{ $description->tugas_tenggat->format('m/d/Y H:i A') }}</span>
                 </div>
             </div>
-            <a href="{{ route('tugas.detail', $description->tugas_id) }}" class="request-button">Back to Tugas List</a>
+            <a href="{{ route('detail', $description->tugas_id) }}" class="request-button">Back to Tugas List</a>
         </div>
     </div>
 </div>
