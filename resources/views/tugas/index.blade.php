@@ -50,13 +50,9 @@
                             <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
+                            <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/edit_ajax') }}')" class="btn btn-edit">Edit</button>
                             <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
-                            <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus tugas ini?')">Delete</button>
-                            </form>
+                            <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/delete_ajax') }}')" class="btn btn-delete">Delete</button>
                         </div>
                     </div>
                 @endforeach

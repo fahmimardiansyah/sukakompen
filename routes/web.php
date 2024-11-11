@@ -55,6 +55,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/ajax', [TugasController::class, 'store_ajax']);
         Route::get('/{id}/detail', [TugasController::class, 'detail']);
         Route::get('/getkompetensi/{jenis_id}', [TugasController::class, 'kompetensi']);
+        Route::get('/{id}/edit_ajax', [TugasController::class, 'edit_ajax']);     
+        Route::put('/{id}/update_ajax', [TugasController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [TugasController::class, 'confirm_ajax']);  
+        Route::delete('/{id}/delete_ajax', [TugasController::class, 'delete_ajax']);
     });
 
     Route::group(['prefix' => 'jenis'], function () {
