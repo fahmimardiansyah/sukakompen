@@ -477,12 +477,15 @@ background-color: #141450;
     color: #141450;
     margin-top: 30px;
     margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 40px;
 }
 table th, table td {
     padding: 10px;

@@ -2,7 +2,8 @@
 
 @section('content')
 
-<!-- Hero Section -->
+<div class="card card-outline card-primary">
+    <!-- Hero Section -->
 <div class="hero">
     <h1>Tugas</h1>
 </div>
@@ -117,8 +118,10 @@
         </div>
     </section>
 </div>
-
+</div>
 <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
+
+
 
 @endsection
 

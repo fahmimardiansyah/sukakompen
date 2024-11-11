@@ -2,6 +2,7 @@
 
 @section('content')
 
+<div class="card card-outline card-primary">
 <!-- Hero Section -->
 <div class="hero">
     <h1>Kompen Mahasiswa</h1>
@@ -32,5 +33,5 @@
         </tbody>
     </table>
 </div>
-
+</div>
 @endsection
