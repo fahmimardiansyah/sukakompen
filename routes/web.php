@@ -11,6 +11,8 @@ use App\Http\Controllers\PesanController;
 use App\Http\Controllers\AlpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\AlpamController;
+use App\Http\Controllers\KompenmaController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -23,6 +25,28 @@ Route::post('register', [AuthController::class,'postregister']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
+
+    Route::group(['prefix' => 'user'], function () {
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/list', [UserController::class, 'list']);
+        Route::get('/create', [UserController::class, 'create']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::get('/create_ajax', [UserController::class, 'create_ajax']);
+        Route::post('/ajax', [UserController::class, 'store_ajax']);
+        Route::get('/{id}', [UserController::class, 'show']);
+        Route::get('/{id}/edit', [UserController::class, 'edit']);
+        Route::put('/{id}', [UserController::class, 'update']);
+        Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);
+        Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
+        Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
+        Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
+        Route::get('/import', [UserController::class, 'import']);
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']);
+        Route::get('/export_excel', [UserController::class, 'export_excel']); // export excel
+        Route::get('/export_pdf', [UserController::class, 'export_pdf']);
+        Route::delete('/{id}', [UserController::class, 'destroy']);
+    });
 
 
     Route::group(['prefix' => 'tugas'], function () {
@@ -58,9 +82,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
     });
 
-    Route::group(['prefix' => 'alpa'], function () {
-        Route::get('/', [PesanController::class, 'index']);
-        Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
+    Route::group(['prefix' => 'alpam'], function () {
+        Route::get('/', [AlpamController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'kompenma'], function () {
+        Route::get('/', [KompenmaController::class, 'index']);
     });
 
 });

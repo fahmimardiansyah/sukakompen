@@ -71,36 +71,47 @@
                         d.level_id = $('#level_id').val();
                     }
                 },
-                columns: [{
-                    // nomor urut dari laravel datatable addIndexColumn()
-                    data: "DT_RowIndex",
-                    className: "text-center",
-                    orderable: false,
-                    searchable: false
-                }, {
-                    data: "username",
-                    className: "",
-                    // orderable: true, jika ingin kolom ini bisa diurutkan
-                    orderable: true,
-                    // searchable: true, jika ingin kolom ini bisa dicari
-                    searchable: true
-                }, {
-                    data: "nama",
-                    className: "",
-                    orderable: true,
-                    searchable: true
-                }, {
-                    // mengambil data level hasil dari ORM berelasi
-                    data: "level.level_nama",
-                    className: "",
-                    orderable: false,
-                    searchable: false
-                }, {
-                    data: "aksi",
-                    className: "",
-                    orderable: false,
-                    searchable: false
-                }]
+                columns: [
+    {
+        data: "DT_RowIndex",
+        className: "text-center",
+        orderable: false,
+        searchable: false
+    },
+    {
+        data: "username",
+        orderable: true,
+        searchable: true
+    },
+    {
+        data: "nama",
+        orderable: true,
+        searchable: true
+    },
+    {
+        data: "level.level_nama",
+        orderable: false,
+        searchable: false
+    },
+    {
+        data: "aksi",
+        orderable: false,
+        searchable: false,
+        render: function(data, type, row) {
+            return `
+                <a href="/user/${row.id}/detail" class="btn btn-sm btn-info" title="Detail">
+                    <i class="fas fa-info-circle"></i>
+                </a>
+                <a href="/user/${row.id}/edit" class="btn btn-sm btn-warning" title="Edit">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <button onclick="deleteUser(${row.id})" class="btn btn-sm btn-danger" title="Hapus">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            `;
+        }
+    }
+]
             });
 
             $('#level_id').on('change', function() {
