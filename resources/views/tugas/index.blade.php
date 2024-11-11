@@ -21,6 +21,10 @@
     </div>
 </div>
 
+    <!-- Recommended Tasks Section -->
+    <section class="recommended-tasks">
+        <h2>Tugas Kompen</h2>
+
 <!-- Tabs and Add Task Button -->
 <div class="content">
     <div class="tabs">
@@ -32,9 +36,6 @@
     <!-- Tombol "Tambah Tugas" -->
     <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">Tambah Tugas</button>
 
-    <!-- Recommended Tasks Section -->
-    <section class="recommended-tasks">
-        <h2>Tugas Kompen</h2>
 
         <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
@@ -139,3 +140,4 @@
         }
     </script>
 @endpush
+

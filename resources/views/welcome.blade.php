@@ -1,14 +1,43 @@
 @extends('layouts.template')
 
 @section('content')
+<div class="card card-outline card-primary">
 <div class="welcome-banner">
     <div class="welcome-content">
         <h1>SELAMAT DATANG DI SUKA KOMPEN</h1>
-        <p>Mau ngurangin jam alpa kamu? yuk kompenin aja</p>
+        <p>Butuh bantuan pekerja? Cari mahasiswa kompen disini</p>
         <a href="/tugas" class="start-button">Start Now</a>
     </div>
 </div>
 
+<div class="stats">
+    <div>
+     <i class="fas fa-user-clock">
+     </i>
+     <h5>
+        Mahasiswa Alpa
+     </h5>
+     <h2>
+      6 Orang
+     </h2>
+     <a href="{{ url('/alpam') }}">
+      Lihat Selengkapnya
+     </a>
+    </div>
+    <div>
+     <i class="fas fa-user-check">
+     </i>
+     <h5>
+        Mahasiswa Kompen
+     </h5>
+     <h2>
+      6 Orang
+     </h2>
+     <a href="{{ url('/kompenma') }}">
+      Lihat Selengkapnya
+     </a>
+    </div>
+   </div>
 
     <section class="recommended-tasks">
         <h2>Tugas Kompen</h2>
@@ -30,4 +59,5 @@
             @endfor
         </div>
     </section>
+</div>
 @endsection
