@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TugasController::class, 'index']);
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
         Route::post('/ajax', [TugasController::class, 'store_ajax']);
-        Route::get('/{id}/detail', [TugasController::class, 'detail'])->name('detail');
+        Route::get('/{id}/detail', [TugasController::class, 'detail']);
         Route::get('/getkompetensi/{jenis_id}', [TugasController::class, 'kompetensi']);
     });
 
