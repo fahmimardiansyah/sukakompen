@@ -9,7 +9,11 @@
         <div class="deskripsi-content">
             <h2>{{ $description->tugas_nama }}</h2>
             <div class="deskripsi-tags">
-                <span class="tag {{ $description->tugas_tipe }}">{{ ucfirst($description->tugas_tipe) }}</span>
+                <div class="tag">
+                    <span class="tag {{ $description->tugas_tipe }}">{{ ucfirst($description->tugas_tipe) }}</span>
+                    <span class="tag {{ $description->jenis_id }}">{{ ucfirst($description->jenis_nama) }}</span>
+                    <span class="tag {{ $description->kompetensi_id }}">{{ ucfirst($description->kompetensi_kode) }}</span>
+                </div>
             </div>
             <p class="deskripsi-description">
                 {{ $description->tugas_deskripsi }}
@@ -25,10 +29,10 @@
                     <span>Kompetensi ID: {{ $description->kompetensi_id }}</span>
                 </div>
                 
-                <div class="deskripsi-deadline">
+                {{-- <div class="deskripsi-deadline">
                     <span><i class="fas fa-calendar-alt"></i> Tenggat: {{ $description->tugas_tenggat->format('m/d/Y H:i A') }}</span>
                 </div>
-            </div>
+            </div> --}}
             <a href="{{ route('detail', $description->tugas_id) }}" class="request-button">Back to Tugas List</a>
         </div>
     </div>

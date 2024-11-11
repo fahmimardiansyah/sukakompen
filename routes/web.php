@@ -11,6 +11,8 @@ use App\Http\Controllers\PesanController;
 use App\Http\Controllers\AlpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\AlpamController;
+use App\Http\Controllers\KompenmaController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -58,9 +60,12 @@ Route::middleware('auth')->group(function () {
         Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
     });
 
-    Route::group(['prefix' => 'alpa'], function () {
-        Route::get('/', [PesanController::class, 'index']);
-        Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
+    Route::group(['prefix' => 'alpam'], function () {
+        Route::get('/', [AlpamController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'kompenma'], function () {
+        Route::get('/', [KompenmaController::class, 'index']);
     });
 
 });

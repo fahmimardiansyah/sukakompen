@@ -24,6 +24,18 @@ html, body {
     overflow-y: auto; /* Tambahkan ini jika sidebar memiliki konten panjang */
 }
 
+.sidebar .logo {
+    padding: 10px; /* Atur padding pada kontainer logo */
+    text-align: center; /* Pusatkan logo di tengah */
+}
+
+.sidebar .logo-img {
+    width: 20px; /* Atur ukuran lebar logo */
+    height: auto; /* Sesuaikan tinggi secara proporsional */
+    margin-top: 10px; /* Atur margin atas */
+    margin-bottom: 10px; /* Atur margin bawah */
+}
+
 /* General Header Styling */
 .header {
     position: fixed;
@@ -50,9 +62,6 @@ html, body {
     z-index: 1000;
 } */
 
-.header .logo img {
-    width: 150px; /* Sesuaikan dengan ukuran logo Anda */
-}
 
 .navbar ul {
     list-style: none;
@@ -121,6 +130,7 @@ html, body {
     box-sizing: border-box; 
     background-color: white;
 } */
+ 
 
 
 /* Banner Styling */
@@ -457,6 +467,38 @@ background-color: #141450;
         margin: 10px 0; /* Menambah margin vertikal */
     }
 }
+/* ALPA MAHASISWA */
+.table-alpa {
+    overflow-x: auto;
+}
+
+.table-alpa h2{
+    font-size: 18px;
+    color: #141450;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+table th {
+    background-color: #2c2c6c;
+    color: white;
+}
+table th:first-child {
+    border-top-left-radius: 10px;
+}
+table th:last-child {
+    border-top-right-radius: 10px;
+}
 
 /* TUGAS PAGE_ADMIN */
 /* Search Bar */
@@ -543,37 +585,41 @@ background-color: #141450;
 }
 
 /* DESKRIPSI TUGAS */
-
-/* CSS for Deskripsi Page */
 .deskripsi-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
+    padding: 20px 50px;
+    max-width: 1100px;
+    max-height: 500px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    min-height: 70vh;
 }
 
 .deskripsi-cont {
     display: flex;
     gap: 20px;
+    align-items: stretch;
 }
 
 .deskripsi-image img {
-    width: 250px;
+    width: 400px;
     height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 10px;
 }
 
 .deskripsi-content {
     flex: 1;
+    padding: 20px 40px;
 }
 
 .deskripsi-content h2 {
-    font-size: 24px;
+    font-size: 18px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
@@ -595,15 +641,15 @@ background-color: #141450;
 }
 
 .tag.offline {
-    background-color: #3a5a98; /* Dark blue for 'Offline' */
+    background-color: #3a5a98; 
 }
 
 .tag.teknis {
-    background-color: #ffc107; /* Yellow for 'Teknis' */
+    background-color: #ffc107; 
 }
 
-.tag.writing {
-    background-color: #28a745; /* Green for 'Writing' */
+.tag.frontend {
+    background-color: #28a745; 
 }
 
 .deskripsi-description {
@@ -638,7 +684,7 @@ background-color: #141450;
 .request-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #6c757d; /* Grey for button */
+    background-color: #6c757d; 
     color: #ffffff;
     font-size: 16px;
     border: none;
@@ -650,7 +696,7 @@ background-color: #141450;
 
 .request-button:hover {
     background-color: #5a6268;
-}
+} 
 
 
 /* jenis */
@@ -982,112 +1028,4 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-/* CSS for Deskripsi Page */
-.deskripsi-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px auto;
-    padding: 20px;
-    max-width: 800px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.deskripsi-cont {
-    display: flex;
-    gap: 20px;
-}
-
-.deskripsi-image img {
-    width: 250px;
-    height: auto;
-    border-radius: 10px;
-}
-
-.deskripsi-content {
-    flex: 1;
-}
-
-.deskripsi-content h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
-}
-
-.deskripsi-tags {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-}
-
-.tag {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-.tag.offline {
-    background-color: #3a5a98; /* Dark blue for 'Offline' */
-}
-
-.tag.teknis {
-    background-color: #ffc107; /* Yellow for 'Teknis' */
-}
-
-.tag.writing {
-    background-color: #28a745; /* Green for 'Writing' */
-}
-
-.deskripsi-description {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 15px;
-}
-
-.deskripsi-details {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-}
-
-.deskripsi-time,
-.deskripsi-duration,
-.deskripsi-deadline {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 14px;
-    color: #555;
-}
-
-.deskripsi-time i,
-.deskripsi-duration i,
-.deskripsi-deadline i {
-    color: #333;
-}
-
-.request-button {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #6c757d; /* Grey for button */
-    color: #ffffff;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.request-button:hover {
-    background-color: #5a6268;
 }

@@ -1,46 +1,14 @@
 <div class="sidebar">
-    <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-            <img @if (file_exists(public_path(
-                        'storage/uploads/profile_pictures/' .
-                            auth()->user()->username .
-                            '/' .
-                            auth()->user()->username .
-                            '_profile.png'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.png') }}" @endif
-                @if (file_exists(public_path(
-                            'storage/uploads/profile_pictures/' .
-                                auth()->user()->username .
-                                '/' .
-                                auth()->user()->username .
-                                '_profile.jpg'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.jpg') }}" @endif
-                @if (file_exists(public_path(
-                            'storage/uploads/profile_pictures/' .
-                                auth()->user()->username .
-                                '/' .
-                                auth()->user()->username .
-                                '_profile.jpeg'))) src="{{ asset('storage/uploads/profile_pictures/' . auth()->user()->username . '/' . auth()->user()->username . '_profile.jpeg') }}" @endif
-                class="img-circle elevation-2" alt="User Image">
-        </div>
-        <div class="info">
-            <a href="{{ url('/profile') }}" class="d-block">{{ auth()->user()->username }}</a>
-        </div>
+    <div class="logo">
+        <a href="{{ url('/') }}">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo">
+        </a>
     </div>
-    <!-- SidebarSearch Form -->
-    {{-- <div class="form-inline mt-2">
-        <div class="input-group" data-widget="sidebar-search">
-            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-            <div class="input-group-append">
-                <button class="btn btn-sidebar">
-                    <i class="fas fa-search fa-fw"></i>
-                </button>
-            </div>
-        </div>
-    </div> --}}
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'dashboard' ? 'active' : '' }} ">
+                <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'welcome' ? 'active' : '' }} ">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>Dashboard</p>
                 </a>
@@ -53,13 +21,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/penjualan') }}" class="nav-link {{ $activeMenu == 'penjualan' ? 'active' : '' }}">
+                <a href="{{ url('/alpam') }}" class="nav-link {{ $activeMenu == 'alpam' ? 'active' : '' }}">
                     <i class="nav-icon far fa-user"></i>
                     <p>Alpa Mahasiswa</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/kompens') }}" class="nav-link {{ $activeMenu == 'kompens' ? 'active' : '' }}">
+                <a href="{{ url('/kompenma') }}" class="nav-link {{ $activeMenu == 'kompenma' ? 'active' : '' }}">
                     <i class="nav-icon far fa-user"></i>
                     <p>Kompen Mahasiswa</p>
                 </a>
