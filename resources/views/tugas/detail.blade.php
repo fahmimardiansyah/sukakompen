@@ -4,7 +4,7 @@
 <div class="deskripsi-container">
     <div class="deskripsi-cont">
         <div class="deskripsi-image">
-            <img src="{{ asset($description->image ?? 'images/penelitian.jpg') }}" alt="Deskripsi Image">
+            <img src="{{ asset($description->image ?? 'img/penelitian.jpeg') }}" alt="Deskripsi Image">
         </div>
         <div class="deskripsi-content">
             <h2>{{ $description->tugas_nama }}</h2>

@@ -544,82 +544,114 @@ background-color: #141450;
 
 /* DESKRIPSI TUGAS */
 
-.task-container {
+/* CSS for Deskripsi Page */
+.deskripsi-container {
     display: flex;
     justify-content: center;
-    padding: 2rem;
+    align-items: center;
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 800px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.task-cont {
-    width: 80vw;
-    max-width: 900px;
-    background: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    padding: 2rem;
+.deskripsi-cont {
     display: flex;
-    gap: 1.5rem;
+    gap: 20px;
 }
 
-.task-image img {
+.deskripsi-image img {
     width: 250px;
-    height: 250px;
+    height: auto;
     border-radius: 10px;
-    object-fit: cover;
 }
 
-.task-content h2 {
-    font-size: 1.8rem;
+.deskripsi-content {
+    flex: 1;
+}
+
+.deskripsi-content h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.deskripsi-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.tag.offline {
+    background-color: #3a5a98; /* Dark blue for 'Offline' */
+}
+
+.tag.teknis {
+    background-color: #ffc107; /* Yellow for 'Teknis' */
+}
+
+.tag.writing {
+    background-color: #28a745; /* Green for 'Writing' */
+}
+
+.deskripsi-description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.deskripsi-details {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.deskripsi-time,
+.deskripsi-duration,
+.deskripsi-deadline {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.deskripsi-time i,
+.deskripsi-duration i,
+.deskripsi-deadline i {
     color: #333;
 }
 
-.task-tags .tag {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    margin-right: 0.5rem;
-    border-radius: 5px;
-    color: #fff;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.tag.offline { background-color: #333; }
-.tag.teknis { background-color: #FFD700; }
-.tag.writing { background-color: #32CD32; }
-
-.task-description {
-    font-size: 1rem;
-    color: #555;
-    margin-top: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.task-details {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.9rem;
-    color: #666;
-    margin-top: 1rem;
-}
-
 .request-button {
-    display: block;
-    width: 100%;
-    padding: 0.8rem;
-    background-color: #FFD700;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #6c757d; /* Grey for button */
+    color: #ffffff;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
-    color: #fff;
-    font-size: 1rem;
-    cursor: pointer;
+    text-decoration: none;
     text-align: center;
-    font-weight: bold;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s ease;
 }
 
 .request-button:hover {
-    background-color: #f2c200;
+    background-color: #5a6268;
 }
+
 
 /* jenis */
 .container {
