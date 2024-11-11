@@ -29,7 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [TugasController::class, 'index']);
         Route::get('/create_ajax', [TugasController::class, 'create_ajax']);
         Route::post('/ajax', [TugasController::class, 'store_ajax']);
-        Route::get('/tugas/detail/{id}', [TugasController::class, 'detail'])->name('tugas.detail');
+        Route::get('/{id}/detail', [TugasController::class, 'detail'])->name('detail');
         Route::get('/getkompetensi/{jenis_id}', [TugasController::class, 'kompetensi']);
     });
 
@@ -51,9 +51,6 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}/update_ajax', [KompetensiController::class, 'update_ajax']);
         Route::get('/{id}/delete_ajax', [KompetensiController::class, 'confirm_ajax']);  
         Route::delete('/{id}/delete_ajax', [KompetensiController::class, 'delete_ajax']);
-
-
-
     });
 
     Route::group(['prefix' => 'pesan'], function () {

@@ -107,8 +107,19 @@ class TugasController extends Controller
 
     public function detail($id)
 {
-    $description = TugasModel::findOrFail($id);
+    $description = TugasModel::find($id);
 
-    return view('tugas.detail', ['description' => $description]);
+    $breadcrumb = (object) [
+        'title' => 'Detail Tugas',
+        'list' => ['Home', 'Tugas', 'Detail']
+    ];
+
+    $page = (object) [
+        'title' => 'Detail Tugas'
+    ];
+
+    $activeMenu = 'tugas'; 
+
+    return view('tugas.detail', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page]);
 }
 }
