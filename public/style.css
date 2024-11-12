@@ -17,23 +17,39 @@ html, body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 250px; /* Sesuaikan dengan lebar sidebar Anda */
-    height: 100vh; /* Memastikan sidebar menempati seluruh tinggi viewport */
-    background-color: #141450; /* Atur warna background sesuai keinginan */
+    width: 250px; 
+    height: 100vh; 
+    background-color: #141450; 
     z-index: 1000;
-    overflow-y: auto; /* Tambahkan ini jika sidebar memiliki konten panjang */
+    overflow-y: auto; 
+    transition: width 0.3s ease;
 }
 
-.sidebar .logo {
-    padding: 10px; /* Atur padding pada kontainer logo */
-    text-align: center; /* Pusatkan logo di tengah */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 0; /* Atur lebar sidebar menjadi 0 saat dikurangi */
+    }
+
+    .sidebar.sidebar-open {
+        width: 250px; /* Lebar asli saat sidebar dibuka */
+    }
 }
 
-.sidebar .logo-img {
-    width: 20px; /* Atur ukuran lebar logo */
-    height: auto; /* Sesuaikan tinggi secara proporsional */
-    margin-top: 10px; /* Atur margin atas */
-    margin-bottom: 10px; /* Atur margin bawah */
+/* Untuk versi desktop saat ditekan tombol hamburger */
+.sidebar-mini.sidebar-collapse .sidebar {
+    width: 80px; /* Atur lebar sidebar yang diperkecil */
+}
+
+.sidebar:hover{
+    background-color: #141450;
+}
+
+.logout{
+    transition: 0.75s;
+}
+
+.logout:hover {
+    background-color: red;
 }
 
 /* General Header Styling */
@@ -197,6 +213,42 @@ background-color: #e5a84f;
 /* .background-kat {
 background-color: #141450;
 } */
+
+/* stats welcome */
+.stats {
+    background-color: #141450;
+    background-image: url(img/doodle.png);
+    background-size: 50% 100%;
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    padding: 40px 0;
+}
+.stats div {
+    text-align: center;
+}
+.stats div i {
+    font-size: 60px;
+    margin-bottom: 10px;
+}
+.stats div h2 {
+    margin: 0 0;
+    font-size: 36px;
+    font-weight: bold;
+}
+.stats div h5 {
+    margin: 5px 0;
+}
+
+.stats div a{
+    color: #ffee07;
+}
+
+.stats div a:hover{
+    color: #ffb007;
+}
+
+
 /* slider */
 .container-kat {
     margin: 30% 50% 0;
@@ -468,8 +520,15 @@ background-color: #141450;
     }
 }
 /* ALPA MAHASISWA */
+.card.card-outline.card-primary {
+    border-color: #ffc107;
+    margin: 0 20px;
+}
+
 .table-alpa {
-    overflow-x: auto;
+    /* overflow-x: auto; */
+    padding: 0 20px;
+    padding-bottom: 30px;
 }
 
 .table-alpa h2{
@@ -484,8 +543,9 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 40px;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
 }
 table th, table td {
     padding: 10px;
@@ -504,45 +564,53 @@ table th:last-child {
 }
 
 /* TUGAS PAGE_ADMIN */
+
 /* Search Bar */
 .search-bars {
     display: flex;
     gap: 10px;
     justify-content: space-between;
     margin: 20px 0;
+    margin-top: 0;
     background-color: #141450;
+    padding: 15px;
 }
-.search-bar div {
+
+.search-bars .filter,
+.search-bars .search-input {
     display: flex;
     align-items: center;
-    border: 1px solid #141450; /* Memberikan border pada container */
-    padding: 5px 10px; /* Memberikan ruang di dalam elemen */
+    border-radius: 5px; /* Apply border-radius on both filter and input */
+    overflow: hidden; /* Prevents children from spilling out of the border-radius */
 }
-.search-bar select,
-.search-bar input {
+
+.search-bars select,
+.search-bars input {
     border: none; /* Menghilangkan border default */
     outline: none; /* Menghilangkan outline default */
-    padding: 8px 15px; /* Ruang di dalam elemen */
+    padding: 8px 15px; 
     font-size: 1rem;
-    border-radius: 30px; /* Memberikan border-radius yang lebih lembut */
     background-color: #fff; /* Warna latar belakang putih untuk elemen input */
     transition: all 0.3s ease; /* Transisi halus */
+    border-radius: 5px; /* Memberikan border-radius yang lebih lembut */
 }
 
 /* Efek saat elemen input/select berada dalam fokus */
-.search-bar input:focus,
-.search-bar select:focus {
+.search-bars select:focus,
+.search-bars input:focus {
     border: 1px solid #1A1A4B; /* Warna border biru saat fokus */
     box-shadow: 0 0 5px rgba(26, 26, 75, 0.2); /* Efek bayangan lembut */
     background-color: #fefefe; /* Latar belakang lebih terang saat fokus */
 }
 
 /* Styling untuk icon filter di dalam search-bar */
-.search-bar i {
+.search-bars .filter i {
     font-size: 1.2rem;
-    color: #1A1A4B; /* Warna ikon sesuai tema */
-    margin-right: 10px;
+    color: white; /* Mengubah ikon filter menjadi putih */
+    margin: 0; /* Menghilangkan margin */
+    padding: 5px; /* Menambahkan padding untuk menyesuaikan ruang */
 }
+
 .search-bars input[type="text"] {
     width: 100%;
     padding: 5px;
@@ -573,6 +641,7 @@ table th:last-child {
 .tab-content.active {
     display: block;
 }
+
 .add-task {
     background-color: #1A1A4B;
     color: white;
@@ -585,6 +654,27 @@ table th:last-child {
     cursor: pointer;
     width: 97%; 
     display: block;
+}
+
+/* Style untuk Tabs */
+.navy-pills .navy-link {
+    background-color: #f8f9fa; /* Warna latar belakang tab */
+    color: #333; /* Warna teks default */
+    border-radius: 0; /* Hilangkan border radius agar lebih tajam */
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transisi pada hover */
+}
+
+/* Tab aktif */
+.navy-pills .navy-link.active {
+    background-color: #007bff; /* Warna latar belakang untuk tab aktif */
+    color: #fff; /* Warna teks untuk tab aktif */
+}
+
+/* Hover effect pada tab */
+.navy-pills .navy-link:hover {
+    background-color: #007bff; /* Warna latar belakang saat hover */
+    color: #fff; /* Warna teks saat hover */
 }
 
 /* DESKRIPSI TUGAS */

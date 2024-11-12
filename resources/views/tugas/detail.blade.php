@@ -29,9 +29,6 @@
                     <span>Kompetensi ID: {{ $description->kompetensi_id }}</span>
                 </div>
                 
-                <!-- <div class="deskripsi-deadline">
-                    <span><i class="fas fa-calendar-alt"></i> Tenggat: {{ $description->tugas_tenggat->format('m/d/Y H:i A') }}</span>
-                </div> -->
             </div>
             <a href="{{ url('tugas') }}" class="request-button">Back to Tugas List</a>
         </div>

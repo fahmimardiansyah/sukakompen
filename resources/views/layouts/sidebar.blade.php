@@ -1,9 +1,9 @@
 <div class="sidebar">
-    <div class="logo">
-        <a href="{{ url('/') }}">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo">
-        </a>
-    </div>
+    <!-- Brand Logo -->
+    <a href="{{ url('/') }}" class="brand-link">
+        <img src="{{ asset('img/SK.png') }}" alt="Suka Kompen"class="brand-image img-circle elevation-3" style="opacity: 1">
+        <span class="brand-text font-weight-light">Suka Kompen.</span>
+    </a>
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -70,8 +70,8 @@
                     <p>Profile</p>
                 </a>
             <li class="nav-header">Logout</li>
-            <li class="nav-item">
-                <a href="{{ url('/logout') }}" class="nav-link logout-button">
+            <li class="nav-item logout">
+                <a href="{{ url('/logout') }}" class="nav-link">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>Logout</p>
                 </a>
