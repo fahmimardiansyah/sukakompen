@@ -13,12 +13,12 @@ class UserModel extends Authenticatable
 
     protected $table = 'm_user';        // Mendefinisikan nama tabel yang digunakan oleh model ini
     protected $primaryKey = 'user_id';  // Mendfinisikan primary key dari tabel yang digunakan
-    protected $fillable = ['username', 'password', 'nama', 'level_id','created_at', 'updated_at'];
+    protected $fillable = ['username', 'password', 'nama', 'level_id', 'foto', 'created_at', 'updated_at'];
     protected $hidden = ['password'];
     protected $casts = ['password' => 'hashed'];
 
 
-    public function level() : BelongsTo
+    public function level(): BelongsTo
     {
         return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
     }
@@ -26,7 +26,7 @@ class UserModel extends Authenticatable
     /**
      * mendapatkan nama role
      */
-    public function getRoleName():string
+    public function getRoleName(): string
     {
         return $this->level->level_nama;
     }
