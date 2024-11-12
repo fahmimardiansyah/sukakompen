@@ -70,7 +70,7 @@
                 </a>
             </li>
             <li class="nav-header">Logout</li>
-            <li class="nav-item">
+            <li class="nav-item logout">
                 <a href="{{ url('/logout') }}" class="nav-link">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>Logout</p>

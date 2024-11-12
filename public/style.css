@@ -36,6 +36,14 @@ html, body {
     margin-bottom: 10px; /* Atur margin bawah */
 }
 
+.logout{
+    transition: 0.75s;
+}
+
+.logout:hover {
+    background-color: red;
+}
+
 /* General Header Styling */
 .header {
     position: fixed;
