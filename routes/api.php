@@ -2,10 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Api\APIController;
 
-Route::post('/login', [AuthController::class, 'postlogin']);
-Route::post('/register', [AuthController::class, 'postregister']);
+Route::post('/login', [APIController::class, 'login']);
+Route::post('/register', [APIController::class, 'postregister']);
 
 /*
 |--------------------------------------------------------------------------
