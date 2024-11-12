@@ -52,30 +52,31 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/kompetensi') }}" class="nav-link {{ $activeMenu == 'kompetensi' ? 'active' : '' }} ">
+                <a href="{{ url('/kompetensi') }}"
+                    class="nav-link {{ $activeMenu == 'kompetensi' ? 'active' : '' }} ">
                     <i class="nav-icon far fa-list-alt"></i>
                     <p>Kompetensi Tugas</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ url('pesan') }}" class="nav-link {{ $activeMenu == 'pesan' ? 'active' : '' }} ">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-bell"></i>
                     <p>Pesan</p>
                 </a>
             </li>
             <li class="nav-item">
                 <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }} ">
-                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
                 </a>
-            </li>
             <li class="nav-header">Logout</li>
             <li class="nav-item">
-                <a href="{{ url('/logout') }}" class="nav-link">
+                <a href="{{ url('/logout') }}" class="nav-link logout-button">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
                     <p>Logout</p>
                 </a>
             </li>
+
         </ul>
     </nav>
 </div>

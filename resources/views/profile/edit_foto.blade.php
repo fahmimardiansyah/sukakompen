@@ -28,10 +28,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="formFileLg" class="form-label">Foto</label>
-                            <input type="file" name="foto" id="formFileLg" class="form-control form-control-lg"
+                            <label for="formFileLg" class="form-label">Pilih Foto</label>
+                            <input type="file" name="avatar" id="formFileLg" class="form-control form-control-lg"
                                 accept=".png,.jpg,.jpeg">
-                            <small id="error-foto" class="error-text form-text text-danger"></small>
+                            <small id="error-avatar" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -45,7 +45,7 @@
             $(document).ready(function() {
                 $("#form-edit").validate({
                     rules: {
-                        foto: {
+                        avatar: {
                             required: true,
                             accept: "png,jpg,jpeg"
                         },
