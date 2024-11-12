@@ -1,9 +1,9 @@
 <div class="sidebar">
-    <div class="logo">
-        <a href="{{ url('/') }}">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo">
-        </a>
-    </div>
+    <!-- Brand Logo -->
+    <a href="{{ url('/') }}" class="brand-link">
+        <img src="{{ asset('img/SK.png') }}" alt="Suka Kompen"class="brand-image img-circle elevation-3" style="opacity: 1">
+        <span class="brand-text font-weight-light">Suka Kompen.</span>
+    </a>
     <!-- Sidebar Menu -->
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
