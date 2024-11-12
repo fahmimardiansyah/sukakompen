@@ -13,6 +13,10 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\AlpamController;
 use App\Http\Controllers\KompenmaController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\InboxController;
+use App\Http\Controllers\AkumulasiController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -92,6 +96,23 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'kompenma'], function () {
         Route::get('/', [KompenmaController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'akumulasi'], function () {
+        Route::get('/', [AkumulasiController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'task'], function () {
+        Route::get('/', [TaskController::class, 'index']);
+        Route::get('/detail', [TugasController::class, 'detail'])->name('task.detail'); 
+    });
+
+    Route::group(['prefix' => 'inbox'], function () {
+        Route::get('/', [InboxController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'history'], function () {
+        Route::get('/', [HistoryController::class, 'index']);
     });
 
 });

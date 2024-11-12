@@ -92,4 +92,13 @@ class AuthController extends Controller
             return redirect('login');
         }
     }
+
+    public function dashboard()
+    {
+    $user = Auth::user();
+    $level = $user->level_id; // Misalkan level_id disimpan di user
+
+    return view('dashboard', compact('level'));
+    }
+
 }

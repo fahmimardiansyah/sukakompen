@@ -1,13 +1,15 @@
 @extends('layouts.template')
 
 @section('content')
+
+<div class="card card-outline card-primary">
 <div class="hero">
     <h1>Jenis Tugas</h1>
 </div>
+<div class="notif">
+    <h2>Jenis Tugas</h2>
+</div>
 <div class="content">
-    <div class="titles">
-        Manage Jenis Tugas
-    </div>
     <a class="add-task"  onclick="modalAction('{{ url('/jenis/create_ajax') }}')">
         + Tambah Jenis Tugas
     </a>
@@ -25,6 +27,7 @@
         </div>
     </div>
     @endforeach
+</div>
 </div>
 
 <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" databackdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>
