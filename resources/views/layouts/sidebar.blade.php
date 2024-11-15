@@ -57,12 +57,6 @@
                     <p>Pesan</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>Profile</p>
-                </a>
-            </li>
             {{-- MAHASISWA --}}
             <li class="nav-header">Mahasiswa</li>
             <li class="nav-item">
@@ -90,6 +84,12 @@
                 </a>
             </li>
             <li class="nav-header">Logout</li>
+                <li class="nav-item">
+                <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
             <li class="nav-item logout">
                 <a href="{{ url('/logout') }}" class="nav-link">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
