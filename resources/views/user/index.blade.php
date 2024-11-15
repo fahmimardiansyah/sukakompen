@@ -5,9 +5,7 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
-                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah
-                    Ajax</button>
+                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah User</button>
             </div>
         </div>
         <div class="card-body">
@@ -72,46 +70,33 @@
                     }
                 },
                 columns: [
-    {
-        data: "DT_RowIndex",
-        className: "text-center",
-        orderable: false,
-        searchable: false
-    },
-    {
-        data: "username",
-        orderable: true,
-        searchable: true
-    },
-    {
-        data: "nama",
-        orderable: true,
-        searchable: true
-    },
-    {
-        data: "level.level_nama",
-        orderable: false,
-        searchable: false
-    },
-    {
-        data: "aksi",
-        orderable: false,
-        searchable: false,
-        render: function(data, type, row) {
-            return `
-                <a href="/user/${row.id}/detail" class="btn btn-sm btn-info" title="Detail">
-                    <i class="fas fa-info-circle"></i>
-                </a>
-                <a href="/user/${row.id}/edit" class="btn btn-sm btn-warning" title="Edit">
-                    <i class="fas fa-edit"></i>
-                </a>
-                <button onclick="deleteUser(${row.id})" class="btn btn-sm btn-danger" title="Hapus">
-                    <i class="fas fa-trash-alt"></i>
-                </button>
-            `;
-        }
-    }
-]
+                    {
+                        data: "DT_RowIndex",
+                        className: "text-center",
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: "username",
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: "nama",
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: "level.level_nama",
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: "aksi",
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
             });
 
             $('#level_id').on('change', function() {

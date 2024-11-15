@@ -34,7 +34,7 @@
     </div>
     
     <!-- Tombol "Tambah Tugas" -->
-    <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">Tambah Tugas</button>
+    <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">+ Tambah Tugas</button>
 
 
         <!-- Admin Tab Content -->

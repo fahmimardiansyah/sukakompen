@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\UserModel;
+use App\Models\LevelModel;
 use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
@@ -46,5 +47,21 @@ class APIController extends Controller
 
         return "Berhasil Menyimpan Data";
     }
-    
+
+    public function getLevels()
+    {
+        try {
+            $levels = LevelModel::all()->select('level_id', 'level_nama');
+
+            return response()->json([
+                'success' => true,
+                'data' => $levels
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengambil data levels: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

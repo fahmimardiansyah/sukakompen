@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AlpaModel;
+use App\Models\ProgressModel;
+use Laravel\Prompts\Progress;
 
 class AlpamController extends Controller
 {
@@ -15,17 +18,10 @@ class AlpamController extends Controller
     
         $activeMenu = 'alpam';
 
-        // Data Mahasiswa yang ingin ditampilkan di Blade
-        $mahasiswa = [
-            ['nama' => 'Fahmi Mardiansyah', 'jam_kompen' => '4 jam', 'jumlah_alpa' => '14 jam'],
-            ['nama' => 'Hasan Basri', 'jam_kompen' => '1 jam', 'jumlah_alpa' => '4 jam'],
-            ['nama' => "Fa'iz Abiyu", 'jam_kompen' => '3 jam', 'jumlah_alpa' => '2 jam'],
-            ['nama' => 'Nasya Syafinka', 'jam_kompen' => '4 jam', 'jumlah_alpa' => '8 jam'],
-            ['nama' => 'Nabilah Rahmah', 'jam_kompen' => '2 jam', 'jumlah_alpa' => '12 jam'],
-            ['nama' => 'Adam Safrila', 'jam_kompen' => '2 jam', 'jumlah_alpa' => '4 jam'],
-        ];
+        $mahasiswa = AlpaModel::all();
 
+        $progress = ProgressModel::all();
         
-        return view('alpam.index', ['mahasiswa' => $mahasiswa,'breadcrumb' => $breadcrumb,'activeMenu' => $activeMenu]);
+        return view('alpam.index', ['mahasiswa' => $mahasiswa,'breadcrumb' => $breadcrumb,'activeMenu' => $activeMenu, 'progress' => $progress]);
     }
 }

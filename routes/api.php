@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\APIController;
 
 Route::post('/login', [APIController::class, 'login']);
-Route::post('/register', [APIController::class, 'postregister']);
+Route::post('/create_data', [APIController::class, 'postregister']);
+Route::get('/levels', [APIController::class, 'getLevels']);
 
 /*
 |--------------------------------------------------------------------------
