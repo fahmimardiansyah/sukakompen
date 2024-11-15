@@ -19,27 +19,27 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function postlogin(Request $request)
-    {
-        if ($request->ajax() || $request->wantsJson()) {
-            $credentials = $request->only('username', 'password');
+    // public function postlogin(Request $request)
+    // {
+    //     if ($request->ajax() || $request->wantsJson()) {
+    //         $credentials = $request->only('username', 'password');
 
-            if (Auth::attempt($credentials)) {
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Login Berhasil',
-                    'redirect' => url('/')
-                ]);
-            }
+    //         if (Auth::attempt($credentials)) {
+    //             return response()->json([
+    //                 'status' => true,
+    //                 'message' => 'Login Berhasil',
+    //                 'redirect' => url('/')
+    //             ]);
+    //         }
 
-            return response()->json([
-                'status' => false,
-                'message' => 'Login Gagal'
-            ]);
-        }
+    //         return response()->json([
+    //             'status' => false,
+    //             'message' => 'Login Gagal'
+    //         ]);
+    //     }
 
-        return redirect('login');
-    }
+    //     return redirect('login');
+    // }
 
     public function logout(Request $request)
     {
@@ -59,6 +59,43 @@ class AuthController extends Controller
             ->with('level', $level);
     }
     
+
+    public function postlogin(Request $request)
+{
+    // Mengecek apakah request berupa AJAX atau membutuhkan respons dalam format JSON
+    if ($request->ajax() || $request->wantsJson()) {
+        
+        // Mengambil data 'username' dan 'password' dari input request
+        $credentials = $request->only('username', 'password');
+        
+        // Mencoba melakukan login dengan kredensial yang diberikan (username dan password)
+        if (Auth::attempt($credentials)) {
+            
+            // Jika login berhasil, menyimpan informasi profil pengguna ke dalam session
+            session([
+                'profile_img_path' => Auth::user()->foto,   // Menyimpan foto profil pengguna
+                'user_id' => Auth::user()->user_id            // Menyimpan ID pengguna
+            ]);
+            
+            // Mengirimkan response JSON yang menunjukkan bahwa login berhasil, beserta URL untuk redirect
+            return response()->json([
+                'status' => true,                            // Status keberhasilan login
+                'message' => 'Login Berhasil',               // Pesan sukses
+                'redirect' => url('/')                       // URL untuk redirect ke halaman utama
+            ]);
+        }
+        
+        // Jika login gagal (misalnya username atau password salah)
+        return response()->json([
+            'status' => false,                             // Status kegagalan login
+            'message' => 'Login Gagal'                    // Pesan kegagalan login
+        ]);
+    }
+    
+    // Jika request bukan berupa AJAX, maka mengarahkan pengguna ke halaman login biasa
+    return redirect('login');
+}
+
         // Membuat fungsi store Ajax
     public function postregister(Request $request)
     {
@@ -92,4 +129,13 @@ class AuthController extends Controller
             return redirect('login');
         }
     }
+
+    public function dashboard()
+    {
+    $user = Auth::user();
+    $level = $user->level_id; // Misalkan level_id disimpan di user
+
+    return view('dashboard', compact('level'));
+    }
+
 }

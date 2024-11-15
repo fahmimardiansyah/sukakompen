@@ -13,6 +13,10 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\AlpamController;
 use App\Http\Controllers\KompenmaController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\InboxController;
+use App\Http\Controllers\AkumulasiController;
+use App\Http\Controllers\HistoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -25,6 +29,14 @@ Route::post('register', [AuthController::class,'postregister']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
+
+    Route::middleware(['authorize:ADM,DSN,TDK,MHS'])->group(function(){
+        Route::get('/profile', [ProfileController::class, 'index']);
+        Route::get('/profile/{id}/edit_ajax', [ProfileController::class, 'edit_ajax']);
+        Route::put('/profile/{id}/update_ajax', [ProfileController::class, 'update_ajax']);
+        Route::get('/profile/{id}/edit_foto', [ProfileController::class, 'edit_foto']);
+        Route::put('/profile/{id}/update_foto', [ProfileController::class, 'update_foto']);
+    });
 
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);
@@ -82,6 +94,23 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['prefix' => 'kompenma'], function () {
         Route::get('/', [KompenmaController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'akumulasi'], function () {
+        Route::get('/', [AkumulasiController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'task'], function () {
+        Route::get('/', [TaskController::class, 'index']);
+        Route::get('/detail', [TugasController::class, 'detail'])->name('task.detail'); 
+    });
+
+    Route::group(['prefix' => 'inbox'], function () {
+        Route::get('/', [InboxController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'history'], function () {
+        Route::get('/', [HistoryController::class, 'index']);
     });
 
 });

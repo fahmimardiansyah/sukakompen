@@ -8,6 +8,7 @@
     <h1>Tugas</h1>
 </div>
 
+
 <!-- Search Bar -->
 <div class="search-bars">
     <div class="filter">
@@ -19,6 +20,9 @@
     <div class="search-input">
         <input type="text" placeholder="Search by Name" />
     </div>
+</div>
+<div class="notif">
+    <h2>Tugas</h2>
 </div>
 
     <!-- Recommended Tasks Section -->

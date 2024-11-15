@@ -154,7 +154,7 @@ html, body {
 position: relative;
 width: 100%;
 height: 600px;
-background-image: url('img/work.jpg'); /* Ganti dengan path gambar Anda */
+background-image: linear-gradient(to top, rgba(17, 17, 85, 0.624), rgba(20, 20, 80, 0.2)), url('img/work.jpg'); 
 background-size: cover;
 background-position: center;
 display: flex;
@@ -185,7 +185,7 @@ margin-bottom: 20px;
 }
 
 .start-button {
-background-color: #FFBD59;
+background-color: #ffe437;
 color: white;
 padding: 10px 20px;
 border-radius: 20px;
@@ -195,7 +195,8 @@ transition: background-color 0.3s;
 }
 
 .start-button:hover {
-background-color: #e5a84f;
+color: white;
+background-color: #ffbd17;
 }
 
 /* KATEGORI KOMPETENSI */
@@ -395,7 +396,13 @@ background-color: #141450;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('img/penelitian.jpeg');
 }
 
+
 /* Grid Layout untuk Card */
+.recommended-tasks {
+    margin: 20px;
+    max-width: 1200px;
+}
+
 .task-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -580,8 +587,9 @@ table th:last-child {
 .search-bars .search-input {
     display: flex;
     align-items: center;
-    border-radius: 5px; /* Apply border-radius on both filter and input */
+    border-radius: 5px; 
     overflow: hidden; /* Prevents children from spilling out of the border-radius */
+    gap: 10px;
 }
 
 .search-bars select,
@@ -1020,7 +1028,7 @@ background-color: #344efa; /* Warna saat hover */
     padding: 20px;
 }
 .notif h2 {
-    font-size: 32px;
+    font-size: 20px;
     color: #1a237e;
     border-bottom: 2px solid #1a237e;
     padding-bottom: 10px;
@@ -1121,4 +1129,18 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* button cetak */
+.btn-cetak {
+    background-color: #4CAF50; /* Warna hijau */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-cetak:hover {
+    background-color: #45a049; /* Warna hijau lebih gelap saat hover */
 }

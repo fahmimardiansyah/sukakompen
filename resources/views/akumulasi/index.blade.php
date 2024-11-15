@@ -1,17 +1,19 @@
-@extends('kompen.template')
+@extends('layouts.template')
 
 @section('content')
-<section class="welcome-section">
 
-    <div class="hero">
-        <h1>
-         Akumulasi
-        </h1>
-       </div>
-</section>
-<div class="akumulasi-container">
-    <h1>Akumulasi Alpa</h1>
-    <table class="akumulasi-table">
+
+<div class="card card-outline card-primary">
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Alpa Mahasiswa</h1>
+</div>
+<div class="notif">
+    <h2>Tabel Akumulasi</h2>
+</div>
+
+<div class="table-alpa">
+    <table>
         <thead>
             <tr>
                 <th>Semester</th>
@@ -19,30 +21,15 @@
             </tr>
         </thead>
         <tbody>
+            @foreach($mahasiswa as $data)
             <tr>
-                <td>Semester 1</td>
-                <td>4 jam</td>
+                <td>{{ $data['semester'] }}</td>
+                <td>{{ $data['jumlah_alpa'] }}</td>
             </tr>
-            <tr>
-                <td>Semester 2</td>
-                <td>4 jam</td>
-            </tr>
-            <tr>
-                <td>Semester 3</td>
-                <td>4 jam</td>
-            </tr>
-            <tr>
-                <td>Semester 4</td>
-                <td>4 jam</td>
-            </tr>
-            <tr>
-                <td>Semester 5</td>
-                <td>4 jam</td>
-            </tr>
-            <tr>
-                <td>Semester 6</td>
-                <td>4 jam</td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
+</div>
+
+@endsection

@@ -1,45 +1,39 @@
-@extends('kompen.template')
+@extends('layouts.template')
 
 @section('content')
-<section class="welcome-section">
 
-    <div class="hero">
-        <h1>
-         History
-        </h1>
-       </div>
-</section>
-<div class="akumulasi-container">
-    <h1>History Tugas</h1>
-    <table class="akumulasi-table">
+
+<div class="card card-outline card-primary">
+<!-- Hero Section -->
+<div class="hero">
+    <h2>Alpa Mahasiswa</h2>
+</div>
+<div class="notif">
+    <h2>Tabel History</h2>
+</div>
+
+<div class="table-alpa">
+    <table>
         <thead>
             <tr>
-                <th class="col-tugas">Tugas</th>
-                <th class="col-status">Status</th>
-                <th class="col-cetak">Form Kompen</th>
+                <th>Tugas</th>
+                <th>Status</th>
+                <th>Cetak</th>
             </tr>
         </thead>
         <tbody>
+            @foreach($mahasiswa as $data)
             <tr>
-                <td>UI/UX Website</td>
-                <td>Selesai</td>
-                <td><button class="print-btn">Cetak</button></td>
+                <td>{{ $data['tugas'] }}</td>
+                <td>{{ $data['status'] }}</td>
+                <td>
+                    <button class="btn-cetak" onclick="window.location.href='/cetak/{{ $data['tugas'] }}'">Cetak</button>
+                </td>
             </tr>
-            <tr>
-                <td>Membuat PPT</td>
-                <td>Selesai</td>
-                <td><button class="print-btn">Cetak</button></td>
-            </tr>
-            <tr>
-                <td>Arsip Nilai</td>
-                <td>Selesai</td>
-                <td><button class="print-btn">Cetak</button></td>
-            </tr>
-            <tr>
-                <td>Arsip Absensi</td>
-                <td>Selesai</td>
-                <td><button class="print-btn">Cetak</button></td>
-            </tr>
+            @endforeach
         </tbody>
     </table>
 </div>
+</div>
+
+@endsection

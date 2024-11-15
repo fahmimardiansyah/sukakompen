@@ -99,11 +99,14 @@ class ProfileController extends Controller
     }
     public function update_foto(Request $request, $id)
 {
-    // cek apakah request dari ajax
+    // buat validasi ektensi dari filenya
     if ($request->ajax() || $request->wantsJson()) {
         $rules = [
             'foto'   => 'required|mimes:jpeg,png,jpg|max:4096'
         ];
+        // ini buat nentuin mau ditaruh mana file yang diupload
+        $folderPath = 'uploads/profile_pictures/'.auth()->user()->username.'/';
+        
         // use Illuminate\Support\Facades\Validator;
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

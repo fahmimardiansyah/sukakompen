@@ -57,6 +57,7 @@
                                 password</small>
                             <small id="error-password" class="error-text form-text text-danger"></small>
                         </div>
+                    </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -104,7 +105,9 @@
                                         title: 'Berhasil',
                                         text: response.message
                                     });
-                                    profile.ajax.reload();
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
                                 } else {
                                     $('.error-text').text('');
                                     $.each(response.msgField, function(prefix, val) {

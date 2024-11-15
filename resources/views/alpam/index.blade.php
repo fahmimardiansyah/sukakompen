@@ -2,12 +2,16 @@
 
 @section('content')
 
+<div class="card card-outline card-primary">
+<!-- Hero Section -->
 <div class="hero">
     <h1>Alpa Mahasiswa</h1>
 </div>
+<div class="notif">
+    <h2>Tabel Alpa Mahasiswa</h2>
+</div>
 
 <div class="table-alpa">
-    <h2>Tabel Alpa Mahasiswa</h2>
     <table>
         <thead>
             <tr>
@@ -28,6 +32,7 @@
             @endforeach
         </tbody>
     </table>
+</div>
 </div>
 
 @endsection
