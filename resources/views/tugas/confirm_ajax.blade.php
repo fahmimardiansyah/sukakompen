@@ -34,14 +34,6 @@
                             <th class="text-right col-3">Nama Tugas :</th>
                             <td class="col-9">{{ $tugas->tugas_nama }}</td>
                         </tr>
-                        <!-- <tr>
-                            <th class="text-right col-3">Jenis Tugas :</th>
-                            <td class="col-9">{{ $tugas->jenis->jenis_nama }}</td>
-                        </tr>
-                        <tr>
-                            <th class="text-right col-3">Kompetensi Tugas :</th>
-                            <td class="col-9">{{ $tugas->kompetensi->kompetensi_nama }}</td>
-                        </tr> -->
                         <tr>
                             <th class="text-right col-3">Deskripsi Tugas :</th>
                             <td class="col-9">{{ $tugas->tugas_deskripsi }}</td>

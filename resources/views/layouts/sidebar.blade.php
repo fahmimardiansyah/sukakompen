@@ -40,8 +40,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/jenis') }}" class="nav-link {{ $activeMenu == 'jenis' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-cogs"></i>
+            <a href="{{ url('/jenis') }}" class="nav-link {{ $activeMenu == 'jenis' ? 'active' : '' }}">
+            <i class="nav-icon fas fa-cogs"></i>
                     <p>Jenis Tugas</p>
                 </a>
             </li>
