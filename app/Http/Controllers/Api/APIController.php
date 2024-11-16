@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\UserModel;
 use App\Models\LevelModel;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APIController extends Controller
 {
@@ -31,9 +32,15 @@ class APIController extends Controller
             ], 401);
         }
 
+        $user = auth()->guard('api')->user();
+
         return response()->json([
             'success' => true,
-            'user' => auth()->guard('api')->user(),
+            'user' => [
+                auth()->guard('api')->user(),
+                'level_id' => (int) $user->level_id,
+                'nama' => $user->nama,
+            ],
             'token' => $token
         ], 200);
     }
@@ -64,6 +71,16 @@ class APIController extends Controller
                 'success' => false,
                 'message' => 'Gagal mengambil data levels: ' . $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function logout(Request $request){
+        $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
+        if($removeToken){
+            return response()->json([
+                'success' => true,
+                'message' => 'Logout Berhasil!',
+            ]);
         }
     }
 }
