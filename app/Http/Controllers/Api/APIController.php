@@ -12,27 +12,29 @@ use Illuminate\Support\Facades\Validator;
 
 class APIController extends Controller
 {
-    public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
+    public function login(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
         ]);
 
-        $user = UserModel::where('username', $request->username)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json([
-                'message' => 'Invalid credentials'
-            ], 401); 
+        if($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
 
-        $token = $user->createToken('YourAppName')->plainTextToken;
+        $credentials = $request->only('username', 'password');
+
+        if(!$token = auth()->guard('api')->attempt($credentials)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Username atau Password Anda Salah',
+            ], 401);
+        }
 
         return response()->json([
-            'user' => $user,
-            'token' => $token,
-            'message' => 'Login successful',
+            'success' => true,
+            'user' => auth()->guard('api')->user(),
+            'token' => $token
         ], 200);
     }
 
