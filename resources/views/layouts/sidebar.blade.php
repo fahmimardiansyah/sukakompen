@@ -1,7 +1,8 @@
 <div class="sidebar">
     <!-- Brand Logo -->
     <a href="{{ url('/') }}" class="brand-link">
-        <img src="{{ asset('img/SK.png') }}" alt="Suka Kompen" class="brand-image img-circle elevation-3" style="opacity: 1">
+        <img src="{{ asset('img/SK.png') }}" alt="Suka Kompen" class="brand-image img-circle elevation-3"
+            style="opacity: 1">
         <span class="brand-text font-weight-light">Suka Kompen.</span>
     </a>
     <!-- Sidebar Menu -->
@@ -40,8 +41,8 @@
                 </a>
             </li>
             <li class="nav-item">
-            <a href="{{ url('/jenis') }}" class="nav-link {{ $activeMenu == 'jenis' ? 'active' : '' }}">
-            <i class="nav-icon fas fa-cogs"></i>
+                <a href="{{ url('/jenis') }}" class="nav-link {{ $activeMenu == 'jenis' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-cogs"></i>
                     <p>Jenis Tugas</p>
                 </a>
             </li>
@@ -57,6 +58,34 @@
                     <p>Pesan</p>
                 </a>
             </li>
+
+            {{-- DOSEN --}}
+            <li class="nav-header">Dosen/Tendik</li>
+            <li class="nav-item">
+                <a href="{{ url('kompen') }}" class="nav-link {{ $activeMenu == 'kompen' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>Tugas Kompen</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('alpha') }}" class="nav-link {{ $activeMenu == 'alpha' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-clock"></i>
+                    <p>Alpa Mahasiswa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('/kompenmhs') }}" class="nav-link {{ $activeMenu == 'kompenmhs' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user-check"></i>
+                    <p>Kompen Mahasiswa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
+
             {{-- MAHASISWA --}}
             <li class="nav-header">Mahasiswa</li>
             <li class="nav-item">
@@ -84,7 +113,7 @@
                 </a>
             </li>
             <li class="nav-header">Logout</li>
-                <li class="nav-item">
+            <li class="nav-item">
                 <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
@@ -99,4 +128,3 @@
         </ul>
     </nav>
 </div>
-
