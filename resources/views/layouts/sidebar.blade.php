@@ -58,7 +58,7 @@
                     <p>Pesan</p>
                 </a>
             </li>
-            
+
             {{-- DOSEN --}}
             <li class="nav-header">Dosen/Tendik</li>
             <li class="nav-item">
@@ -77,6 +77,12 @@
                 <a href="{{ url('/kompenmhs') }}" class="nav-link {{ $activeMenu == 'kompenmhs' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user-check"></i>
                     <p>Kompen Mahasiswa</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
                 </a>
             </li>
 

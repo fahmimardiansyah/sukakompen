@@ -5,6 +5,7 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\KompenController;
@@ -39,6 +40,14 @@ Route::middleware('auth')->group(function () {
         Route::put('/profile/{id}/update_ajax', [ProfileController::class, 'update_ajax']);
         Route::get('/profile/{id}/edit_foto', [ProfileController::class, 'edit_foto']);
         Route::put('/profile/{id}/update_foto', [ProfileController::class, 'update_foto']);
+    });
+
+    Route::middleware(['authorize:ADM,DSN,TDK,MHS'])->group(function(){
+        Route::get('/profil', [ProfilController::class, 'index']);
+        Route::get('/profil/{id}/edit_ajax', [ProfilController::class, 'edit_ajax']);
+        Route::put('/profil/{id}/update_ajax', [ProfilController::class, 'update_ajax']);
+        Route::get('/profil/{id}/edit_foto', [ProfilController::class, 'edit_foto']);
+        Route::put('/profil/{id}/update_foto', [ProfilController::class, 'update_foto']);
     });
 
     Route::group(['prefix' => 'user'], function () {
