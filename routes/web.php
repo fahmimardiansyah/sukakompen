@@ -7,12 +7,15 @@ use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KompetensiController;
+use App\Http\Controllers\KompenController;
 use App\Http\Controllers\PesanController;
 use App\Http\Controllers\AlpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\AlphaController;
 use App\Http\Controllers\AlpamController;
 use App\Http\Controllers\KompenmaController;
+use App\Http\Controllers\KompenmhsController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\InboxController;
 use App\Http\Controllers\AkumulasiController;
@@ -63,6 +66,18 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}/delete_ajax', [TugasController::class, 'delete_ajax']);
     });
 
+    Route::group(['prefix' => 'kompen'], function () {
+        Route::get('/', [KompenController::class, 'index']);
+        Route::get('/create_ajax', [KompenController::class, 'create_ajax']);
+        Route::post('/ajax', [KompenController::class, 'store_ajax']);
+        Route::get('/{id}/detail', [KompenController::class, 'detail']);
+        Route::get('/getkompetensi/{jenis_id}', [KompenController::class, 'kompetensi']);
+        Route::get('/{id}/edit_ajax', [KompenController::class, 'edit_ajax']);     
+        Route::put('/{id}/update_ajax', [KompenController::class, 'update_ajax']);
+        Route::get('/{id}/delete_ajax', [KompenController::class, 'confirm_ajax']);  
+        Route::delete('/{id}/delete_ajax', [KompenController::class, 'delete_ajax']);
+    });
+
     Route::group(['prefix' => 'jenis'], function () {
         Route::get('/', [JenisController::class, 'index']);
         Route::get('/create_ajax', [JenisController::class, 'create_ajax']);
@@ -88,12 +103,20 @@ Route::middleware('auth')->group(function () {
         Route::get('/create_ajax', [PesanController::class, 'create_ajax']);
     });
 
+    Route::group(['prefix' => 'alpha'], function () {
+        Route::get('/', [AlphaController::class, 'index']);
+    });
+
     Route::group(['prefix' => 'alpam'], function () {
         Route::get('/', [AlpamController::class, 'index']);
     });
 
     Route::group(['prefix' => 'kompenma'], function () {
         Route::get('/', [KompenmaController::class, 'index']);
+    });
+
+    Route::group(['prefix' => 'kompenmhs'], function () {
+        Route::get('/', [KompenmhsController::class, 'index']);
     });
 
     Route::group(['prefix' => 'akumulasi'], function () {
