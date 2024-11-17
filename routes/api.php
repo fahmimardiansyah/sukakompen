@@ -3,7 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\APIController;
-use App\Http\Controllers\Api\APItugasController;
+use App\Http\Controllers\Api\APITugasController;
+use App\Http\Controllers\Api\APITugasDosenController;
 
 Route::post('/login', [APIController::class, 'login']);
 Route::post('/create_data', [APIController::class, 'postregister']);
@@ -11,10 +12,12 @@ Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
-Route::post('/tugas/create_data', [APITugasController::class, 'store']);
-Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
-Route::post('/tugas/update_data', [APITugasController::class, 'edit']);
-Route::post('/tugas/delete_data', [APITugasController::class, 'destroy']);
+
+Route::post('/tugas_dosen', [APITugasDosenController::class, 'index']);
+Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store']);
+Route::post('/tugas_dosen/detail_data', [APITugasDosenController::class, 'show']);
+Route::post('/tugas_dosen/update_data', [APITugasDosenController::class, 'edit']);
+Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destroy']);
 
 /*
 |--------------------------------------------------------------------------

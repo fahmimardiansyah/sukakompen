@@ -9,7 +9,7 @@
     <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-item">
-                <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'welcome' ? 'active' : '' }}">
+                <a href="{{ url('/welcome') }}" class="nav-link {{ $activeMenu == 'welcome' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tachometer-alt"></i>
                     <p>Dashboard</p>
                 </a>
@@ -62,6 +62,12 @@
             {{-- DOSEN --}}
             <li class="nav-header">Dosen/Tendik</li>
             <li class="nav-item">
+                <a href="{{ url('/landing') }}" class="nav-link {{ $activeMenu == 'landing' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
@@ -80,7 +86,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('/kompenmhs') }}" class="nav-link {{ $activeMenu == 'kompenmhs' ? 'active' : '' }}">
+                <a href="{{ url('kompenmhs') }}" class="nav-link {{ $activeMenu == 'kompenmhs' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user-check"></i>
                     <p>Kompen Mahasiswa</p>
                 </a>
@@ -95,6 +101,13 @@
             {{-- MAHASISWA --}}
             <li class="nav-header">Mahasiswa</li>
             <li class="nav-item">
+                <a href="{{ url('dashboardmhs') }}"
+                    class="nav-link {{ $activeMenu == 'dashboardmhs' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
@@ -102,7 +115,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ url('akumulasi') }}" class="nav-link {{ $activeMenu == 'akumulasi' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-users"></i>
+                    <i class="nav-icon fas fa-chart-bar"></i>
                     <p>Akumulasi</p>
                 </a>
             </li>
@@ -114,8 +127,8 @@
             </li>
             <li class="nav-item">
                 <a href="{{ url('history') }}" class="nav-link {{ $activeMenu == 'history' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-cogs"></i>
-                    <p>History</p>
+                    <i class="nav-icon fas fa-clock"></i>
+                    <p>Histori</p>
                 </a>
             </li>
             <li class="nav-item">

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class LandingController extends Controller
+class DashboardmhsController extends Controller
 {
     public function index()
     {
@@ -14,8 +14,8 @@ class LandingController extends Controller
             'list' => ['Home', 'Welcome']
         ];
 
-        $activeMenu = 'landing';
+        $activeMenu = 'dashboardmhs';
 
-        return view('landing', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+        return view('dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }
