@@ -9,7 +9,13 @@ class LandingController extends Controller
 {
     public function index()
     {
+        $breadcrumb = (object) [
+            'title' => 'Dashboard Page',
+            'list' => ['Home', 'Welcome']
+        ];
 
-        return view('landing.index');
+        $activeMenu = 'landing';
+
+        return view('landing', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }

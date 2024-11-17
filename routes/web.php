@@ -2,14 +2,17 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfilemhsController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\KompenController;
 use App\Http\Controllers\PesanController;
+use App\Http\Controllers\NotifController;
 use App\Http\Controllers\AlpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
@@ -33,6 +36,7 @@ Route::post('register', [AuthController::class,'postregister']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
+    Route::get('/', [LandingController::class, 'index']);
 
     Route::middleware(['authorize:ADM,DSN,TDK,MHS'])->group(function(){
         Route::get('/profile', [ProfileController::class, 'index']);
@@ -48,6 +52,14 @@ Route::middleware('auth')->group(function () {
         Route::put('/profil/{id}/update_ajax', [ProfilController::class, 'update_ajax']);
         Route::get('/profil/{id}/edit_foto', [ProfilController::class, 'edit_foto']);
         Route::put('/profil/{id}/update_foto', [ProfilController::class, 'update_foto']);
+    });
+
+    Route::middleware(['authorize:ADM,DSN,TDK,MHS'])->group(function(){
+        Route::get('/profilemhs', [ProfilemhsController::class, 'index']);
+        Route::get('/profilemhs/{id}/edit_ajax', [ProfilemhsController::class, 'edit_ajax']);
+        Route::put('/profilemhs/{id}/update_ajax', [ProfilemhsController::class, 'update_ajax']);
+        Route::get('/profilemhs/{id}/edit_foto', [ProfilemhsController::class, 'edit_foto']);
+        Route::put('/profilemhs/{id}/update_foto', [ProfilemhsController::class, 'update_foto']);
     });
 
     Route::group(['prefix' => 'user'], function () {
@@ -105,6 +117,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}/update_ajax', [KompetensiController::class, 'update_ajax']);
         Route::get('/{id}/delete_ajax', [KompetensiController::class, 'confirm_ajax']);  
         Route::delete('/{id}/delete_ajax', [KompetensiController::class, 'delete_ajax']);
+    });
+
+    Route::group(['prefix' => 'notif'], function () {
+        Route::get('/', [NotifController::class, 'index']);
+        Route::get('/create_ajax', [NotifController::class, 'create_ajax']);
     });
 
     Route::group(['prefix' => 'pesan'], function () {
