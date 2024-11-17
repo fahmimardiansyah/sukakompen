@@ -112,6 +112,13 @@
                     <p>Inbox</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
+            {{-- admin --}}
             <li class="nav-header">Logout</li>
             <li class="nav-item">
                 <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
