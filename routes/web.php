@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TugasController;
 use App\Http\Controllers\ProfileController;
@@ -35,6 +36,7 @@ Route::post('register', [AuthController::class,'postregister']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
+    Route::get('/', [LandingController::class, 'index']);
 
     Route::middleware(['authorize:ADM,DSN,TDK,MHS'])->group(function(){
         Route::get('/profile', [ProfileController::class, 'index']);

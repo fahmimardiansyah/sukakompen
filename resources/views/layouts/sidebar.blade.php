@@ -62,6 +62,12 @@
             {{-- DOSEN --}}
             <li class="nav-header">Dosen/Tendik</li>
             <li class="nav-item">
+                <a href="{{ url('/') }}" class="nav-link {{ $activeMenu == 'landing' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
