@@ -62,6 +62,12 @@
             {{-- DOSEN --}}
             <li class="nav-header">Dosen/Tendik</li>
             <li class="nav-item">
+                <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ url('kompen') }}" class="nav-link {{ $activeMenu == 'kompen' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-tasks"></i>
                     <p>Tugas Kompen</p>
@@ -80,14 +86,20 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>Profile</p>
+                <a href="{{ url('notif') }}" class="nav-link {{ $activeMenu == 'notif' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-envelope"></i>
+                    <p>Pesan</p>
                 </a>
             </li>
 
             {{-- MAHASISWA --}}
             <li class="nav-header">Mahasiswa</li>
+            <li class="nav-item">
+                <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>Profile</p>
+                </a>
+            </li>
             <li class="nav-item">
                 <a href="{{ url('akumulasi') }}" class="nav-link {{ $activeMenu == 'akumulasi' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-users"></i>
@@ -112,12 +124,7 @@
                     <p>Inbox</p>
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-user"></i>
-                    <p>Profile</p>
-                </a>
-            </li>
+
             {{-- admin --}}
             <li class="nav-header">Logout</li>
             <li class="nav-item">

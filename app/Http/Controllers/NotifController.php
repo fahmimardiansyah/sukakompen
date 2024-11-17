@@ -9,7 +9,13 @@ class NotifController extends Controller
 {
     public function index()
     {
+        $breadcrumb = (object) [
+            'title' => 'Pesan Page',
+            'list' => ['Home', 'Pesan Tugas']
+        ];
 
-        return view('notif.index');
+        $activeMenu = 'notif';
+
+        return view('notif.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }

@@ -14,7 +14,7 @@ class PesanController extends Controller
             'list' => ['Home', 'Pesan Tugas']
         ];
 
-        $activeMenu = 'Pesan';
+        $activeMenu = 'pesan';
 
         return view('pesan.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }

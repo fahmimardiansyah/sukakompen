@@ -11,6 +11,7 @@ use App\Http\Controllers\JenisController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\KompenController;
 use App\Http\Controllers\PesanController;
+use App\Http\Controllers\NotifController;
 use App\Http\Controllers\AlpaController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\DetailController;
@@ -114,6 +115,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}/update_ajax', [KompetensiController::class, 'update_ajax']);
         Route::get('/{id}/delete_ajax', [KompetensiController::class, 'confirm_ajax']);  
         Route::delete('/{id}/delete_ajax', [KompetensiController::class, 'delete_ajax']);
+    });
+
+    Route::group(['prefix' => 'notif'], function () {
+        Route::get('/', [NotifController::class, 'index']);
+        Route::get('/create_ajax', [NotifController::class, 'create_ajax']);
     });
 
     Route::group(['prefix' => 'pesan'], function () {
