@@ -4,43 +4,38 @@
 
 <div class="card card-outline card-primary">
     <!-- Hero Section -->
-<div class="hero">
-    <h1>Tugas</h1>
-</div>
-
-
-<!-- Search Bar -->
-<div class="search-bars">
-    <div class="filter">
-        <i class="fas fa-filter"></i>
-        <select>
-            <option>Search by Level</option>
-        </select>
+    <div class="hero">
+        <h1>Tugas Kompensasi</h1>
     </div>
-    <div class="search-input">
-        <input type="text" placeholder="Search by Name" />
+
+    <!-- Search Bar -->
+    <div class="search-bars">
+        <div class="filter">
+            <i class="fas fa-filter"></i>
+            <select>
+                <option>Search by Level</option>
+            </select>
+        </div>
+        <div class="search-input">
+            <input type="text" placeholder="Search by Name" />
+        </div>
     </div>
-</div>
-<div class="notif">
-    <h2>Tugas</h2>
-</div>
+    <div class="notif">
+        <h2>Tugas Kompensasi</h2>
+    </div>
 
-    <!-- Recommended Tasks Section -->
-    <section class="recommended-tasks">
-        <h2>Tugas Kompen</h2>
-
-<!-- Tabs and Add Task Button -->
-<div class="content">
+    <!-- Tabs Navigation -->
     <div class="tabs">
-        <button class="tab active" onclick="showTab('admin')">Admin</button>
-        <button class="tab" onclick="showTab('dosen')">Dosen</button>
-        <button class="tab" onclick="showTab('tendik')">Tendik</button>
+        <button class="tab-button active" onclick="showTab('admin')">Admin</button>
+        <button class="tab-button" onclick="showTab('dosen')">Dosen</button>
+        <button class="tab-button" onclick="showTab('tendik')">Tendik</button>
     </div>
-    
-    <!-- Tombol "Tambah Tugas" -->
+
+    <!-- Add Task Button -->
     <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">+ Tambah Tugas</button>
 
-
+    <!-- Tab Contents -->
+    <section class="recommended-tasks">
         <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
             <div class="task-grid">
@@ -119,10 +114,8 @@
         </div>
     </section>
 </div>
-</div>
+
 <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
-
-
 
 @endsection
 
@@ -135,9 +128,13 @@
         }
 
         function showTab(tabName) {
+            // Mengatur tab aktif
+            $('.tab-button').removeClass('active');
+            $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
+
+            // Menampilkan konten tab yang sesuai
             $('.tab-content').removeClass('active');
             $('#' + tabName).addClass('active');
         }
     </script>
 @endpush
-

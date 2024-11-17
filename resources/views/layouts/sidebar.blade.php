@@ -55,7 +55,7 @@
             <li class="nav-item">
                 <a href="{{ url('pesan') }}" class="nav-link {{ $activeMenu == 'pesan' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-envelope"></i>
-                    <p>Pesan</p>
+                    <p>Inbox</p>
                 </a>
             </li>
 
@@ -88,7 +88,7 @@
             <li class="nav-item">
                 <a href="{{ url('notif') }}" class="nav-link {{ $activeMenu == 'notif' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-envelope"></i>
-                    <p>Pesan</p>
+                    <p>Inbox</p>
                 </a>
             </li>
 
@@ -120,7 +120,7 @@
             </li>
             <li class="nav-item">
                 <a href="{{ url('inbox') }}" class="nav-link {{ $activeMenu == 'inbox' ? 'active' : '' }}">
-                    <i class="nav-icon fas fa-tools"></i>
+                    <i class="nav-icon fas fa-envelope"></i>
                     <p>Inbox</p>
                 </a>
             </li>
