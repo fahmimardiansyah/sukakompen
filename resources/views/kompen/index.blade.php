@@ -26,7 +26,6 @@
 
         <!-- Recommended Tasks Section -->
         <section class="recommended-tasks">
-            <h2>Tugas Kompen</h2>
 
             <!-- Tabs and Add Task Button -->
             {{-- <div class="content">

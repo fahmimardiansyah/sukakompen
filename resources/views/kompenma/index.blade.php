@@ -9,7 +9,9 @@
 </div>
 
 <div class="table-alpa">
-    <h2>Tabel Kompen Mahasiswa</h2>
+    <div class="card-header">
+        <h2>Tabel Kompen Mahasiswa</h2>
+    </div>
     <table>
         <thead>
             <tr>
@@ -32,6 +34,9 @@
             @endforeach
         </tbody>
     </table>
+    <div class="card-tools">
+        <button onclick="modalAction('{{ url('/supplier/import') }}')" class="btn btn-info btn-sm">Import supplier</button>
+    </div>
 </div>
 </div>
 @endsection

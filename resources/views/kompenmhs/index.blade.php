@@ -6,9 +6,11 @@
         <div class="hero">
             <h1>Kompen Mahasiswa</h1>
         </div>
+        <div class="notif">
+            <h2>Tabel Kompen Mahasiswa</h2>
+        </div>
 
         <div class="table-alpa">
-            <h2>Tabel Kompen Mahasiswa</h2>
             <table>
                 <thead>
                     <tr>
