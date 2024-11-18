@@ -476,15 +476,15 @@ table th:last-child {
     padding: 5px;
 }
 
-/* Tabs Container */
+/* Tabs Container baru*/
 .tabs {
     display: flex;
     justify-content: flex-start;
     margin: 20px 20px;
-    border-bottom: 2px solid #002855; /* Warna garis bawah */
+    border-bottom: 2px solid #002855; 
 }
 
-/* Individual Tab Button */
+
 .tab-button {
     position: relative;
     padding: 10px 20px;
@@ -500,6 +500,45 @@ table th:last-child {
 
 /* Active Tab Style */
 .tab-button.active {
+    background-color: #002855; 
+    color: #ffffff; 
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 2px solid #002855;
+    border-bottom: none;
+}
+
+
+.tab-button:hover {
+    color: #002855;
+    background-color: #e6eaf3; 
+}
+
+/* Remove Bottom Border Gap on Active Tabs */
+.tabs .tab.active:after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff; 
+}
+
+/* Tab Button Styles lama */
+.tabs .tab {
+    position: relative;
+    padding: 10px 20px;
+    background-color: transparent;
+    color: #002855;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s;
+}
+.tabs .tab.active {
     background-color: #002855; /* Warna biru */
     color: #ffffff; /* Teks putih */
     border-top-left-radius: 8px;
@@ -508,21 +547,17 @@ table th:last-child {
     border-bottom: none;
 }
 
-/* Hover Effect for Tabs */
-.tab-button:hover {
+.tab:hover {
     color: #002855;
     background-color: #e6eaf3; /* Biru muda */
 }
 
-/* Remove Bottom Border Gap on Active Tabs */
-.tabs .tab-button.active:after {
-    content: "";
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 100%;
-    height: 2px;
-    background-color: #ffffff; /* Menyembunyikan border bottom aktif */
+/* Tab Content */
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
 }
 
 .add-task {
