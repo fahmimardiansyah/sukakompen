@@ -12,6 +12,7 @@ Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
+Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
 
 Route::post('/tugas_dosen', [APITugasDosenController::class, 'index']);
 Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store']);
