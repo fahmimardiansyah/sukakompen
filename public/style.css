@@ -652,16 +652,24 @@ table th:last-child {
     color: #ffffff;
 }
 
+.tag.online {
+    background-color: #3a5a98; 
+}
+
 .tag.offline {
     background-color: #3a5a98; 
 }
 
-.tag.teknis {
+.tag.Teknis {
     background-color: #ffc107; 
 }
 
-.tag.frontend {
-    background-color: #28a745; 
+.tag.Pengabdian {
+    background-color: #ffc107; 
+}
+
+.tag.Penelitian {
+    background-color: #ffc107; 
 }
 
 .deskripsi-description {
