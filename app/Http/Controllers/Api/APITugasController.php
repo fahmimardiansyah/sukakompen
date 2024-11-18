@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TugasModel;
+use Illuminate\Http\Request;
 
 class APITugasController extends Controller
 {
@@ -10,6 +11,12 @@ class APITugasController extends Controller
     public function index()
     {
         $data = TugasModel::all();
+        return $data;
+    }
+
+    public function show(Request $request)
+    {
+        $data = TugasModel::all()->where("tugas_id", $request->tugas_id)->first();
         return $data;
     }
 }

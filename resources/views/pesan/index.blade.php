@@ -9,8 +9,10 @@
     <h2>Pesan</h2>
 </div>
 
+<section class="recommended-tasks">
+
     {{-- Pesan Cards --}}
-    <div class="pesan-card">
+    <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
         <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
         <div class="pesan-info">
             <h3>Hasan Basyri</h3>
@@ -19,11 +21,11 @@
         <button class="cek-button" onclick="openModal('{{ url('/pesan/show_ajax') }}')">Cek</button>
     </div>
 
-    <div class="pesan-card">
+    <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
         <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
         <div class="pesan-info">
             <h3>Fahmi Mardiansyah</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
+            <p>Mengumpulkan pekerjaan.</p>
         </div>
         <button class="cek-button" onclick="openModal('Fahmi Mardiansyah', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')">Cek</button>
     </div>
@@ -38,7 +40,7 @@
             <p id="modalMessage"></p>
         </div>
     </div>
-</div>
+</section>
 </div>
 @endsection
 

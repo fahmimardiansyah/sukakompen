@@ -14,6 +14,7 @@
         + Tambah Jenis Tugas
     </a>
 
+    <section class="recommended-tasks">
     @foreach ($jenis as $item)
     <div class="jenis-card">
         <img alt="Profile picture of {{ $item->jenis_nama }}" height="50" src="{{ $item->image_url }}" width="50"/>
@@ -27,6 +28,7 @@
         </div>
     </div>
     @endforeach
+    </section>
 </div>
 </div>
 

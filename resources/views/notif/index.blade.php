@@ -3,14 +3,16 @@
 @section('content')
     <div class="card card-outline card-primary">
         <div class="hero">
-            <h1>Pesan</h1>
+            <h1>Inbox</h1>
         </div>
         <div class="notif">
-            <h2>Pesan</h2>
+            <h2>Inbox</h2>
         </div>
 
+        <section class="recommended-tasks">
+
         {{-- Pesan Cards --}}
-        <div class="pesan-card">
+        <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
             <img alt="Profile picture of a person" height="50"
                 src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg"
                 width="50" />
@@ -21,7 +23,7 @@
             <button class="cek-button" onclick="openModal('{{ url('/notif/show_ajax') }}')">Cek</button>
         </div>
 
-        <div class="pesan-card">
+        <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
             <img alt="Profile picture of a person" height="50"
                 src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg"
                 width="50" />
@@ -44,6 +46,7 @@
                 <p id="modalMessage"></p>
             </div>
         </div>
+        </section>
     </div>
     </div>
 @endsection

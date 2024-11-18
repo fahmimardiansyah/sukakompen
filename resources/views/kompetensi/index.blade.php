@@ -14,6 +14,7 @@
         + Tambah Kompetensi Tugas
     </a>
 
+    <section class="recommended-tasks">
     @foreach ($kompetensi as $item)
     <div class="kompeten-card">
         <img alt="Profile picture of {{ $item->kompetensi_nama }}" height="50" src="{{ $item->image_url }}" width="50"/>
@@ -27,6 +28,7 @@
         </div>
     </div>
     @endforeach
+    </section>
 </div>
 </div>
 
