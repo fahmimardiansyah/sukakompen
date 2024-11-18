@@ -53,7 +53,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="{{ url('pesan') }}" class="nav-link {{ $activeMenu == 'pesan' ? 'active' : '' }}">
+                <a href="{{ url('/pesan') }}" class="nav-link {{ $activeMenu == 'pesan' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-envelope"></i>
                     <p>Inbox</p>
                 </a>
@@ -141,7 +141,7 @@
             {{-- admin --}}
             <li class="nav-header">Logout</li>
             <li class="nav-item">
-                <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
+                <a href="{{ url('profil') }}" class="nav-link {{ $activeMenu == 'profile' ? 'active' : '' }}">
                     <i class="nav-icon fas fa-user"></i>
                     <p>Profile</p>
                 </a>

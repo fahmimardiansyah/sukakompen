@@ -9,8 +9,8 @@ class ProgressModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_mahasiswa_alpa'; 
-    protected $primaryKey = 'alpa_id'; 
+    protected $table = 't_progress'; 
+    protected $primaryKey = 'progress_id'; 
 
     protected $fillable = [
         'mahasiswa_id',
@@ -20,7 +20,7 @@ class ProgressModel extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(ProgressModel::class, 'mahasiswa_id', 'mahasiswa_id');
+        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id', 'mahasiswa_id');
     }
 
     public function tugas()
