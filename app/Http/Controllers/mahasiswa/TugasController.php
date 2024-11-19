@@ -3,6 +3,13 @@
 namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\JenisModel;
+use App\Models\KompetensiModel;
+use App\Models\TugasModel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\support\Facades\Validator;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class TugasController extends Controller
@@ -14,9 +21,15 @@ class TugasController extends Controller
             'list' => ['Home', 'Tugas']
         ];
 
-        $activeMenu = 'task';
+        $activeMenu = 'kompen';
 
-        return view('mahasiswa.task.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+        $tugas = TugasModel::with('jenis')->get();
+
+        return view('mahasiswa.task.index', [
+            'breadcrumb' => $breadcrumb,
+            'activeMenu' => $activeMenu,
+            'tugas' => $tugas,
+        ]);
     }
 
     public function show()

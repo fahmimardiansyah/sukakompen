@@ -15,25 +15,24 @@ use Illuminate\Http\Request;
 class TugasController extends Controller
 {
     public function index()
-{
-    $user = auth()->user(); // Mendapatkan user yang sedang login
+    {
+        $user = auth()->user(); // Mendapatkan user yang sedang login
 
-    $breadcrumb = (object) [
-        'title' => 'Tugas Page',
-        'list' => ['Home', 'Tugas']
-    ];
+        $breadcrumb = (object) [
+            'title' => 'Tugas Page',
+            'list' => ['Home', 'Tugas']
+        ];
 
-    $activeMenu = 'kompen';
+        $activeMenu = 'kompen';
 
-    // Ambil tugas berdasarkan user yang login
-    $tugas = TugasModel::where('user_id', $user->user_id)->get();
+        $tugas = TugasModel::where('user_id', $user->user_id)->get();
 
-    return view('dosen_tendik.kompen.index', [
-        'breadcrumb' => $breadcrumb,
-        'activeMenu' => $activeMenu,
-        'tugas' => $tugas,
-    ]);
-}
+        return view('dosen_tendik.kompen.index', [
+            'breadcrumb' => $breadcrumb,
+            'activeMenu' => $activeMenu,
+            'tugas' => $tugas,
+        ]);
+    }
 
 
     public function create_ajax()

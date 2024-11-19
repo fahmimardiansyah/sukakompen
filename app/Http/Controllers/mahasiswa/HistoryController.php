@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\ProgressModel;
+use App\Models\MahasiswaModel;
 use Illuminate\Http\Request;
 
 class HistoryController extends Controller
@@ -16,15 +18,19 @@ class HistoryController extends Controller
         
         $activeMenu = 'history';
 
-        // Data Tugas Mahasiswa yang ingin ditampilkan di Blade
-        $mahasiswa = [
-            ['tugas' => 'Fisika', 'status' => 'Selesai', 'form_kompen' => 'Form A'],
-            ['tugas' => 'Matematika', 'status' => 'Belum Selesai', 'form_kompen' => 'Form B'],
-            ['tugas' => 'Kimia', 'status' => 'Selesai', 'form_kompen' => 'Form A'],
-            ['tugas' => 'Biologi', 'status' => 'Selesai', 'form_kompen' => 'Form C'],
-            ['tugas' => 'Sejarah', 'status' => 'Belum Selesai', 'form_kompen' => 'Form B'],
-        ];
+        $user = auth()->user();
 
-        return view('mahasiswa.history.index', ['mahasiswa' => $mahasiswa, 'breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->url('dashboardmhs')->with('error', 'Mahasiswa tidak ditemukan');
+        }
+
+        $mahasiswaId = $mahasiswa->mahasiswa_id;
+
+        $history = ProgressModel::where('mahasiswa_id', $mahasiswaId)
+                ->with('tugas')->get();
+
+        return view('mahasiswa.history.index', ['history' => $history, 'breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
 }

@@ -24,8 +24,6 @@ Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destro
 Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
