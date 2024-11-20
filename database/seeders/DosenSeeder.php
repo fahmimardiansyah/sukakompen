@@ -3,19 +3,21 @@
 namespace Database\Seeders;
 
 use App\Models\Dosen;
-use App\Models\DosenModel;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DosenSeeder extends Seeder
 {
     public function run(): void
     {
-        DosenModel::create([
-            'dosen_nama' => 'Fahmi Mardiansyah',
+        $data =[
+            'dosen_id' => 1,
+            'user_id' => 2,
             'nidn' => '87654321',
-            'username' => 'fahmi',
-            'no_telp' => '08123456789',
-            'tugas_id' => 1, 
-        ]);
+            'dosen_nama' => 'Fahmi Mardiansyah',
+            'dosen_no_telp' => '08123456789',
+        ];
+
+        DB::table('m_dosen')->insert($data);
     }
 }

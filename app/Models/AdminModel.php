@@ -5,19 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DosenModel extends Model
+class AdminModel extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_dosen';
+    protected $table = 'm_admin';
 
-    protected $primaryKey = 'dosen_id'; 
+    protected $primaryKey = 'admin_id'; 
 
     protected $fillable = [
         'user_id',
-        'nidn',
-        'dosen_nama',
-        'dosen_no_telp',
+        'nip',
+        'admin_nama',
+        'admin_no_telp',
     ];
 
     public function user()

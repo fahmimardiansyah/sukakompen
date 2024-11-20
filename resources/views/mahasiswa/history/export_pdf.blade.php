@@ -2,7 +2,10 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berita Acara Kompensasi Presensi</title>
     <style>
         body {
             font-family: "Times New Roman", Times, serif;
@@ -26,6 +29,7 @@
 
         .header .subtitle {
             font-size: 10pt;
+            margin: 2px 0;
         }
 
         .content {
@@ -73,14 +77,14 @@
     <h3 class="content">BERITA ACARA KOMPENSASI PRESENSI</h3>
 
     <div class="content">
-        <p><strong>Nama Pemberi Pekerjaan:</strong> {{ $dosen->dosen_nama }}</p>
-        <p><strong>NIDN:</strong> {{ $dosen->nidn }}</p>
-        <p><strong>Memberikan rekomendasi kompensasi kepada:</strong></p>
-        <p><strong>Nama Mahasiswa:</strong> {{ $mahasiswa->mahasiswa_nama }}</p>
-        <p><strong>NIM:</strong> {{ $mahasiswa->nim }}</p>
-        <p><strong>Semester:</strong> {{ $mahasiswa->semester }}</p>
-        <p><strong>Pekerjaan:</strong> {{ $tugas->tugas_nama }}</p>
-        <p><strong>Jumlah Jam:</strong> {{ $tugas->tugas_jam_kompen }}</p>
+        <p><strong>No Tugas:</strong> {{ $tugas_No ?? '-' }}</p>
+        <p><strong>Nama Pemberi Pekerjaan:</strong> {{ $pemberi_tugas ?? '-' }}</p>
+        <p><strong>NIDN:</strong> {{ $nidn ?? '-' }}</p>
+        <p><strong>Nama Mahasiswa:</strong> {{ $mahasiswa_nama ?? '-' }}</p>
+        <p><strong>NIM:</strong> {{ $nim ?? '-' }}</p>
+        <p><strong>Semester:</strong> {{ $semester ?? '-' }}</p>
+        <p><strong>Pekerjaan:</strong> {{ $tugas_nama ?? '-' }}</p>
+        <p><strong>Jumlah Jam:</strong> {{ $tugas_jam_kompen ?? '0' }} jam</p>
     </div>
 
     <div class="signature">
@@ -93,8 +97,10 @@
 
     <div class="qr-code">
         <p><strong>Scan QR Code untuk validasi:</strong></p>
-        <img src="{{ asset('qr.jpeg') }}" alt="QR Code">
+        <img src="data:image/png;base64,{{ $qrCode }}" alt="QR Code">
     </div>
+
+
 
     <div class="note">
         <p><strong>NB:</strong> Form ini wajib disimpan untuk kepentingan bebas tanggungan.</p>

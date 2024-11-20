@@ -5,75 +5,114 @@ namespace App\Http\Controllers\mahasiswa;
 use App\Http\Controllers\Controller;
 use App\Models\ProgressModel;
 use App\Models\MahasiswaModel;
-use App\Models\TugasModel;
-use App\Models\DosenModel;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Endroid\QrCode\Builder\Builder;
 
 class HistoryController extends Controller
 {
+    /**
+     * Menampilkan halaman histori tugas mahasiswa.
+     */
     public function index()
     {
         $breadcrumb = (object) [
             'title' => 'Histori Tugas',
             'list' => ['Home', 'Histori']
         ];
-        
+
         $activeMenu = 'history';
 
-        $user = auth()->user();
-
+        $user = Auth::user();
         $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
 
         if (!$mahasiswa) {
-            return redirect()->url('dashboardmhs')->with('error', 'Mahasiswa tidak ditemukan');
+            return redirect()
+                ->route('dashboardmhs')
+                ->with('error', 'Mahasiswa tidak ditemukan');
         }
 
-        $mahasiswaId = $mahasiswa->mahasiswa_id;
+        $history = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+            ->with('tugas')
+            ->get();
 
-        $history = ProgressModel::where('mahasiswa_id', $mahasiswaId)
-                ->with('tugas')->get();
-
-        return view('mahasiswa.history.index', ['history' => $history, 'breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
-    }
-
-    public function export_pdf($tugas_id)
-    {
-        // Ambil data tugas berdasarkan tugas_id dan pilih kolom yang dibutuhkan
-        $tugas = TugasModel::select('tugas_id', 'tugas_nama', 'tugas_jam_kompen', 'mahasiswa_id', 'dosen_id')
-                           ->find($tugas_id);
-    
-        // Validasi jika tugas tidak ditemukan
-        if (!$tugas) {
-            abort(404, 'Tugas tidak ditemukan');
-        }
-    
-        // Ambil data mahasiswa berdasarkan mahasiswa_id dan pilih kolom yang dibutuhkan
-        $mahasiswa = MahasiswaModel::select('mahasiswa_nama', 'nim', 'semester')
-                                   ->find($tugas->mahasiswa_id);
-    
-        // Ambil data dosen berdasarkan dosen_id dan pilih kolom yang dibutuhkan
-        $dosen = DosenModel::select('dosen_nama', 'nidn')
-                           ->find($tugas->dosen_id);
-    
-        // Validasi jika mahasiswa atau dosen tidak ditemukan
-        if (!$mahasiswa || !$dosen) {
-            abort(404, 'Data mahasiswa atau dosen tidak ditemukan');
-        }
-    
-        // Load view PDF dengan data mahasiswa, dosen, dan tugas
-        $pdf = Pdf::loadView('history.export_pdf', [
-            'tugas' => $tugas,      // Kirimkan tugas ke view
-            'mahasiswa' => $mahasiswa,
-            'dosen' => $dosen,
+        return view('mahasiswa.history.index', [
+            'history' => $history,
+            'breadcrumb' => $breadcrumb,
+            'activeMenu' => $activeMenu
         ]);
-    
-        // Set ukuran kertas dan orientasi
-        $pdf->setPaper('a4', 'portrait');
-        $pdf->setOption("isRemoteEnabled", true);
-    
-        // Stream file PDF ke browser
-        return $pdf->stream('Form Kompensasi_' . $mahasiswa->mahasiswa_nama . '.pdf');
     }
 
+    /**
+     * Mengekspor histori tugas mahasiswa ke dalam PDF.
+     */
+    public function export_pdf()
+    {
+        $user = Auth::user();
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return redirect()
+                ->route('dashboardmhs')
+                ->with('error', 'Data mahasiswa tidak ditemukan.');
+        }
+
+        $history = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+            ->with([
+                'tugas' => function ($query) {
+                    $query->select('tugas_id', 'tugas_No', 'tugas_nama', 'tugas_jam_kompen', 'user_id')
+                        ->with(['users' => function ($query) {
+                            $query->select('user_id', 'nama');
+                        }]);
+                }
+            ])
+            ->get();
+
+        $data = $history->map(function ($item) {
+            return [
+                'tugas_No' => $item->tugas->tugas_No ?? '-',
+                'tugas_nama' => $item->tugas->tugas_nama ?? '-',
+                'tugas_jam_kompen' => $item->tugas->tugas_jam_kompen ?? 0,
+                'pemberi_tugas' => $item->tugas->users->nama ?? '-',
+                'mahasiswa_nama' => $item->mahasiswa->mahasiswa_nama ?? '-',
+                'nim' => $item->mahasiswa->nim ?? '-',
+                'semester' => $item->mahasiswa->semester ?? '-',
+            ];
+        })->first();
+
+        if (!$data) {
+            return redirect()
+                ->route('history.index')
+                ->with('error', 'Tidak ada data yang dapat diekspor.');
+        }
+
+        // Generate QR Code using Endroid/qr-code
+        $qrContent = url('/history/export_pdf');
+
+        $result = Builder::create()
+            ->data($qrContent)
+            ->size(150)
+            ->margin(10)
+            ->build();
+
+        $qrCode = base64_encode($result->getString());
+
+        // Generate PDF
+        $pdf = Pdf::loadView('mahasiswa.history.export_pdf', [
+            'tugas_No' => $data['tugas_No'],
+            'pemberi_tugas' => $data['pemberi_tugas'],
+            'nidn' => '123456', // Sesuaikan dengan data yang tersedia
+            'mahasiswa_nama' => $data['mahasiswa_nama'],
+            'nim' => $data['nim'],
+            'semester' => $data['semester'],
+            'tugas_nama' => $data['tugas_nama'],
+            'tugas_jam_kompen' => $data['tugas_jam_kompen'],
+            'qrCode' => $qrCode, // Kirim QR Code dalam format base64
+        ]);
+
+        $pdf->setPaper('a4', 'landscape');
+        $pdf->setOption("isRemoteEnabled", true);
+
+        return $pdf->stream('Surat_Kompen_' . now()->format('Y-m-d_His') . '.pdf');
+    }
 }

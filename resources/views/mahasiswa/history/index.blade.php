@@ -27,7 +27,7 @@
                 <td>{{ $data->tugas->tugas_nama }}</td>
                 <td>{{ $data->status ? 'Selesai' : 'Belum Selesai' }}</td>
                 <td>
-                    <button class="btn-cetak" onclick="window.location.href='{{ url('/history/export_pdf/' . $data['tugas_id']) }}'">Cetak</button>
+                    <button class="btn-cetak" onclick="window.location.href='{{ url('/history/export_pdf') }}'">Cetak</button>
                 </td>                
             </tr>
             @endforeach
