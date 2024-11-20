@@ -9,6 +9,7 @@ use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 
@@ -64,7 +65,8 @@ class TugasController extends Controller
                 'tugas_kuota' => ['required', 'integer', 'max:10'],
                 'tugas_jam_kompen' => ['required', 'integer', 'max:50'],
                 'tugas_tenggat' => ['required', 'date'],
-                'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id']
+                'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id'],
+                'tugas_file' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:20480']
             ];
     
             $validator = Validator::make($request->all(), $rules);
@@ -81,6 +83,13 @@ class TugasController extends Controller
                 $data = $request->all();
                 $data['tugas_No'] = (string) Str::uuid();
                 $data['user_id'] = auth()->user()->user_id ?? null; 
+
+                if ($request->hasFile('tugas_file')) {
+                    $file = $request->file('tugas_file');
+                    $fileName = time() . '_' . $file->getClientOriginalName(); // Buat nama file unik
+                    $file->storeAs('uploads/tugas', $fileName, 'public'); // Simpan di direktori storage/app/public/uploads/tugas
+                    $data['tugas_file'] = $fileName; // Simpan nama file ke database
+                }
                 
                 TugasModel::create($data);
                 return response()->json([
@@ -142,27 +151,50 @@ class TugasController extends Controller
                 'tugas_kuota' => ['required', 'integer', 'max:10'],
                 'tugas_jam_kompen' => ['required', 'integer', 'max:50'],
                 'tugas_tenggat' => ['required', 'date'],
-                'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id']
-            ] ;
-
+                'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id'],
+                'tugas_file' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:20480'] // Maks 20MB
+            ];
+    
             $validator = Validator::make($request->all(), $rules);
-            
+    
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false, 
+                    'status' => false,
                     'message' => 'Validasi gagal.',
                     'msgField' => $validator->errors()
                 ]);
             }
-
+    
             $check = TugasModel::find($id);
-
+    
             if ($check) {
-                $check->update($request->all());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diupdate'
-                ]);
+                try {
+                    // Proses file upload jika ada
+                    if ($request->hasFile('tugas_file')) {
+                        $file = $request->file('tugas_file');
+                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $file->storeAs('uploads/tugas', $filename, 'public'); // Simpan file ke direktori 'storage/app/public/uploads/tugas'
+    
+                        // Hapus file lama jika ada
+                        if ($check->tugas_file && \Storage::disk('public')->exists('uploads/tugas/' . $check->tugas_file)) {
+                            \Storage::disk('public')->delete('uploads/tugas/' . $check->tugas_file);
+                        }
+    
+                        $request->merge(['tugas_file' => $filename]); // Tambahkan nama file baru ke request
+                    }
+    
+                    $check->update($request->all());
+    
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diupdate'
+                    ]);
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan saat mengupdate data: ' . $e->getMessage()
+                    ]);
+                }
             } else {
                 return response()->json([
                     'status' => false,

@@ -28,6 +28,16 @@
                     <span>Jam Kompen: {{ $description->tugas_jam_kompen }}</span>
                     <span>Kompetensi ID: {{ $description->kompetensi_id }}</span>
                 </div>
+
+            <div class="deskripsi-download">
+                @if($description->tugas_file)
+                    <a href="{{ storage_path('app/public/tugas/' . $description->tugas_file) }}" class="download-button" download>
+                        <i class="fas fa-download"></i> Download Tugas
+                    </a>
+                @else
+                    <span>No file available for download.</span>
+                @endif
+            </div>
                 
             </div>
             <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>

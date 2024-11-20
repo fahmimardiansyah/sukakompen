@@ -14,7 +14,7 @@ class TugasModel extends Model
     protected $primaryKey = 'tugas_id'; 
     protected $fillable = [
         'tugas_No', 'tugas_nama', 'jenis_id', 'tugas_tipe', 'tugas_deskripsi', 
-        'tugas_kuota', 'tugas_jam_kompen', 'tugas_tenggat', 'kompetensi_id', 'user_id'
+        'tugas_kuota', 'tugas_jam_kompen', 'tugas_tenggat', 'kompetensi_id', 'user_id', 'tugas_file'
     ];
     
 
@@ -33,5 +33,15 @@ class TugasModel extends Model
     public function kompetensi() : BelongsTo
     {
         return $this->belongsTo(KompetensiModel::class, 'kompetensi_id', 'kompetensi_id');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id','mahasiswa_id');
+    }
+
+    public function dosen()
+    {
+        return $this->belongsTo(DosenModel::class, 'dosen_id','dosen_id');
     }
 }
