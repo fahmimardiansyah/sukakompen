@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\APIController;
-use App\Http\Controllers\APIDashboardMHSController;
+use App\Http\Controllers\Api\APIAlpaController;
 use App\Http\Controllers\Api\APITugasController;
 use App\Http\Controllers\Api\APITugasDosenController;
 use App\Http\Controllers\Api\APIAkumulasiController;
@@ -24,6 +24,8 @@ Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store'
 Route::post('/tugas_dosen/detail_data', [APITugasDosenController::class, 'show']);
 Route::post('/tugas_dosen/update_data', [APITugasDosenController::class, 'edit']);
 Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destroy']);
+
+Route::post('/alpa', [APIAlpaController::class, 'index']);
 
 Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);

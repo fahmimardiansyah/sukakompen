@@ -17,7 +17,6 @@ class AlpaController extends Controller
 
         $activeMenu = 'alpha';
 
-        // Memuat relasi progress dan tugas
         $mahasiswa = AlpaModel::with(['progress.tugas'])->get();
 
         return view('dosen_tendik.alpha.index', [
