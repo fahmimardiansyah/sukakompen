@@ -12,6 +12,7 @@ Route::post('register', [AuthController::class,'postregister']);
 
 
 Route::middleware('auth')->group(function () {
+    Route::get('/', [App\Http\Controllers\Admin\WelcomeController::class, 'index']);
 
     // admin
     Route::middleware(['authorize:ADM'])->group(function(){
