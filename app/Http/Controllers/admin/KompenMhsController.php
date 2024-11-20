@@ -15,10 +15,20 @@ class KompenMhsController extends Controller
             'list' => ['Home', 'Kompen Mahasiswa']
         ];
     
-        $activeMenu = 'kompenma';
+        $activeMenu = 'kompenmhs';
 
-        $mahasiswa = ProgressModel::with(['tugas', 'mahasiswa'])->get();
-        
-        return view('admin.kompenma.index', ['mahasiswa' => $mahasiswa,'breadcrumb' => $breadcrumb,'activeMenu' => $activeMenu]);
+        $user = auth()->user();
+
+        $mahasiswa = ProgressModel::with(['tugas', 'mahasiswa'])
+            ->whereHas('tugas', function ($query) use ($user) {
+                $query->where('user_id', $user->user_id);
+            })
+            ->get();
+
+        return view('dosen_tendik.kompenmhs.index', [
+            'mahasiswa' => $mahasiswa,
+            'breadcrumb' => $breadcrumb,
+            'activeMenu' => $activeMenu
+        ]);
     }
 }

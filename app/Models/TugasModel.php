@@ -34,14 +34,4 @@ class TugasModel extends Model
     {
         return $this->belongsTo(KompetensiModel::class, 'kompetensi_id', 'kompetensi_id');
     }
-
-    public function mahasiswa()
-    {
-        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id','mahasiswa_id');
-    }
-
-    public function dosen()
-    {
-        return $this->belongsTo(DosenModel::class, 'dosen_id','dosen_id');
-    }
 }
