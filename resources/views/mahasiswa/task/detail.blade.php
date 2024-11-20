@@ -30,7 +30,8 @@
                 </div>
                 
             </div>
-            <a href="{{ url('tugas') }}" class="request-button">Back to Tugas List</a>
+            <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
+            <a href="{{ url('task') }}" class="request-button">Request</a>
         </div>
     </div>
 </div>
