@@ -602,7 +602,7 @@ table th:last-child {
     align-items: center;
     margin: 20px auto;
     padding: 20px 50px;
-    /* max-width: 1100px; */
+    width: 100%;
     max-height: 500px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -615,10 +615,11 @@ table th:last-child {
     justify-content: space-between; 
     gap: 20px;
     align-items: stretch;
+    width: 100%;
 }
 
 .deskripsi-image img {
-    width: 400px;
+    width: 700px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -631,7 +632,7 @@ table th:last-child {
 }
 
 .deskripsi-content h2 {
-    font-size: 18px;
+    font-size: 60px;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
@@ -647,7 +648,7 @@ table th:last-child {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 5px;
-    font-size: 12px;
+    font-size: 17px;
     font-weight: bold;
     color: #ffffff;
 }
@@ -673,7 +674,7 @@ table th:last-child {
 }
 
 .deskripsi-description {
-    font-size: 14px;
+    font-size: 20px;
     color: #555;
     margin-bottom: 15px;
 }
@@ -691,7 +692,7 @@ table th:last-child {
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 14px;
+    font-size: 17px;
     color: #555;
 }
 
@@ -701,7 +702,7 @@ table th:last-child {
     color: #333;
 }
 
-.request-button {
+.back-button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #6c757d; 
@@ -714,8 +715,27 @@ table th:last-child {
     transition: background-color 0.3s ease;
 }
 
-.request-button:hover {
+.back-button:hover {
+    color: #ffffff;
     background-color: #5a6268;
+} 
+
+.request-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #11c40b; 
+    color: #ffffff;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.request-button:hover {
+    color: #ffffff;
+    background-color: #149910;
 } 
 
 
@@ -944,7 +964,7 @@ background-color: #344efa; /* Warna saat hover */
     margin: 0;
 }
 .notif {
-    display: flex; /* Aktifkan Flexbox */
+    /* display: flex;  */
     justify-content: space-between; /* Ruang di antara elemen */
     align-items: center; /* Sejajarkan elemen secara vertikal */
     padding: 20px;

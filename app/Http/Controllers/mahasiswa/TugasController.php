@@ -41,4 +41,22 @@ class TugasController extends Controller
 
         return view('mahasiswa.task.detail', ['breadcrumb' => $breadcrumb]);
     }
+
+    public function detail($id)
+    {
+        $description = TugasModel::find($id);
+
+        $breadcrumb = (object) [
+            'title' => 'Detail Tugas',
+            'list' => ['Home', 'Tugas', 'Detail']
+        ];
+
+        $page = (object) [
+            'title' => 'Detail Tugas'
+        ];
+
+        $activeMenu = 'tugas'; 
+
+        return view('mahasiswa.task.detail', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page]);
+    }
 }

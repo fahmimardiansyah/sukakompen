@@ -137,7 +137,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
-            Route::get('/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
+            Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
         });
 
         Route::group(['prefix' => 'history'], function () {

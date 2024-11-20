@@ -12,6 +12,9 @@
     <h2>
      Inbox
     </h2>
+   </div>
+
+    <section class="recommended-tasks">
 
     <!-- Notification with Gradient -->
     <div class="notification" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
@@ -73,8 +76,8 @@
       </p>
      </div>
     </div>
+    </section>
 
-</div>   
 </div>
 </div>
 @endsection
