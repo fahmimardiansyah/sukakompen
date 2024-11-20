@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <div class="card card-outline card-primary">
 <!-- Hero Section -->
 <div class="hero">
@@ -21,10 +20,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $data)
+            @foreach($akumulasi as $data)
             <tr>
-                <td>{{ $data['semester'] }}</td>
-                <td>{{ $data['jumlah_alpa'] }}</td>
+                <td>Semester {{ $data->semester }}</td>
+                <td>{{ $data->jumlah_alpa }} Jam</td>
             </tr>
             @endforeach
         </tbody>

@@ -31,8 +31,6 @@ Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show'])
 Route::post('/mahasiswa', [APIProfileMHSController::class, 'index']);
 Route::post('/mahasiswa/{mahasiswaId}', [APIProfileMHSController::class, 'show']);
 
-
-
 /*
 |--------------------------------------------------------------------------
 | API Routes

@@ -18,8 +18,8 @@ class AkumulasiModel extends Model
         'jumlah_alpa',
     ];
 
-    public function progress()
+    public function mahasiswa()
     {
-        return $this->belongsTo(ProgressModel::class, 'progress_id', 'progress_id');
+        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id', 'mahasiswa_id');
     }
 }

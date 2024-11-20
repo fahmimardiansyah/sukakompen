@@ -12,7 +12,6 @@ Route::post('register', [AuthController::class,'postregister']);
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', [App\Http\Controllers\Admin\WelcomeController::class, 'index']);
 
     // admin
     Route::middleware(['authorize:ADM'])->group(function(){
@@ -84,7 +83,7 @@ Route::middleware('auth')->group(function () {
     });
 
     // Dosen Dan tendik
-    Route::middleware(['authorize:DSN, TDK'])->group(function(){
+    Route::middleware(['authorize:DSN,TDK'])->group(function(){
         Route::get('/landing', [App\Http\Controllers\Dosen_tendik\WelcomeController::class, 'index']);
 
         Route::group(['prefix' => 'profile'], function() {
@@ -124,11 +123,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboardmhs', [App\Http\Controllers\Mahasiswa\WelcomeController::class, 'index']);
 
         Route::group(['prefix' => 'profilemhs'], function () {
-            Route::get('/profilemhs', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'index']);
-            Route::get('/profilemhs/{id}/edit_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_ajax']);
-            Route::put('/profilemhs/{id}/update_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_ajax']);
-            Route::get('/profilemhs/{id}/edit_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_foto']);
-            Route::put('/profilemhs/{id}/update_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_foto']);
+            Route::get('/', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'index']);
+            Route::get('/{id}/edit_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_ajax']);
+            Route::get('/{id}/edit_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_foto']);
+            Route::put('/{id}/update_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_foto']);
         });
 
         Route::group(['prefix' => 'akumulasi'], function () {

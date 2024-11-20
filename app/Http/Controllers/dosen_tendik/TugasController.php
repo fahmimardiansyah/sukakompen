@@ -16,7 +16,7 @@ class TugasController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()->user(); // Mendapatkan user yang sedang login
 
         $breadcrumb = (object) [
             'title' => 'Tugas Page',
@@ -33,6 +33,7 @@ class TugasController extends Controller
             'tugas' => $tugas,
         ]);
     }
+
 
     public function create_ajax()
     {

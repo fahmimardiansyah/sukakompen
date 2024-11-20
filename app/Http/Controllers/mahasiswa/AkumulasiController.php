@@ -4,6 +4,8 @@ namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\AkumulasiModel;
+use App\Models\MahasiswaModel;
 
 class AkumulasiController extends Controller
 {
@@ -13,19 +15,26 @@ class AkumulasiController extends Controller
             'title' => 'Akumulasi',
             'list' => ['Home', 'Akumulasi']
         ];
-    
+
         $activeMenu = 'akumulasi';
 
-        // Data Akumulasi Mahasiswa yang ingin ditampilkan di Blade
-        $mahasiswa = [
-            ['semester' => 'Semester 1', 'jumlah_alpa' => '2'],
-            ['semester' => 'Semester 2', 'jumlah_alpa' => '4'],
-            ['semester' => 'Semester 3', 'jumlah_alpa' => '1'],
-            ['semester' => 'Semester 4', 'jumlah_alpa' => '3'],
-            ['semester' => 'Semester 5', 'jumlah_alpa' => '5'],
-            ['semester' => 'Semester 6', 'jumlah_alpa' => '0'],
-        ];
+        $user = auth()->user();
 
-        return view('mahasiswa.akumulasi.index', ['mahasiswa' => $mahasiswa, 'breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return redirect()->url('dashboardmhs')->with('error', 'Mahasiswa tidak ditemukan');
+        }
+
+        $mahasiswaId = $mahasiswa->mahasiswa_id;
+
+        $akumulasi = AkumulasiModel::where('mahasiswa_id', $mahasiswaId)->get();
+
+        return view('mahasiswa.akumulasi.index', [
+            'akumulasi' => $akumulasi,
+            'breadcrumb' => $breadcrumb,
+            'activeMenu' => $activeMenu,
+        ]);
     }
+
 }

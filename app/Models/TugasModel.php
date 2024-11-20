@@ -27,11 +27,11 @@ class TugasModel extends Model
 
     public function jenis() : BelongsTo
     {
-        return $this->belongsTo(UserModel::class, 'jenis_id', 'jenis_id');
+        return $this->belongsTo(JenisModel::class, 'jenis_id', 'jenis_id');
     }
 
     public function kompetensi() : BelongsTo
     {
-        return $this->belongsTo(UserModel::class, 'kompetensi_id', 'kompetensi_id');
+        return $this->belongsTo(KompetensiModel::class, 'kompetensi_id', 'kompetensi_id');
     }
 }

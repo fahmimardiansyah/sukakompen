@@ -22,10 +22,10 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $data)
+            @foreach($history as $data)
             <tr>
-                <td>{{ $data['tugas'] }}</td>
-                <td>{{ $data['status'] }}</td>
+                <td>{{ $data->tugas->tugas_nama }}</td>
+                <td>{{ $data->status ? 'Selesai' : 'Belum Selesai' }}</td>
                 <td>
                     <button class="btn-cetak" onclick="window.location.href='/cetak/{{ $data['tugas'] }}'">Cetak</button>
                 </td>
