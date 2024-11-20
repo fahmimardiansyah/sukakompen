@@ -76,6 +76,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="tugas_file">Upload File Tugas</label>
+                        <input type="file" name="tugas_file" id="tugas_file" class="form-control" accept=".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.zip,.rar" required>
+                        <small id="error-tugas_file" class="error-text form-text text-danger"></small>
+                    </div>
+
+                    <div class="form-group">
                         <label>Jam Kompen</label>
                         <input value="{{ $tugas->tugas_jam_kompen }}" type="number" name="tugas_jam_kompen" id="tugas_jam_kompen" class="form-control" required>
                         <small id="error-tugas_jam_kompen" class="error-text form-text text-danger"></small>

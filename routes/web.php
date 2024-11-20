@@ -137,12 +137,14 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
-            Route::get('/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
+            Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
         });
 
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'index']);
+            Route::get('/export_pdf/{tugas_id}', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
         });
+        
 
         Route::group(['prefix' => 'inbox'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\PesanController::class, 'index']);
