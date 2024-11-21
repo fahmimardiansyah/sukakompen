@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('progress_id');
             $table->unsignedBigInteger('mahasiswa_id');
             $table->unsignedBigInteger('tugas_id');
-            $table->boolean('status')->default(false);
+            $table->boolean('status')->default(null);
             $table->timestamps();
 
             $table->foreign('mahasiswa_id')->references('mahasiswa_id')->on('m_mahasiswa');
