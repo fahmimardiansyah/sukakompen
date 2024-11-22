@@ -122,7 +122,7 @@ class APIApplyController extends Controller
         return response()->json(['message' => 'Berhasil menyimpan data'], 201);
     }
 
-    // tampilan notif ketika diterima dan ditolak mahasiswa 
+    // notif di mhs untuk diterima atau ditolak
     public function notif(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
