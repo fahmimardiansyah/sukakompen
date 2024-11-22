@@ -33,6 +33,7 @@ Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply
 Route::post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
+Route::post('/notif', [APIApplyController::class, 'notif']);
 
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
