@@ -43,8 +43,8 @@ Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'ind
 Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
-Route::post('/mahasiswa', [APIProfileMHSController::class, 'index']);
-Route::post('/mahasiswa/{id}', [APIProfileMHSController::class, 'show']);
+Route::post('/profilemhs', [APIProfileMHSController::class, 'index']);
+Route::post('/profilemhs/{mahasiswaId}', [APIProfileMHSController::class, 'show']);
 
 /*
 |--------------------------------------------------------------------------
