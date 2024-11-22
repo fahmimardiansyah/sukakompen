@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\APITugasDosenController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
+
 use App\Http\Controllers\Api\APIApplyController;
 
 Route::post('/login', [APIController::class, 'login']);
@@ -17,6 +18,9 @@ Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
 // Route::middleware('auth:api')->get('/dashboard', [APIDashboardMHSController::class, 'index']);
+
+Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
@@ -30,6 +34,7 @@ Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destro
 Route::post('/alpa', [APIAlpaController::class, 'index']);
 
 Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply']);
+Route::get('/tugas/show', [APIApplyController::class, 'show']);
 Route::post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
@@ -41,7 +46,7 @@ Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
 Route::post('/mahasiswa', [APIProfileMHSController::class, 'index']);
-Route::post('/mahasiswa/{mahasiswaId}', [APIProfileMHSController::class, 'show']);
+Route::post('/mahasiswa/{id}', [APIProfileMHSController::class, 'show']);
 
 /*
 |--------------------------------------------------------------------------
