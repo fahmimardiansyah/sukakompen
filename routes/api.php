@@ -10,7 +10,6 @@ use App\Http\Controllers\Api\APIDashboardMHSController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
-
 use App\Http\Controllers\Api\APIApplyController;
 
 Route::post('/login', [APIController::class, 'login']);
@@ -44,7 +43,6 @@ Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
 Route::post('/profilemhs', [APIProfileMHSController::class, 'index']);
-
 
 /*
 |--------------------------------------------------------------------------

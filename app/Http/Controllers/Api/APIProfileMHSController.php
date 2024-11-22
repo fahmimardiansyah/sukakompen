@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\MahasiswaModel;
 
 class APIProfileMHSController extends Controller
 {
-    // Mengambil data profil mahasiswa berdasarkan data yang dikirimkan
     public function index(Request $request)
     {
         $user = auth()->user();
