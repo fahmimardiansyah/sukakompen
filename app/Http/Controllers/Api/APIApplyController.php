@@ -11,6 +11,30 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APIApplyController extends Controller
 {
+    public function show(Request $request)
+    {
+        $validate = $request->validate([
+            'tugas_id' => 'required|exists:t_tugas,tugas_id',
+        ]);
+
+        $tugas = TugasModel::find($validate['tugas_id']);
+
+        if (!$tugas) {
+            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
+        }
+
+        // Format respons dengan data tambahan
+        return response()->json([
+            'tugas_nama' => $tugas->tugas_nama,
+            'tugas_deskripsi' => $tugas->tugas_deskripsi,
+            'tugas_tenggat' => $tugas->tugas_tenggat,
+            'tugas_tipe' => $tugas->tugas_tipe,
+            'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
+            'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
+        ], 200);
+    }
+
+
     // untuk tampilan apply approval dosen/tendik
     public function index(Request $request)
     {

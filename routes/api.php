@@ -30,6 +30,7 @@ Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destro
 Route::post('/alpa', [APIAlpaController::class, 'index']);
 
 Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply']);
+Route::get('/tugas/show', [APIApplyController::class, 'show']);
 Route::post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
