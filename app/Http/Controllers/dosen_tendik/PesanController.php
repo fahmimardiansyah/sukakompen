@@ -18,4 +18,10 @@ class PesanController extends Controller
 
         return view('dosen_tendik.notif.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
+
+    public function apply() {
+        
+        
+
+    }
 }

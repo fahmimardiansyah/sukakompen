@@ -9,48 +9,21 @@ use Illuminate\Http\Request;
 
 class APIDashboardMHSController extends Controller
 {
-    /**
-     * Display a listing of all Mahasiswa and Tugas.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function index(Request $request)
     {
-        // Ambil semua data Mahasiswa dan Tugas
-        $mahasiswa = MahasiswaModel::all();
-        $tugas = TugasModel::all();
+        $user = auth()->user();
 
-        return response()->json([
-            'mahasiswa' => $mahasiswa,
-            'tugas' => $tugas,
-        ]);
-    }
-
-    /**
-     * Display specific Mahasiswa and their Tugas by Mahasiswa ID.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'mahasiswa_id' => 'required|integer',
-        ]);
-
-        $mahasiswaId = $request->mahasiswa_id;
-
-        // Ambil data Mahasiswa berdasarkan ID
-        $mahasiswa = MahasiswaModel::find($mahasiswaId);
-
-        if (!$mahasiswa) {
-            return response()->json(['error' => 'Mahasiswa not found'], 404);
+        if (!$user) {
+            return response()->json(['error' => 'User tidak terautentikasi'], 401);
         }
 
-        // Ambil data Tugas yang berkaitan dengan Mahasiswa (jika ada hubungan)
-        $tugas = TugasModel::where('user_id', $mahasiswa->user_id)->get();
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
+        }
+
+        $tugas = TugasModel::all();
 
         return response()->json([
             'mahasiswa' => $mahasiswa,

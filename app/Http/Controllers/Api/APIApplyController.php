@@ -11,6 +11,29 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APIApplyController extends Controller
 {
+    public function show(Request $request)
+    {
+        $validate = $request->validate([
+            'tugas_id' => 'required|exists:t_tugas,tugas_id',
+        ]);
+
+        $tugas = TugasModel::find($validate['tugas_id']);
+
+        if (!$tugas) {
+            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
+        }
+
+        // Format respons dengan data tambahan
+        return response()->json([
+            'tugas_nama' => $tugas->tugas_nama,
+            'tugas_deskripsi' => $tugas->tugas_deskripsi,
+            'tugas_tenggat' => $tugas->tugas_tenggat,
+            'tugas_tipe' => $tugas->tugas_tipe,
+            'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
+            'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
+        ], 200);
+    }
+
     // untuk tampilan apply approval dosen/tendik
     public function index(Request $request)
     {
@@ -99,4 +122,50 @@ class APIApplyController extends Controller
         return response()->json(['message' => 'Berhasil menyimpan data'], 201);
     }
 
+    // notif di mhs untuk diterima atau ditolak
+    public function notif(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user) {
+            return response()->json(['error' => 'User tidak ditemukan'], 401);
+        }
+
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['message' => 'Data mahasiswa tidak ditemukan untuk user ini'], 404);
+        }
+
+        $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+            ->with('tugas') 
+            ->get();
+
+        $applyGrouped = $apply->groupBy('apply_status');
+
+        $applyAccepted = $applyGrouped->get(1, collect());
+
+        $applyRejected = $applyGrouped->get(0, collect());
+
+        $result = [
+            'accepted' => $applyAccepted->map(function ($applyItem) {
+                return [
+                    'apply_id' => $applyItem->apply_id,
+                    'status' => 'accepted',
+                    'tugas' => $applyItem->tugas,
+                ];
+            })->values(),
+
+            'rejected' => $applyRejected->map(function ($applyItem) {
+                return [
+                    'apply_id' => $applyItem->apply_id,
+                    'status' => 'rejected',
+                    'tugas' => $applyItem->tugas, 
+                ];
+            })->values(),
+        ];
+
+        return response()->json($result);
+    }
+        
 }
