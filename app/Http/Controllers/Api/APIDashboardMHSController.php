@@ -1,39 +1,60 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\UserModel;
+use App\Http\Controllers\Controller;
+use App\Models\MahasiswaModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 
 class APIDashboardMHSController extends Controller
 {
     /**
-     * Handle the dashboard data.
+     * Display a listing of all Mahasiswa and Tugas.
      *
-     * @param Request $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function index(Request $request)
     {
-        // Mendapatkan user berdasarkan ID yang login
-        $user = UserModel::find($request->user()->user_id);
+        // Ambil semua data Mahasiswa dan Tugas
+        $mahasiswa = MahasiswaModel::all();
+        $tugas = TugasModel::all();
 
-        // Data untuk rekomendasi tugas
-        $rekomendasiTugas = TugasModel::select('tugas_nama', 'tugas_deskripsi', 'tugas_jam_kompen')
-            ->orderBy('tugas_jam_kompen', 'desc') // Prioritaskan tugas dengan jam terbesar
-            ->limit(3) // Batasi jumlah rekomendasi
-            ->get();
+        return response()->json([
+            'mahasiswa' => $mahasiswa,
+            'tugas' => $tugas,
+        ]);
+    }
 
-        // Format data yang akan dikirim ke frontend
-        $response = [
-            'user' => [
-                'nama' => $user->nama,
-                'nim' => $user->username,
-            ],
-            'rekomendasi_tugas' => $rekomendasiTugas,
-        ];
+    /**
+     * Display specific Mahasiswa and their Tugas by Mahasiswa ID.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function show(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'mahasiswa_id' => 'required|integer',
+        ]);
 
-        return response()->json($response);
+        $mahasiswaId = $request->mahasiswa_id;
+
+        // Ambil data Mahasiswa berdasarkan ID
+        $mahasiswa = MahasiswaModel::find($mahasiswaId);
+
+        if (!$mahasiswa) {
+            return response()->json(['error' => 'Mahasiswa not found'], 404);
+        }
+
+        // Ambil data Tugas yang berkaitan dengan Mahasiswa (jika ada hubungan)
+        $tugas = TugasModel::where('user_id', $mahasiswa->user_id)->get();
+
+        return response()->json([
+            'mahasiswa' => $mahasiswa,
+            'tugas' => $tugas,
+        ]);
     }
 }

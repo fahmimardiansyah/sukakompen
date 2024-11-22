@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Akumulasi; // Jangan lupa import model jika digunakan
 use App\Models\AkumulasiModel;
 
 class APIAkumulasiController extends Controller
