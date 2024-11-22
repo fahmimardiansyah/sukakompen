@@ -25,6 +25,7 @@ class TugasModel extends Model
         return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
     }
 
+
     public function jenis() : BelongsTo
     {
         return $this->belongsTo(JenisModel::class, 'jenis_id', 'jenis_id');

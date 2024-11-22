@@ -25,9 +25,9 @@ class APIProfileMHSController extends Controller
      * @param int $mahasiswaId
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show($mahasiswaId)
+    public function show($id)
     {
-        $mahasiswa = MahasiswaModel::with('user')->where('mahasiswa_id', $mahasiswaId)->first(); // Mengambil mahasiswa spesifik berdasarkan ID
+        $mahasiswa = MahasiswaModel::with('user')->where('mahasiswa_id', $id)->first(); // Mengambil mahasiswa spesifik berdasarkan ID
 
         if (!$mahasiswa) {
             return response()->json([
