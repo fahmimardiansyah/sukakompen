@@ -7,24 +7,27 @@ use App\Http\Controllers\Api\APIAlpaController;
 use App\Http\Controllers\Api\APITugasController;
 use App\Http\Controllers\Api\APITugasDosenController;
 use App\Http\Controllers\Api\APIDashboardMHSController;
+use App\Http\Controllers\Api\APIDashboardDSNController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
 
+// Authentication Routes
 Route::post('/login', [APIController::class, 'login']);
 Route::post('/create_data', [APIController::class, 'postregister']);
 Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
-// Route::middleware('auth:api')->get('/dashboard', [APIDashboardMHSController::class, 'index']);
+// Dashboard Routes
+Route::middleware('auth:api')->post('/dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::middleware('auth:api')->post('/dashboarddsn', [APIDashboardDSNController::class, 'index']);
 
-Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
-Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
-
+// Tugas Routes
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
 
+// Tugas Dosen Routes
 Route::post('/tugas_dosen', [APITugasDosenController::class, 'index']);
 Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store']);
 Route::post('/tugas_dosen/detail_data', [APITugasDosenController::class, 'show']);
@@ -33,10 +36,10 @@ Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destro
 Route::get('/jenis_tugas', [APITugasDosenController::class, 'getJenisTugas']);
 Route::get('/bidang_kompetensi', [APITugasDosenController::class, 'getBidangKompetensi']);
 
-
-
+// Alpa Routes
 Route::post('/alpa', [APIAlpaController::class, 'index']);
 
+// Apply Routes
 Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply']);
 Route::get('/tugas/show', [APIApplyController::class, 'show']);
 Route::middleware('auth:api')->post('/apply_mahasiswa', [APIApplyController::class, 'index']);
@@ -44,12 +47,17 @@ Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
 Route::post('/notif', [APIApplyController::class, 'notif']);
 
+// Kompen Routes
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
+// Akumulasi Routes
 Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
-Route::post('/profilemhs', [APIProfileMHSController::class, 'index']);
+// Profile Mahasiswa Routes
+Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
+
+// Default Sanctum Route
 
 /*
 |--------------------------------------------------------------------------
