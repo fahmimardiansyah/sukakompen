@@ -47,7 +47,6 @@ class APIUploadFileMhsController extends Controller
             $file->storeAs('posts', $fileName, 'public');
             
             $data->file_mahasiswa = $fileName;
-            $data->status = true;
             $data->save();
 
             return response()->json([

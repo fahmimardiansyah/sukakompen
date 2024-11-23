@@ -94,6 +94,7 @@ class APIApplyController extends Controller
         $save->apply_id = $data->apply_id;
         $save->mahasiswa_id = $data->mahasiswa_id;
         $save->tugas_id = $data->tugas_id;
+        $save->status = false;
         $save->save();
 
         return 'Berhasil Mengubah Data';

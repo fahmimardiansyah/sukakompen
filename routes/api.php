@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
 use App\Http\Controllers\Api\APIUploadFileMhsController;
 use App\Http\Controllers\Api\APINotifController;
+use App\Http\Controllers\Api\APIApprovalController;
 
 // Authentication Routes
 Route::post('/login', [APIController::class, 'login']);
@@ -23,7 +24,6 @@ Route::post('/logout', [APIController::class, 'logout']);
 
 // Dashboard Routes
 Route::middleware('auth:api')->post('/dashboardmhs', [APIDashboardMHSController::class, 'index']);
-Route::middleware('auth:api')->post('/dashboarddsn', [APIDashboardDSNController::class, 'index']);
 
 // Tugas Routes
 Route::post('/tugas', [APITugasController::class, 'index']);
@@ -50,6 +50,11 @@ Route::post('/acc', [APIApplyController::class, 'acc']);
 
 Route::post('/notif_terima_apply', [APINotifController::class, 'notifTerimaApply']);
 Route::post('/notif_tolak_apply', [APINotifController::class, 'notifTolakApply']);
+
+Route::post('/cek_tugas', [APIApprovalController::class, 'cek_tugas']);
+Route::post('/detail_cek', [APIApprovalController::class, 'detail_cek']);
+Route::post('/tolak', [APIApprovalController::class, 'tolak']);
+Route::post('/terima', [APIApprovalController::class, 'terima']);
 
 Route::post('/upload', [APIUploadFileMhsController::class, 'upload']);
 Route::post('/download', [APIUploadFileMhsController::class, 'download']);
