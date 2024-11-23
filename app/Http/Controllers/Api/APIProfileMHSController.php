@@ -8,34 +8,21 @@ use App\Models\MahasiswaModel;
 
 class APIProfileMHSController extends Controller
 {
-    /**
-     * Get all mahasiswa profiles.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswa = MahasiswaModel::with('user')->get(); // Mengambil semua data mahasiswa
-        return response()->json($mahasiswa);
-    }
+        $user = auth()->user();
 
-    /**
-     * Get profile of a specific mahasiswa.
-     *
-     * @param int $mahasiswaId
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function show($id)
-    {
-        $mahasiswa = MahasiswaModel::with('user')->where('mahasiswa_id', $id)->first(); // Mengambil mahasiswa spesifik berdasarkan ID
-
-        if (!$mahasiswa) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Mahasiswa not found'
-            ], 404);
+        if (!$user) {
+            return response()->json(['error' => 'User tidak terautentikasi'], 401);
         }
 
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
+        }
+
+        // Kembalikan data profil mahasiswa
         return response()->json($mahasiswa);
     }
 }

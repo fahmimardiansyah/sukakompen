@@ -6,10 +6,10 @@ use App\Http\Controllers\Api\APIController;
 use App\Http\Controllers\Api\APIAlpaController;
 use App\Http\Controllers\Api\APITugasController;
 use App\Http\Controllers\Api\APITugasDosenController;
+use App\Http\Controllers\Api\APIDashboardMHSController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
-
 use App\Http\Controllers\Api\APIApplyController;
 
 Route::post('/login', [APIController::class, 'login']);
@@ -19,8 +19,8 @@ Route::post('/logout', [APIController::class, 'logout']);
 
 // Route::middleware('auth:api')->get('/dashboard', [APIDashboardMHSController::class, 'index']);
 
-// Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
-// Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
+Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
@@ -39,17 +39,17 @@ Route::post('/alpa', [APIAlpaController::class, 'index']);
 
 Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply']);
 Route::get('/tugas/show', [APIApplyController::class, 'show']);
-Route::post('/apply_mahasiswa', [APIApplyController::class, 'index']);
+Route::middleware('auth:api')->post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
+Route::post('/notif', [APIApplyController::class, 'notif']);
 
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
 Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
 Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
 
-Route::post('/mahasiswa', [APIProfileMHSController::class, 'index']);
-Route::post('/mahasiswa/{id}', [APIProfileMHSController::class, 'show']);
+Route::post('/profilemhs', [APIProfileMHSController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

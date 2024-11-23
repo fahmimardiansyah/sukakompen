@@ -34,7 +34,6 @@ class APIApplyController extends Controller
         ], 200);
     }
 
-
     // untuk tampilan apply approval dosen/tendik
     public function index(Request $request)
     {
@@ -123,4 +122,50 @@ class APIApplyController extends Controller
         return response()->json(['message' => 'Berhasil menyimpan data'], 201);
     }
 
+    // notif di mhs untuk diterima atau ditolak
+    public function notif(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+
+        if (!$user) {
+            return response()->json(['error' => 'User tidak ditemukan'], 401);
+        }
+
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['message' => 'Data mahasiswa tidak ditemukan untuk user ini'], 404);
+        }
+
+        $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+            ->with('tugas') 
+            ->get();
+
+        $applyGrouped = $apply->groupBy('apply_status');
+
+        $applyAccepted = $applyGrouped->get(1, collect());
+
+        $applyRejected = $applyGrouped->get(0, collect());
+
+        $result = [
+            'accepted' => $applyAccepted->map(function ($applyItem) {
+                return [
+                    'apply_id' => $applyItem->apply_id,
+                    'status' => 'accepted',
+                    'tugas' => $applyItem->tugas,
+                ];
+            })->values(),
+
+            'rejected' => $applyRejected->map(function ($applyItem) {
+                return [
+                    'apply_id' => $applyItem->apply_id,
+                    'status' => 'rejected',
+                    'tugas' => $applyItem->tugas, 
+                ];
+            })->values(),
+        ];
+
+        return response()->json($result);
+    }
+        
 }
