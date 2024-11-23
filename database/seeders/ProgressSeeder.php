@@ -15,8 +15,9 @@ class ProgressSeeder extends Seeder
         $data = [
             [
                 'progress_id' => 1,
+                'apply_id' => 1,
                 'mahasiswa_id' => 1,
-                'tugas_id' => 1,
+                'tugas_id' => 2,
                 'status' => true,
             ],
         ];

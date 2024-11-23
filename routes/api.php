@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
+use App\Http\Controllers\Api\APIUploadFileMhsController;
+use App\Http\Controllers\Api\APINotifController;
 
 Route::post('/login', [APIController::class, 'login']);
 Route::post('/create_data', [APIController::class, 'postregister']);
@@ -35,7 +37,12 @@ Route::get('/tugas/show', [APIApplyController::class, 'show']);
 Route::middleware('auth:api')->post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
-Route::post('/notif', [APIApplyController::class, 'notif']);
+
+Route::post('/notif_terima_apply', [APINotifController::class, 'notifTerimaApply']);
+Route::post('/notif_tolak_apply', [APINotifController::class, 'notifTolakApply']);
+
+Route::post('/upload', [APIUploadFileMhsController::class, 'upload']);
+Route::post('/download', [APIUploadFileMhsController::class, 'download']);
 
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 

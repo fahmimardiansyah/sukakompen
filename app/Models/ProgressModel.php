@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class ProgressModel extends Model
 {
@@ -13,10 +14,23 @@ class ProgressModel extends Model
     protected $primaryKey = 'progress_id'; 
 
     protected $fillable = [
+        'apply_id',
         'mahasiswa_id',
         'tugas_id',
+        'file_mahasiswa',
         'status',
     ];
+
+    protected function file(): Attribute {
+        return Attribute::make(
+            get: fn ($file) => url('/storage/posts/' . $file),
+        );
+    }
+
+    public function apply()
+    {
+        return $this->belongsTo(MahasiswaModel::class, 'apply_id', 'apply_id');
+    }
 
     public function mahasiswa()
     {

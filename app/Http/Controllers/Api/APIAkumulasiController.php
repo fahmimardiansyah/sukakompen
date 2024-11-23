@@ -10,7 +10,7 @@ class APIAkumulasiController extends Controller
 {
     public function index()
     {
-        $akumulasi = AkumulasiModel::all();  // Contoh mengambil semua data akumulasi
+        $akumulasi = AkumulasiModel::all();
         return response()->json($akumulasi);
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\ApplyModel;
 use App\Models\MahasiswaModel;
+use App\Models\ProgressModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -83,11 +84,17 @@ class APIApplyController extends Controller
         return 'Berhasil Mengubah Data';
     }
 
-    // function ketika apply diterima
+    // function ketika apply diterima dan auto update untuk progress
     public function acc(Request $request) {
         $data = ApplyModel::all()->where('apply_id', $request->apply_id)->first();
         $data->apply_status = true;
         $data->save();
+
+        $save = new ProgressModel;
+        $save->apply_id = $data->apply_id;
+        $save->mahasiswa_id = $data->mahasiswa_id;
+        $save->tugas_id = $data->tugas_id;
+        $save->save();
 
         return 'Berhasil Mengubah Data';
     }
@@ -116,56 +123,9 @@ class APIApplyController extends Controller
         $apply = new ApplyModel();
         $apply->mahasiswa_id = $mahasiswa->mahasiswa_id;
         $apply->tugas_id = $tugas->tugas_id;
-
         $apply->save();
 
         return response()->json(['message' => 'Berhasil menyimpan data'], 201);
-    }
-
-    // notif di mhs untuk diterima atau ditolak
-    public function notif(Request $request)
-    {
-        $user = JWTAuth::parseToken()->authenticate();
-
-        if (!$user) {
-            return response()->json(['error' => 'User tidak ditemukan'], 401);
-        }
-
-        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
-
-        if (!$mahasiswa) {
-            return response()->json(['message' => 'Data mahasiswa tidak ditemukan untuk user ini'], 404);
-        }
-
-        $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
-            ->with('tugas') 
-            ->get();
-
-        $applyGrouped = $apply->groupBy('apply_status');
-
-        $applyAccepted = $applyGrouped->get(1, collect());
-
-        $applyRejected = $applyGrouped->get(0, collect());
-
-        $result = [
-            'accepted' => $applyAccepted->map(function ($applyItem) {
-                return [
-                    'apply_id' => $applyItem->apply_id,
-                    'status' => 'accepted',
-                    'tugas' => $applyItem->tugas,
-                ];
-            })->values(),
-
-            'rejected' => $applyRejected->map(function ($applyItem) {
-                return [
-                    'apply_id' => $applyItem->apply_id,
-                    'status' => 'rejected',
-                    'tugas' => $applyItem->tugas, 
-                ];
-            })->values(),
-        ];
-
-        return response()->json($result);
     }
         
 }
