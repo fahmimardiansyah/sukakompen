@@ -19,8 +19,8 @@ Route::post('/logout', [APIController::class, 'logout']);
 
 // Route::middleware('auth:api')->get('/dashboard', [APIDashboardMHSController::class, 'index']);
 
-Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
-Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
+// Route::post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
+// Route::post('dashboardmhs/detail', [APIDashboardMHSController::class, 'show']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
@@ -30,6 +30,10 @@ Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store'
 Route::post('/tugas_dosen/detail_data', [APITugasDosenController::class, 'show']);
 Route::post('/tugas_dosen/update_data', [APITugasDosenController::class, 'edit']);
 Route::post('/tugas_dosen/delete_data', [APITugasDosenController::class, 'destroy']);
+Route::get('/jenis_tugas', [APITugasDosenController::class, 'getJenisTugas']);
+Route::get('/bidang_kompetensi', [APITugasDosenController::class, 'getBidangKompetensi']);
+
+
 
 Route::post('/alpa', [APIAlpaController::class, 'index']);
 
