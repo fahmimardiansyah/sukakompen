@@ -4,15 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\TugasModel;
+use App\Models\JenisModel;
+use App\Models\KompetensiModel;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class APITugasDosenController extends Controller
 {
-
     // untuk lihat tugas dosen/tendik
     public function index()
     {
@@ -96,5 +96,19 @@ class APITugasDosenController extends Controller
         $del = TugasModel::all()->where('tugas_id', $request->tugas_id)->first();
         $del->delete();
         return "Berhasil Menghapus Data";
+    }
+
+    // untuk mendapatkan jenis tugas
+    public function getJenisTugas()
+    {
+        $jenisTugas = JenisModel::all();
+        return response()->json($jenisTugas);
+    }
+
+    // untuk mendapatkan bidang kompetensi
+    public function getBidangKompetensi()
+    {
+        $bidangKompetensi = KompetensiModel::all();
+        return response()->json($bidangKompetensi);
     }
 }
