@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APINotifController extends Controller
 {
-    // notif di mhs untuk diterima
+    // notif di mhs untuk apply diterima
     public function notifTerimaApply(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();
@@ -48,6 +48,8 @@ class APINotifController extends Controller
 
                 $tendik = TendikModel::where('user_id', $tugas->user_id)->first(); 
 
+                $admin = AdminModel::where('user_id', $tugas->user_id)->first();
+
                 $pemberiTugas = null;
 
                 if ($dosen) {
@@ -62,7 +64,14 @@ class APINotifController extends Controller
                         'tendik_nama' => $tendik->tendik_nama,
                         'tendik_no_telp' => $tendik->tendik_no_telp,
                     ];
+                } elseif ($admin) {
+                    $pemberiTugas = [
+                        'nip' => $admin->nip,
+                        'admin_nama' => $admin->admin_nama,
+                        'admin_no_telp' => $admin->admin_no_telp,
+                    ];
                 }
+
 
                 return [
                     'apply_id' => $applyItem->apply_id,
@@ -83,7 +92,7 @@ class APINotifController extends Controller
         return response()->json($result);
     }
 
-    // notif di mhs untuk ditolak
+    // notif di mhs untuk apply ditolak
     public function notifTolakApply(Request $request)
     {
         $user = JWTAuth::parseToken()->authenticate();

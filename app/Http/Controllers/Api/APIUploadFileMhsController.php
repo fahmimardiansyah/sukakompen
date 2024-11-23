@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 class APIUploadFileMhsController extends Controller
 {
+
+    // msh upload file ketika tugas selesai
     public function upload(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -59,6 +61,8 @@ class APIUploadFileMhsController extends Controller
         return response()->json(['status' => false, 'message' => 'Gagal mengupload file'], 500);
     }
 
+
+    // pemberi tugas donlod file dari mhs
     public function download(Request $request)
     {
         $data = ProgressModel::where('progress_id', $request->progress_id)->first();
