@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
-class ProgressSeeder extends Seeder
+class ApprovalSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,14 +15,14 @@ class ProgressSeeder extends Seeder
     {
         $data = [
             [
+                'approval_id' => 1,
                 'progress_id' => 1,
-                'apply_id' => 1,
                 'mahasiswa_id' => 1,
                 'tugas_id' => 2,
-                'status' => true,
+                'status' => null,
             ],
         ];
 
-        DB::table('t_progress')->insert($data);
+        DB::table('t_approval_tugas')->insert($data);
     }
 }

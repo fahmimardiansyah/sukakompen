@@ -4,28 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class ProgressModel extends Model
+class ApprovalModel extends Model
 {
     use HasFactory;
 
-    protected $table = 't_progress'; 
-    protected $primaryKey = 'progress_id'; 
+    protected $table = 't_approval_tugas'; 
+    protected $primaryKey = 'approval_id'; 
 
     protected $fillable = [
-        'apply_id',
+        'progress_id',
         'mahasiswa_id',
         'tugas_id',
-        'file_mahasiswa',
         'status',
     ];
-
-    protected function file(): Attribute {
-        return Attribute::make(
-            get: fn ($file) => url('/storage/posts/' . $file),
-        );
-    }
 
     public function apply()
     {
