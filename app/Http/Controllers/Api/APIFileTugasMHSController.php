@@ -8,8 +8,9 @@ use App\Models\ProgressModel;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
-class APIUploadFileMhsController extends Controller
+class APIFileTugasMHSController extends Controller
 {
+    // mahasiswa upload file tugas
     public function upload(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -59,6 +60,7 @@ class APIUploadFileMhsController extends Controller
         return response()->json(['status' => false, 'message' => 'Gagal mengupload file'], 500);
     }
 
+    // dosen download file tugas
     public function download(Request $request)
     {
         $data = ProgressModel::where('progress_id', $request->progress_id)->first();

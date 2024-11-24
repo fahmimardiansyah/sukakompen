@@ -12,7 +12,7 @@ use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
 use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
-use App\Http\Controllers\Api\APIUploadFileMhsController;
+use App\Http\Controllers\Api\APIFileTugasMHSController;
 use App\Http\Controllers\Api\APINotifController;
 use App\Http\Controllers\Api\APIApprovalController;
 
@@ -56,8 +56,8 @@ Route::post('/detail_cek', [APIApprovalController::class, 'detail_cek']);
 Route::post('/tolak', [APIApprovalController::class, 'tolak']);
 Route::post('/terima', [APIApprovalController::class, 'terima']);
 
-Route::post('/upload', [APIUploadFileMhsController::class, 'upload']);
-Route::post('/download', [APIUploadFileMhsController::class, 'download']);
+Route::post('/upload', [APIFileTugasMHSController::class, 'upload']);
+Route::post('/download', [APIFileTugasMHSController::class, 'download']);
 
 // Kompen Routes
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
