@@ -7,8 +7,10 @@ use App\Http\Controllers\Api\APIAlpaController;
 use App\Http\Controllers\Api\APITugasController;
 use App\Http\Controllers\Api\APITugasDosenController;
 use App\Http\Controllers\Api\APIDashboardMHSController;
+use App\Http\Controllers\Api\APIDashboardDSNController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
+use App\Http\Controllers\Api\APIProfileDSNController;
 use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
 
@@ -18,6 +20,7 @@ Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
 Route::middleware('auth:api')->post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::middleware('auth:api')->post('dashboarddsn', [APIDashboardDSNController::class, 'index']);
 
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
@@ -39,10 +42,10 @@ Route::post('/notif', [APIApplyController::class, 'notif']);
 
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
-Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
-Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
+Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class, 'index']);
 
-Route::post('/profilemhs', [APIProfileMHSController::class, 'index']);
+Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
+Route::middleware('auth:api')->post('/profiledsn', [APIProfileDSNController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

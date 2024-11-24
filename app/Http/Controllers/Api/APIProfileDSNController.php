@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\MahasiswaModel;
-use App\Models\AkumulasiModel;
 use Illuminate\Http\Request;
+use App\Models\DosenModel;
 
-class APIAkumulasiController extends Controller
+class APIProfileDSNController extends Controller
 {
     public function index(Request $request)
     {
@@ -17,17 +16,13 @@ class APIAkumulasiController extends Controller
             return response()->json(['error' => 'User tidak terautentikasi'], 401);
         }
 
-        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+        $dosen = DosenModel::where('user_id', $user->user_id)->first();
 
-        if (!$mahasiswa) {
+        if (!$dosen) {
             return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
         }
 
-        $akumulasi = AkumulasiModel::all();
-
-        return response()->json([
-            'mahasiswa' => $mahasiswa,
-            'akumulasi' => $akumulasi,
-        ]);
+        // Kembalikan data profil mahasiswa
+        return response()->json($dosen);
     }
 }
