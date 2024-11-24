@@ -3,20 +3,31 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\MahasiswaModel;
 use App\Models\AkumulasiModel;
+use Illuminate\Http\Request;
 
 class APIAkumulasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $akumulasi = AkumulasiModel::all();
-        return response()->json($akumulasi);
-    }
+        $user = auth()->user();
 
-    public function show($mahasiswaId)
-    {
-        $akumulasi = AkumulasiModel::where('mahasiswa_id', $mahasiswaId)->get();
-        return response()->json($akumulasi);
+        if (!$user) {
+            return response()->json(['error' => 'User tidak terautentikasi'], 401);
+        }
+
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
+        }
+
+        $akumulasi = AkumulasiModel::all();
+
+        return response()->json([
+            'mahasiswa' => $mahasiswa,
+            'akumulasi' => $akumulasi,
+        ]);
     }
 }

@@ -25,6 +25,9 @@ Route::post('/logout', [APIController::class, 'logout']);
 // Dashboard Routes
 Route::middleware('auth:api')->post('/dashboardmhs', [APIDashboardMHSController::class, 'index']);
 
+// akumulasi
+Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class, 'index']);
+
 // Tugas Routes
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
