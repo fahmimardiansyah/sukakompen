@@ -65,10 +65,6 @@ Route::post('/download', [APIFileTugasMHSController::class, 'download']);
 // Kompen Routes
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
-// Akumulasi Routes
-Route::post('/akumulasi', [APIAkumulasiController::class, 'index']);
-Route::post('/akumulasi/{mahasiswaId}', [APIAkumulasiController::class, 'show']);
-
 // Profile Mahasiswa Routes
 Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
 
