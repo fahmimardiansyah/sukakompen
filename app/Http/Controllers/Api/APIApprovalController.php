@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ApprovalModel;
+use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
 use Illuminate\Http\Request;
 use App\Models\TugasModel;
@@ -66,28 +67,40 @@ class APIApprovalController extends Controller
         return response()->json($result);
     }
 
-    // detail cek tugas
     public function detail(Request $request)
-    {
-        $validate = $request->validate([
-            'tugas_id' => 'required|exists:t_tugas,tugas_id',
-        ]);
+{
+    $validate = $request->validate([
+        'tugas_id' => 'required|exists:t_tugas,tugas_id',
+        'progress_id' => 'required|exists:t_progress,progress_id'
+    ]);
 
-        $tugas = TugasModel::find($validate['tugas_id']);
-
-        if (!$tugas) {
-            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
-        }
-
-        return response()->json([
-            'tugas_nama' => $tugas->tugas_nama,
-            'tugas_deskripsi' => $tugas->tugas_deskripsi,
-            'tugas_tenggat' => $tugas->tugas_tenggat,
-            'tugas_tipe' => $tugas->tugas_tipe,
-            'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
-            'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
-        ], 200);
+    $tugas = TugasModel::find($validate['tugas_id']);
+    if (!$tugas) {
+        return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
     }
+
+    $progress = ProgressModel::find($validate['progress_id']);
+    if (!$progress) {
+        return response()->json(['message' => 'Data progress tidak ditemukan'], 404);
+    }
+
+    $mahasiswa = MahasiswaModel::where('mahasiswa_id', $progress->mahasiswa_id)->first();
+    if (!$mahasiswa) {
+        return response()->json(['message' => 'Mahasiswa tidak ditemukan'], 404);
+    }
+
+    return response()->json([
+        'mahasiswa_nama' => $mahasiswa->mahasiswa_nama,
+        'file_mahasiswa' => $progress->file_mahasiswa,
+        'tugas_nama' => $tugas->tugas_nama,
+        'tugas_deskripsi' => $tugas->tugas_deskripsi,
+        'tugas_tenggat' => $tugas->tugas_tenggat,
+        'tugas_tipe' => $tugas->tugas_tipe,
+        'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
+        'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
+    ], 200);
+}
+
 
     // function ketika tugas ditolak
     public function tolak(Request $request) {

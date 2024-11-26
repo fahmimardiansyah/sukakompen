@@ -51,11 +51,13 @@ Route::middleware('auth:api')->post('/apply_mahasiswa', [APIApplyController::cla
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);
 
+Route::post('/show_tugas', [APINotifController::class, 'show']);
 Route::post('/notif_terima_apply', [APINotifController::class, 'notifTerimaApply']);
 Route::post('/notif_tolak_apply', [APINotifController::class, 'notifTolakApply']);
 
+Route::post('/kirim', [APIApprovalController::class, 'kirim']);
 Route::post('/cek_tugas', [APIApprovalController::class, 'cek_tugas']);
-Route::post('/detail_cek', [APIApprovalController::class, 'detail_cek']);
+Route::post('/detail_cek', [APIApprovalController::class, 'detail']);
 Route::post('/tolak', [APIApprovalController::class, 'tolak']);
 Route::post('/terima', [APIApprovalController::class, 'terima']);
 
@@ -67,8 +69,6 @@ Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'ind
 
 // Profile Mahasiswa Routes
 Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
-
-// Default Sanctum Route
 
 /*
 |--------------------------------------------------------------------------

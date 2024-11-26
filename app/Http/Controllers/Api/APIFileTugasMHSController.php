@@ -14,7 +14,6 @@ class APIFileTugasMHSController extends Controller
     public function upload(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'progress_id' => 'required|exists:t_progress,progress_id',
             'file_mahasiswa' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:5120',
         ]);
 
@@ -26,7 +25,7 @@ class APIFileTugasMHSController extends Controller
             ], 422);
         }
 
-        $data = ProgressModel::where('progress_id', $request->progress_id)->first();
+        $data = ProgressModel::where('apply_id', $request->apply_id)->first();
 
         if (!$data) {
             return response()->json(['status' => false, 'message' => 'Progress ID tidak ditemukan'], 404);
@@ -34,7 +33,6 @@ class APIFileTugasMHSController extends Controller
 
         if ($data->file_mahasiswa) {
             $oldFilePath = storage_path('app/public/posts/' . $data->file_mahasiswa);
-
             if (file_exists($oldFilePath)) {
                 unlink($oldFilePath);
             }
@@ -42,11 +40,11 @@ class APIFileTugasMHSController extends Controller
 
         if ($request->hasFile('file_mahasiswa')) {
             $file = $request->file('file_mahasiswa');
-            
-            $fileName = time() . '_' . $file->hashName();
-            
+
+            $fileName = time() . '_' . $file->getClientOriginalName();
+
             $file->storeAs('posts', $fileName, 'public');
-            
+
             $data->file_mahasiswa = $fileName;
             $data->save();
 
@@ -63,7 +61,11 @@ class APIFileTugasMHSController extends Controller
     // dosen download file tugas
     public function download(Request $request)
     {
-        $data = ProgressModel::where('progress_id', $request->progress_id)->first();
+        $validated = $request->validate([
+            'progress_id' => 'required|integer',
+        ]);
+
+        $data = ProgressModel::where('progress_id', $validated['progress_id'])->first();
 
         if (!$data || !$data->file_mahasiswa) {
             return response()->json(['message' => 'File tidak ditemukan'], 404);
@@ -75,6 +77,10 @@ class APIFileTugasMHSController extends Controller
             return response()->json(['message' => 'File tidak ada di server'], 404);
         }
 
-        return response()->download($filePath);
+        // Mengembalikan file untuk diunduh
+        return response()->download($filePath, $data->file_mahasiswa, [
+            'Content-Type' => mime_content_type($filePath),
+        ]);
     }
+
 }

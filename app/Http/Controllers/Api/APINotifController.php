@@ -8,11 +8,36 @@ use App\Models\ApplyModel;
 use App\Models\MahasiswaModel;
 use App\Models\DosenModel;
 use App\Models\TendikModel;
+use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class APINotifController extends Controller
 {
+
+    public function show(Request $request)
+    {
+        $validate = $request->validate([
+            'tugas_id' => 'required|exists:t_tugas,tugas_id',
+        ]);
+
+        $tugas = TugasModel::find($validate['tugas_id']);
+
+        if (!$tugas) {
+            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
+        }
+
+        return response()->json([
+            'tugas_nama' => $tugas->tugas_nama,
+            'tugas_deskripsi' => $tugas->tugas_deskripsi,
+            'tugas_tenggat' => $tugas->tugas_tenggat,
+            'tugas_tipe' => $tugas->tugas_tipe,
+            'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
+            'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
+            'file_tugas' => $tugas->file_tugas,
+        ], 200);
+    }
+
     // notif di mhs untuk apply diterima
     public function notifTerimaApply(Request $request)
     {
@@ -115,7 +140,7 @@ class APINotifController extends Controller
         $applyAccepted = $applyGrouped->get(0, collect());
 
         $result = [
-            'accepted' => $applyAccepted->map(function ($applyItem) {
+            'declined' => $applyAccepted->map(function ($applyItem) {
 
                 $tugas = $applyItem->tugas; 
                 
