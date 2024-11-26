@@ -4,6 +4,7 @@ namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\TugasModel;
 
 class WelcomeController extends Controller
 {
@@ -15,7 +16,8 @@ class WelcomeController extends Controller
         ];
 
         $activeMenu = 'dashboardmhs';
+        $tugas = TugasModel::with('jenis')->get();
 
-        return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
+        return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas,]);
     }
 }

@@ -42,22 +42,46 @@
         <section class="recommended-tasks">
             <h2>Tugas Kompen</h2>
             <div class="task-grid">
-                @for ($i = 0; $i < 8; $i++)
+                @foreach ($tugas as $item)
                     <div class="task-card">
                         <div class="card-header">
-                            <span class="task-category">Teknis</span>
+                            <span class="task-category">Admin Task</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                            <h3>Arsip Absensi</h3>
-                            <p>Mengarsip ketidakhadiran dalam satu jam untuk menghindari denda di satu jurusan.</p>
+                            <h3>{{ $item->tugas_nama }}</h3>
+                            <p>{{ $item->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a class="btn">Kerjakan</a>
+                            <a href="{{ url('/task/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
+</div>
+</div>
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
+
+
+
 @endsection
+
+@push('js')
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+
+        function showTab(tabName) {
+            $('.tab').removeClass('active');
+            $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
+
+            $('.tab-content').removeClass('active');
+            $('#' + tabName).addClass('active');
+        }
+    </script>
+@endpush

@@ -8,8 +8,11 @@ use App\Http\Controllers\Api\APITugasController;
 use App\Http\Controllers\Api\APITugasDosenController;
 use App\Http\Controllers\Api\APIDashboardMHSController;
 use App\Http\Controllers\Api\APIDashboardDSNController;
+use App\Http\Controllers\Api\APIDashboardTDKController;
 use App\Http\Controllers\Api\APIAkumulasiController;
 use App\Http\Controllers\Api\APIProfileMHSController;
+use App\Http\Controllers\Api\APIProfileDSNController;
+use App\Http\Controllers\Api\APIProfileTDKController;
 use App\Http\Controllers\Api\APIKompenController;
 use App\Http\Controllers\Api\APIApplyController;
 use App\Http\Controllers\Api\APIFileTugasMHSController;
@@ -22,8 +25,9 @@ Route::post('/create_data', [APIController::class, 'postregister']);
 Route::get('/levels', [APIController::class, 'getLevels']);
 Route::post('/logout', [APIController::class, 'logout']);
 
-// Dashboard Routes
-Route::middleware('auth:api')->post('/dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::middleware('auth:api')->post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
+Route::middleware('auth:api')->post('dashboarddsn', [APIDashboardDSNController::class, 'index']);
+Route::middleware('auth:api')->post('dashboardtdk', [APIDashboardTDKController::class, 'index']);
 
 // akumulasi
 Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class, 'index']);
@@ -67,8 +71,11 @@ Route::post('/download', [APIFileTugasMHSController::class, 'download']);
 // Kompen Routes
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
 
-// Profile Mahasiswa Routes
+Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class, 'index']);
+
 Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
+Route::middleware('auth:api')->post('/profiledsn', [APIProfileDSNController::class, 'index']);
+Route::middleware('auth:api')->post('/profiletdk', [APIProfileTDKController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------
