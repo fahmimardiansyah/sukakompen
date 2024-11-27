@@ -77,7 +77,7 @@
                         </div>
                         <!-- /.col -->
                     </div>
-                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('login') }}">Sign in</a></p>
+                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('biodata') }}">Sign in</a></p>
                 </form>
             </div>
             <!-- /.card-body -->
