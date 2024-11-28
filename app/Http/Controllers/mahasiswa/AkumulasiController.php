@@ -23,7 +23,7 @@ class AkumulasiController extends Controller
         $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
 
         if (!$mahasiswa) {
-            return redirect()->url('dashboardmhs')->with('error', 'Mahasiswa tidak ditemukan');
+            return redirect()->route('dashboardmhs')->with('error', 'Mahasiswa tidak ditemukan');
         }
 
         $mahasiswaId = $mahasiswa->mahasiswa_id;

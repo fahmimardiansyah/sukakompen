@@ -36,7 +36,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Username</th>
-                        <th>Nama</th>
                         <th>Level Pengguna</th>
                         <th>Aksi</th>
                     </tr>
@@ -78,11 +77,6 @@
                     },
                     {
                         data: "username",
-                        orderable: true,
-                        searchable: true
-                    },
-                    {
-                        data: "nama",
                         orderable: true,
                         searchable: true
                     },

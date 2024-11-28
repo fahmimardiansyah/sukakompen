@@ -29,11 +29,8 @@
             <p class="login-box-msg">Lengkapi Biodata Anda</p>
             <form action="{{ route('biodata.save') }}" method="POST" id="form-biodata">
                 @csrf
-                <input type="hidden" name="user_id" value="{{ $user_id }}">
-                <input type="hidden" name="level_id" value="{{ $level_id }}">
 
-                <!-- Dinamis berdasarkan Level -->
-                @if($level_id == 1) <!-- Admin -->
+                @if($level_id == 1) 
                     <div class="input-group mb-3">
                         <input type="text" name="nip" class="form-control" placeholder="NIP" required>
                         <div class="input-group-append">

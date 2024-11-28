@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdminModel;
+use App\Models\DosenModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\LevelModel;
+use App\Models\MahasiswaModel;
+use App\Models\TendikModel;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\Validator;
 
@@ -58,52 +62,101 @@ class AuthController extends Controller
 
     public function postregister(Request $request)
     {
-        // Cek apakah request berupa AJAX
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_id' => 'required|integer',
-                'username' => 'required|string|min:3|unique:m_user,username',
-                'nama'     => 'required|string|max:100',
-                'password' => 'required|min:5'
+                'level_id' => 'required|integer|in:1,2,3,4',
             ];
 
-            // Validasi input
+            switch ($request->level_id) {
+                case 1: // Admin
+                    $rules['nip'] = 'required|string|max:20|unique:m_admin,nip';
+                    $rules['admin_nama'] = 'required|string|max:100';
+                    $rules['admin_no_telp'] = 'required|string|max:15';
+                    break;
+                case 2: // Dosen
+                    $rules['nidn'] = 'required|string|max:20|unique:m_dosen,nidn';
+                    $rules['dosen_nama'] = 'required|string|max:100';
+                    $rules['dosen_no_telp'] = 'required|string|max:15';
+                    break;
+                case 3: // Tendik
+                    $rules['nip'] = 'required|string|max:20|unique:m_tendik,nip';
+                    $rules['tendik_nama'] = 'required|string|max:100';
+                    $rules['tendik_no_telp'] = 'required|string|max:15';
+                    break;
+                case 4: // Mahasiswa
+                    $rules['nim'] = 'required|string|max:20|unique:m_mahasiswa,nim';
+                    $rules['mahasiswa_nama'] = 'required|string|max:100';
+                    $rules['prodi'] = 'required|string|max:100';
+                    $rules['semester'] = 'required|integer|min:1';
+                    break;
+            }
+
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors(), // Pesan error validasi
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
-            // Simpan data user
-            UserModel::create([
-                'level_id' => $request->level_id,
-                'username' => $request->username,
-                'nama'     => $request->nama,
-                'password' => bcrypt($request->password), // Enkripsi password
-            ]);
+            $user = new UserModel();
+            $user->level_id = $request->level_id;
 
-            // Kirim respons JSON dengan URL redirect
+            if ($request->level_id == 1) { // Admin
+                $user->username = $request->nip;
+            } elseif ($request->level_id == 2) { // Dosen
+                $user->username = $request->nidn;
+            } elseif ($request->level_id == 3) { // Tendik
+                $user->username = $request->nip;
+            } elseif ($request->level_id == 4) { // Mahasiswa
+                $user->username = $request->nim;
+            }
+            $user->password = bcrypt($user->username); // Default password
+            $user->save();
+
+            if ($request->level_id == 1) { // Admin
+                AdminModel::create([
+                    'user_id' => $user->user_id,
+                    'nip' => $request->nip,
+                    'admin_nama' => $request->admin_nama,
+                    'admin_no_telp' => $request->admin_no_telp,
+                ]);
+            } elseif ($request->level_id == 2) { // Dosen
+                DosenModel::create([
+                    'user_id' => $user->user_id,
+                    'nidn' => $request->nidn,
+                    'dosen_nama' => $request->dosen_nama,
+                    'dosen_no_telp' => $request->dosen_no_telp,
+                ]);
+            } elseif ($request->level_id == 3) { // Tendik
+                TendikModel::create([
+                    'user_id' => $user->user_id,
+                    'nip' => $request->nip,
+                    'tendik_nama' => $request->tendik_nama,
+                    'tendik_no_telp' => $request->tendik_no_telp,
+                ]);
+            } elseif ($request->level_id == 4) { // Mahasiswa
+                MahasiswaModel::create([
+                    'user_id' => $user->user_id,
+                    'nim' => $request->nim,
+                    'mahasiswa_nama' => $request->mahasiswa_nama,
+                    'prodi' => $request->prodi,
+                    'semester' => $request->semester,
+                ]);
+            }
+
             return response()->json([
                 'status' => true,
                 'message' => 'Data user berhasil disimpan',
-                'redirect' => url('login'), // URL login dikirimkan ke client
+                'redirect' => url('login'),
             ]);
         }
 
-        // Jika bukan AJAX, redirect langsung
         return redirect('login');
     }
 
-        /**
-     * Menentukan route redirect berdasarkan level_kode.
-     *
-     * @param string $level_kode
-     * @return string
-     */
     private function getRedirectRoute($level_kode)
     {
         switch ($level_kode) {

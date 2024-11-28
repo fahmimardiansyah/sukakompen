@@ -18,4 +18,9 @@ class PesanController extends Controller
 
         return view('admin.pesan.index', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu]);
     }
+
+    public function apply()
+    {
+        return view('admin.pesan.show_ajax');
+    }
 }

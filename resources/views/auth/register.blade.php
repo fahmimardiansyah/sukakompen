@@ -6,8 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Register Pengguna</title>
     <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
     <!-- icheck bootstrap -->
@@ -27,65 +26,32 @@
                 <p class="login-box-msg">Sign up to start your session</p>
                 <form action="{{ url('register') }}" method="POST" id="form-register">
                     @csrf
-                    <div class="form-group"> 
-                        <label>Level Pengguna</label> 
-                        <select name="level_id" id="level_id" class="form-control" required> 
-                            <option value="">- Pilih Level -</option> 
-                            @foreach($level as $l) 
-                                <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option> 
-                            @endforeach 
-                        </select> 
-                        <small id="error-level_id" class="error-text form-text text-danger"></small> 
-                    </div> 
-                    
-                    <div class="input-group mb-3">
-                        <input type="text" id="username" name="username" class="form-control"
-                            placeholder="Username">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                        <small id="error-username" class="error-text text-danger"></small>
+                    <div class="form-group">
+                        <label>Level Pengguna</label>
+                        <select name="level_id" id="level_id" class="form-control" required>
+                            <option value="">- Pilih Level -</option>
+                            @foreach($level as $l)
+                                <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
+                            @endforeach
+                        </select>
+                        <small id="error-level_id" class="error-text form-text text-danger"></small>
                     </div>
 
-                    <div class="input-group mb-3">
-                        <input type="text" id="nama" name="nama" class="form-control"
-                            placeholder="Nama">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-envelope"></span>
-                            </div>
-                        </div>
-                        <small id="error-nama" class="error-text text-danger"></small>
-                    </div>
+                    <!-- Biodata fields will be dynamically added here -->
+                    <div id="biodata-fields"></div>
 
-                    <div class="input-group mb-3">
-                        <input type="password" id="password" name="password" class="form-control"
-                            placeholder="Password">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-lock"></span>
-                            </div>
-                        </div>
-                        <small id="error-password" class="error-text text-danger"></small>
-                    </div>
                     <div class="row">
-                        <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                         </div>
-                        <!-- /.col -->
                     </div>
-                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('biodata') }}">Sign in</a></p>
+                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('login') }}">Sign in</a></p>
                 </form>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
-
-{{-- 0895001794957 --}}
 
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
@@ -100,62 +66,206 @@
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $(document).ready(function() {
-            $("#form-register").validate({
-                rules: { 
-                    level_id: {required: true, number: true}, 
-                    username: {required: true, minlength: 4, maxlength: 20}, 
-                    nama: {required: true, minlength: 3, maxlength: 100}, 
-                    password: {required: true, minlength: 5, maxlength: 20} 
-                }, 
-                submitHandler: function(form) { // ketika valid, maka bagian yg akan dijalankan 
+        $(document).ready(function () {
+            // Inisialisasi validasi
+            const formValidator = $("#form-register").validate({
+                rules: {
+                    level_id: { required: true, number: true },
+                },
+                submitHandler: function (form) {
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
-                        success: function(response) {
-                            if (response.status) { // jika sukses 
+                        success: function (response) {
+                            if (response.status) {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message,
-                                }).then(function() {
+                                }).then(function () {
                                     window.location = response.redirect;
                                 });
-                            } else { // jika error 
-                                $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Terjadi Kesalahan',
-                                    text: response.message
-                                });
+                            } else {
+                                showValidationErrors(response.msgField);
                             }
+                        },
+                        error: function (xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Terjadi Kesalahan',
+                                text: xhr.responseText
+                            });
                         }
                     });
-                    return false;
                 },
                 errorElement: 'span',
-                errorPlacement: function(error, element) {
+                errorPlacement: function (error, element) {
                     error.addClass('invalid-feedback');
-                    element.closest('.input-group').append(error);
+                    element.closest('.form-group').append(error);
                 },
-                highlight: function(element, errorClass, validClass) {
+                highlight: function (element) {
                     $(element).addClass('is-invalid');
                 },
-                unhighlight: function(element, errorClass, validClass) {
+                unhighlight: function (element) {
                     $(element).removeClass('is-invalid');
                 }
             });
+
+            // Fungsi untuk menampilkan field biodata sesuai level
+            $('#level_id').change(function () {
+                const levelId = $(this).val();
+                let biodataFields = '';
+                const rules = {};
+
+                if (levelId == 1) { // Admin
+                    biodataFields += generateAdminFields();
+                    $.extend(rules, adminRules());
+                } else if (levelId == 2) { // Dosen
+                    biodataFields += generateDosenFields();
+                    $.extend(rules, dosenRules());
+                } else if (levelId == 3) { // Tendik
+                    biodataFields += generateTendikFields();
+                    $.extend(rules, tendikRules());
+                } else if (levelId == 4) { // Mahasiswa
+                    biodataFields += generateMahasiswaFields();
+                    $.extend(rules, mahasiswaRules());
+                }
+
+                $('#biodata-fields').html(biodataFields);
+
+                // Update validasi
+                formValidator.settings.rules = rules;
+            });
         });
+
+        // Fungsi generator untuk field sesuai level
+        function generateAdminFields() {
+            return `
+                <div class="input-group mb-3">
+                    <input type="text" name="nip" class="form-control" placeholder="NIP" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="admin_nama" class="form-control" placeholder="Nama" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="admin_no_telp" class="form-control" placeholder="No. Telepon" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                    </div>
+                </div>`;
+        }
+
+        function generateDosenFields() {
+            return `
+                <div class="input-group mb-3">
+                    <input type="text" name="nidn" class="form-control" placeholder="NIDN" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="dosen_nama" class="form-control" placeholder="Nama" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="dosen_no_telp" class="form-control" placeholder="No. Telepon" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                    </div>
+                </div>`;
+        }
+
+        function generateTendikFields() {
+            return `
+                <div class="input-group mb-3">
+                    <input type="text" name="nip" class="form-control" placeholder="NIP" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="tendik_nama" class="form-control" placeholder="Nama" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="tendik_no_telp" class="form-control" placeholder="No. Telepon" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                    </div>
+                </div>`;
+        }
+
+        function generateMahasiswaFields() {
+            return `
+                <div class="input-group mb-3">
+                    <input type="text" name="nim" class="form-control" placeholder="NIM" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="mahasiswa_nama" class="form-control" placeholder="Nama" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="prodi" class="form-control" placeholder="Program Studi" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-book"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="number" name="semester" class="form-control" placeholder="Semester" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-graduation-cap"></span></div>
+                    </div>
+                </div>`;
+        }
+
+        function adminRules() {
+            return {
+                nip: { required: true, maxlength: 20 },
+                admin_nama: { required: true, maxlength: 100 },
+                admin_no_telp: { required: true, maxlength: 15 }
+            };
+        }
+
+        function dosenRules() {
+            return {
+                nidn: { required: true, maxlength: 20 },
+                dosen_nama: { required: true, maxlength: 100 },
+                dosen_no_telp: { required: true, maxlength: 15 }
+            };
+        }
+
+        function tendikRules() {
+            return {
+                nip: { required: true, maxlength: 20 },
+                tendik_nama: { required: true, maxlength: 100 },
+                tendik_no_telp: { required: true, maxlength: 15 }
+            };
+        }
+
+        function mahasiswaRules() {
+            return {
+                nim: { required: true, maxlength: 20 },
+                mahasiswa_nama: { required: true, maxlength: 100 },
+                prodi: { required: true, maxlength: 100 },
+                semester: { required: true, number: true }
+            };
+        }
     </script>
 </body>
 

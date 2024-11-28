@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\ApplyModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
 use App\Models\TugasModel;
@@ -58,5 +59,12 @@ class TugasController extends Controller
         $activeMenu = 'tugas'; 
 
         return view('mahasiswa.task.detail', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page]);
+    }
+
+    public function apply($id)
+    {
+        $apply = ApplyModel::where('tugas_id', $id)->get();
+
+        
     }
 }

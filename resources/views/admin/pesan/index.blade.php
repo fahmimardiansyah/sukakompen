@@ -18,7 +18,7 @@
             <h3>Hasan Basyri</h3>
             <p>Request pekerjaan membuat PPT.</p>
         </div>
-        <button class="cek-button" onclick="openModal('{{ url('/pesan/show_ajax') }}')">Cek</button>
+        <button onclick="modalAction('{{ url('/pesan/apply') }}')" class="cek">Cek</button>
     </div>
 
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
@@ -29,17 +29,7 @@
         </div>
         <button class="cek-button" onclick="openModal('Fahmi Mardiansyah', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.')">Cek</button>
     </div>
-
-    <!-- Tambahkan card lainnya dengan struktur yang sama -->
-
-    {{-- Modal --}}
-    <div id="modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3 id="modalTitle"></h3>
-            <p id="modalMessage"></p>
-        </div>
-    </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 </section>
 </div>
 @endsection
@@ -92,18 +82,12 @@
 </style>
 @endsection
 
-@section('scripts')
+@push('js')
 <script>
-    // Function to open modal and display message
-    function openModal(title, message) {
-        document.getElementById('modalTitle').innerText = title;
-        document.getElementById('modalMessage').innerText = message;
-        document.getElementById('modal').style.display = 'flex';
-    }
-
-    // Function to close modal
-    function closeModal() {
-        document.getElementById('modal').style.display = 'none';
+    function modalAction(url = '') {
+        $('#myModal').load(url, function() {
+            $('#myModal').modal('show');
+        });
     }
 </script>
-@endsection
+@endpush

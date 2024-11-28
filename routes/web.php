@@ -72,6 +72,7 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'pesan'], function () {
             Route::get('/', [App\Http\Controllers\Admin\PesanController::class, 'index']);
+            Route::get('/apply', [App\Http\Controllers\Admin\PesanController::class, 'apply']);
         });
         
         Route::group(['prefix' => 'profil'], function() {
@@ -121,7 +122,7 @@ Route::middleware('auth')->group(function () {
 
     // Mahasiswa
     Route::middleware(['authorize:MHS'])->group(function(){
-        Route::get('/dashboardmhs', [App\Http\Controllers\Mahasiswa\WelcomeController::class, 'index']);
+        Route::get('/dashboardmhs', [App\Http\Controllers\Mahasiswa\WelcomeController::class, 'index'])->name('dashboardmhs');
 
         Route::group(['prefix' => 'profilemhs'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'index']);
@@ -138,6 +139,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
+            Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
         });
 
         Route::group(['prefix' => 'history'], function () {

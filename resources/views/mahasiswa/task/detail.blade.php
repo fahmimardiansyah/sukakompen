@@ -41,7 +41,7 @@
                 
             </div>
             <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-            <a href="{{ url('task') }}" class="request-button">Request</a>
+            <a href="{{ url('apply') }}" class="request-button">apply</a>
         </div>
     </div>
 </div>
