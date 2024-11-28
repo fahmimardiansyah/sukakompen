@@ -4,7 +4,7 @@ namespace App\Http\Controllers\dosen_tendik;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ProgressModel;
+use App\Models\ApprovalModel;
 
 class KompenMhsController extends Controller
 {
@@ -19,14 +19,14 @@ class KompenMhsController extends Controller
 
         $user = auth()->user();
 
-        $mahasiswa = ProgressModel::with(['tugas', 'mahasiswa'])
+        $approval = ApprovalModel::with(['tugas', 'mahasiswa', 'progress'])
             ->whereHas('tugas', function ($query) use ($user) {
                 $query->where('user_id', $user->user_id);
             })
             ->get();
 
         return view('dosen_tendik.kompenmhs.index', [
-            'mahasiswa' => $mahasiswa,
+            'mahasiswa' => $approval,
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu
         ]);

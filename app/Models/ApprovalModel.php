@@ -19,9 +19,9 @@ class ApprovalModel extends Model
         'status',
     ];
 
-    public function apply()
+    public function progress()
     {
-        return $this->belongsTo(MahasiswaModel::class, 'apply_id', 'apply_id');
+        return $this->belongsTo(ProgressModel::class, 'progress_id', 'progress_id');
     }
 
     public function mahasiswa()

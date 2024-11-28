@@ -4,7 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\ProgressModel;
+use App\Models\ApprovalModel;
 
 class KompenMhsController extends Controller
 {
@@ -19,7 +19,7 @@ class KompenMhsController extends Controller
 
         $user = auth()->user();
 
-        $mahasiswa = ProgressModel::with(['tugas', 'mahasiswa'])
+        $mahasiswa = ApprovalModel::with(['tugas', 'mahasiswa'])
             ->whereHas('tugas', function ($query) use ($user) {
                 $query->where('user_id', $user->user_id);
             })

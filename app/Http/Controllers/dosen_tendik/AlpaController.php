@@ -17,9 +17,9 @@ class AlpaController extends Controller
 
         $activeMenu = 'alpha';
 
-        $mahasiswa = AlpaModel::with(['progress.tugas'])->get();
+        $mahasiswa = AlpaModel::with(['approval.tugas'])->get();
 
-        return view('dosen_tendik.alpha.index', [
+        return view('admin.alpam.index', [
             'mahasiswa' => $mahasiswa,
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu,

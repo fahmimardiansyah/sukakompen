@@ -17,8 +17,7 @@ class AlpaController extends Controller
 
         $activeMenu = 'alpam';
 
-        // Memuat relasi progress dan tugas
-        $mahasiswa = AlpaModel::with(['progress.tugas'])->get();
+        $mahasiswa = AlpaModel::with(['approval.tugas'])->get();
 
         return view('admin.alpam.index', [
             'mahasiswa' => $mahasiswa,

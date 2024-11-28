@@ -169,15 +169,13 @@ class TugasController extends Controller
     
             if ($check) {
                 try {
-                    // Proses file upload jika ada
                     if ($request->hasFile('tugas_file')) {
                         $file = $request->file('tugas_file');
                         $filename = time() . '_' . $file->getClientOriginalName();
                         $file->storeAs('uploads/tugas', $filename, 'public'); // Simpan file ke direktori 'storage/app/public/uploads/tugas'
     
-                        // Hapus file lama jika ada
-                        if ($check->tugas_file && \Storage::disk('public')->exists('uploads/tugas/' . $check->tugas_file)) {
-                            \Storage::disk('public')->delete('uploads/tugas/' . $check->tugas_file);
+                        if ($check->tugas_file && Storage::disk('public')->exists('uploads/tugas/' . $check->tugas_file)) {
+                            Storage::disk('public')->delete('uploads/tugas/' . $check->tugas_file);
                         }
     
                         $request->merge(['tugas_file' => $filename]); // Tambahkan nama file baru ke request

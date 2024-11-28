@@ -15,12 +15,12 @@ class AlpaModel extends Model
     protected $fillable = [
         'mahasiswa_alpa_nim',
         'mahasiswa_alpa_nama',
-        'progress_id',
+        'approval_id',
         'jam_alpa',
     ];
 
-    public function progress()
+    public function approval()
     {
-        return $this->belongsTo(ProgressModel::class, 'progress_id', 'progress_id');
+        return $this->belongsTo(ApprovalModel::class, 'approval_id', 'approval_id');
     }
 }

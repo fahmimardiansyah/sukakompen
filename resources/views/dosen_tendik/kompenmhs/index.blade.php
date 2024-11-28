@@ -29,7 +29,15 @@
                 <td>{{ $data->mahasiswa->nim }}</td>
                 <td>{{ $data->tugas->tugas_nama }}</td>
                 <td>{{ $data->tugas->tugas_jam_kompen }}</td>
-                <td>{{ $data->status ? 'Selesai' : 'Belum Selesai' }}</td>
+                @if($data->status === 1)
+                    <td>Selesai (Tugas Diterima)</td>
+                @elseif($data->status === 0)
+                    <td>Tugas Ditolak</td>
+                @elseif($data->status === null)
+                    <td>Selesai (Menunggu persetujuan)</td>
+                @elseif($data->progress->status === 0)
+                    <td>Belum Selesai</td>
+                @endif
             </tr>
             @endforeach
         </tbody>

@@ -16,6 +16,10 @@
 
     <section class="recommended-tasks">
 
+    @foreach($progress as $data)
+        @if($data->status === 1)
+    @endforeach
+
     <!-- Notification with Gradient -->
     <div class="notification" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
      <img alt="Profile picture of Septian Enggar S." height="50" src="https://storage.googleapis.com/a1aa/image/dVqQymORCvozEpawKsIaEH2CXnmO8Ucevf3CYZJtz1ujHsrTA.jpg" width="50"/>

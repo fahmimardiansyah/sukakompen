@@ -19,7 +19,7 @@
                     <th>Nama Mahasiswa</th>
                     <th>Jam Kompen</th>
                     <th>Jumlah Alpa</th>
-                    <th>Aksi</th>
+                    <!-- <th>Aksi</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,11 @@
                 <tr>
                     <td>{{ $data->mahasiswa_alpa_nim }}</td>
                     <td>{{ $data->mahasiswa_alpa_nama }}</td>
-                    <td>{{ $data->progress->tugas->tugas_jam_kompen ?? '0' }} Jam</td>
+                    @if($data->approval->status === 1)
+                        <td>{{ $data->approval->tugas->tugas_jam_kompen ?? '0' }} Jam</td>
+                    @else
+                        <td>0 Jam</td>
+                    @endif
                     <td>{{ $data->jam_alpa }} Jam</td>
                     {{-- <td>
                         <form action="{{ route('cetak.alpa', ['nim' => $data['mahasiswa_alpa_nim']]) }}" method="POST">
