@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class UserModel extends Authenticatable implements JWTSubject
@@ -21,7 +22,7 @@ class UserModel extends Authenticatable implements JWTSubject
 
     protected $table = 'm_user';        // Mendefinisikan nama tabel yang digunakan oleh model ini
     protected $primaryKey = 'user_id';  // Mendfinisikan primary key dari tabel yang digunakan
-    protected $fillable = ['username', 'password', 'level_id', 'created_at', 'updated_at'];
+    protected $fillable = ['username', 'password', 'level_id', 'image'];
     protected $hidden = ['password'];
     protected $casts = ['password' => 'hashed'];
 
@@ -29,6 +30,12 @@ class UserModel extends Authenticatable implements JWTSubject
     public function level(): BelongsTo
     {
         return $this->belongsTo(LevelModel::class, 'level_id', 'level_id');
+    }
+
+    protected function image(): Attribute {
+        return Attribute::make(
+            get: fn ($image) => url('/storage/image/' . $image),
+        );
     }
 
     /**

@@ -62,8 +62,7 @@ class PesanController extends Controller
         if (!$userId) {
             return null;
         }
-
-        // Prioritaskan urutan model (Dosen > Tendik > Admin)
+        
         $models = [
             DosenModel::class,
             TendikModel::class,

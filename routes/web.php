@@ -77,8 +77,8 @@ Route::middleware('auth')->group(function () {
         
         Route::group(['prefix' => 'profil'], function() {
             Route::get('/', [App\Http\Controllers\Admin\ProfileController::class, 'index']);
-            Route::get('/{id}/edit_ajax', [App\Http\Controllers\Admin\ProfileController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [App\Http\Controllers\Admin\ProfileController::class, 'update_ajax']);
+            Route::get('/{id}/edit_username', [App\Http\Controllers\Admin\ProfileController::class, 'edit_username']);
+            Route::put('/{id}/update_username', [App\Http\Controllers\Admin\ProfileController::class, 'update_username']);
             Route::get('/{id}/edit_foto', [App\Http\Controllers\Admin\ProfileController::class, 'edit_foto']);
             Route::put('/{id}/update_foto', [App\Http\Controllers\Admin\ProfileController::class, 'update_foto']);
         });
