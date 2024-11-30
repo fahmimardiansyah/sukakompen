@@ -16,6 +16,7 @@ class WelcomeController extends Controller
         ];
 
         $activeMenu = 'dashboardmhs';
+        
         $tugas = TugasModel::with('jenis')->get();
 
         return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas,]);

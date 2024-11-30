@@ -6,13 +6,16 @@
         <div class="row" id="profile">
             <div class="col-md-4 border-right">
                 <div class="p-3 py-5">
-
-                    <div class="d-flex flex-column align-items-center text-center p-3 "><img class="rounded mt-3 mb-2"
-                        width="250px" src=" {{ asset($user->avatar) }} ">
+                    <div class="d-flex flex-column align-items-center text-center p-3 ">
+                    @if ($user->image === null)
+                        <img class="rounded mt-3 mb-2" width="250px" src="{{ $user->image }}">
+                    @else
+                        <i class="fa fa-user-circle" style="font-size: 120px;"></i>
+                    @endif
                     </div>
-                    <div onclick="modalAction('{{ url('/profile/' . session('user_id') . '/edit_foto') }}')"
-                        class="mt-4 text-center"><button class="btn btn-primary profile-button" type="button">Edit
-                            Foto</button></div>
+                    <div onclick="modalAction('{{ url('/profil/' . $user->user_id . '/edit_foto') }}')" class="mt-4 text-center">
+                        <button class="btn btn-primary profile-button" type="button">Edit Foto</button>
+                    </div>
                 </div>
             </div>
             <div class="col-md-8 border-right">
@@ -23,30 +26,22 @@
                     <div class="row mt-3">
                         <table class="table table-bordered table-striped table-hover table-sm">
                             <tr>
-                                <th>ID</th>
-                                <td>{{ $user->user_id }}</td>
-                            </tr>
-                            <tr>
-                                <th>Level</th>
-                                <td>{{ $user->level->level_nama }}</td>
-                            </tr>
-                            <tr>
-                                <th>Username</th>
-                                <td>{{ $user->username }}</td>
+                                <th>NIP</th>
+                                <td>{{ $admin->nip ?? 'N/A' }}</td>
                             </tr>
                             <tr>
                                 <th>Nama</th>
-                                <td>{{ $user->nama }}</td>
+                                <td>{{ $admin->admin_nama ?? 'N/A' }}</td>
                             </tr>
                             <tr>
-                                <th>Password</th>
-                                <td></td>
+                                <th>No. Telp</th>
+                                <td>{{ $admin->admin_no_telp ?? 'N/A' }}</td>
                             </tr>
                         </table>
                     </div>
                     <div class="mt-3 text-center">
-                        <button onclick="modalAction('{{ url('/profile/' . session('user_id') . '/edit_ajax') }}')"
-                            class="btn btn-primary profile-button">Edit Profile</button>
+                        <button onclick="modalAction('{{ url('/profil/' . $user->user_id . '/edit_username') }}')" class="btn btn-primary profile-button">Edit Username</button>
+                        <button onclick="modalAction('{{ url('/profil/' . $user->user_id . '/edit_profile') }}')" class="btn btn-primary profile-button">Edit Profile</button>
                     </div>
                 </div>
             </div>

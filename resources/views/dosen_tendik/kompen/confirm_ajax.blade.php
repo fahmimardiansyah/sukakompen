@@ -1,4 +1,4 @@
-@empty($kompen)
+@empty($tugas)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,12 +10,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/tugas') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/kompen') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/tugas/' . $tugas->tugas_id . '/delete_ajax') }}" method="POST" id="form-delete">
+    <form action="{{ url('/kompen/' . $tugas->tugas_id . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -34,14 +34,14 @@
                             <th class="text-right col-3">Nama Tugas :</th>
                             <td class="col-9">{{ $tugas->tugas_nama }}</td>
                         </tr>
-                        <!-- <tr>
+                        <tr>
                             <th class="text-right col-3">Jenis Tugas :</th>
                             <td class="col-9">{{ $tugas->jenis->jenis_nama }}</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Kompetensi Tugas :</th>
                             <td class="col-9">{{ $tugas->kompetensi->kompetensi_nama }}</td>
-                        </tr> -->
+                        </tr>
                         <tr>
                             <th class="text-right col-3">Deskripsi Tugas :</th>
                             <td class="col-9">{{ $tugas->tugas_deskripsi }}</td>

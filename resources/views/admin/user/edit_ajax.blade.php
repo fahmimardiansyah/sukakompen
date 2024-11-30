@@ -78,11 +78,6 @@
                         minlength: 3,
                         maxlength: 20
                     },
-                    nama: {
-                        required: true,
-                        minlength: 3,
-                        maxlength: 100
-                    },
                     password: {
                         minlength: 5,
                         maxlength: 20
@@ -94,14 +89,16 @@
                         type: form.method,
                         data: $(form).serialize(),
                         success: function(response) {
+                            console.log(response); 
                             if (response.status) {
-                                $('#myModal').modal('hide');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                dataUser.ajax.reload();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {
@@ -113,6 +110,14 @@
                                     text: response.message
                                 });
                             }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', xhr.responseText); // Menampilkan error
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Kesalahan',
+                                text: 'Gagal mengirim data'
+                            });
                         }
                     });
                     return false;

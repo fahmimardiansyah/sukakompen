@@ -18,7 +18,7 @@
                     Mahasiswa Alpa
                 </h5>
                 <h2>
-                    6 Orang
+                    {{ $alpa }} Orang
                 </h2>
                 <a href="{{ url('/alpha') }}">
                     Lihat Selengkapnya
@@ -31,7 +31,7 @@
                     Mahasiswa Kompen
                 </h5>
                 <h2>
-                    6 Orang
+                    {{ $approval }} Orang
                 </h2>
                 <a href="{{ url('/kompenmhs') }}">
                     Lihat Selengkapnya
@@ -42,22 +42,36 @@
         <section class="recommended-tasks">
             <h2>Tugas Kompen</h2>
             <div class="task-grid">
-                @for ($i = 0; $i < 8; $i++)
+                @foreach($tugas as $data)
                     <div class="task-card">
                         <div class="card-header">
-                            <span class="task-category">Teknis</span>
+                            <span class="task-category">{{ $data->jenis->jenis_nama }}</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                            <h3>Arsip Absensi</h3>
-                            <p>Mengarsip ketidakhadiran dalam satu jam untuk menghindari denda di satu jurusan.</p>
+                            <h3>{{ $data->tugas_nama }}</h3>
+                            <p>{{ $data->tugas_deskripsi }}</p>
                         </div>
                         <div class="card-footer">
-                            <a class="btn">Kerjakan</a>
+                            <button onclick="modalAction('{{ url('/kompen/' . $data->tugas_id . '/edit_ajax') }}')" class="btn btn-edit">Edit</button>
+                            <a href="{{ url('/kompen/' . $data->tugas_id . '/detail') }}" class="btn">Buka</a>
+                            <button onclick="modalAction('{{ url('/kompen/' . $data->tugas_id . '/delete_ajax') }}')" class="btn btn-delete">Delete</button>
                         </div>
                     </div>
-                @endfor
+                @endforeach
             </div>
         </section>
     </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
+
 @endsection
+
+@push('js')
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+    </script>
+@endpush

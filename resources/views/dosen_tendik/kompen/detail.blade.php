@@ -20,8 +20,8 @@
             </p>
             <div class="deskripsi-details">
                 <div class="deskripsi-time">
-                    <span><i class="fas fa-clock"></i> {{ $description->created_at->format('H:i A') }}</span>
-                    <span><i class="fas fa-calendar-alt"></i> {{ $description->created_at->format('m/d/Y') }}</span>
+                    <span><i class="fas fa-clock"></i> {{ $description->tugas_tenggat->format('H:i A') }}</span>
+                    <span><i class="fas fa-calendar-alt"></i> {{ $description->tugas_tenggat->format('m/d/Y') }}</span>
                 </div>
                 <div class="deskripsi-duration">
                     <span><i class="fas fa-arrow-down"></i> Kuota: {{ $description->tugas_kuota }}</span>
