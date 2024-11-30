@@ -31,6 +31,12 @@
                     </div>
                 </div>
             </div>
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('admin')">Admin</button>
+                <button class="tab" onclick="showTab('dosen')">Dosen</button>
+                <button class="tab" onclick="showTab('tendik')">Tendik</button>
+                <button class="tab" onclick="showTab('mahasiswa')">Tendik</button>
+            </div>
             <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
                 <thead>
                     <tr>
@@ -50,6 +56,14 @@
 @endpush
 @push('js')
     <script>
+        function showTab(tabName) {
+            $('.tab').removeClass('active');
+            $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
+
+            $('.tab-content').removeClass('active');
+            $('#' + tabName).addClass('active');
+        }
+        
         function modalAction(url = '') {
             $('#myModal').load(url, function() {
                 $('#myModal').modal('show');
