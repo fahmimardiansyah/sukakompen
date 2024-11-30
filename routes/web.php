@@ -79,6 +79,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Admin\ProfileController::class, 'index']);
             Route::get('/{id}/edit_username', [App\Http\Controllers\Admin\ProfileController::class, 'edit_username']);
             Route::put('/{id}/update_username', [App\Http\Controllers\Admin\ProfileController::class, 'update_username']);
+            Route::get('/{id}/edit_profile', [App\Http\Controllers\Admin\ProfileController::class, 'edit_profile']);
+            Route::put('/{id}/update_profile', [App\Http\Controllers\Admin\ProfileController::class, 'update_profile']);
             Route::get('/{id}/edit_foto', [App\Http\Controllers\Admin\ProfileController::class, 'edit_foto']);
             Route::put('/{id}/update_foto', [App\Http\Controllers\Admin\ProfileController::class, 'update_foto']);
         });

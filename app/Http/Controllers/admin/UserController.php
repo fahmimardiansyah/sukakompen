@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminModel;
+use App\Models\DosenModel;
 use App\Models\LevelModel;
+use App\Models\MahasiswaModel;
+use App\Models\TendikModel;
 use App\Models\User;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
@@ -36,15 +40,23 @@ class UserController extends Controller
     {
         $users = UserModel::select('user_id', 'username', 'level_id')
             ->with('level');
+
         if ($request->level_id) {
             $users->where('level_id', $request->level_id);
         }
 
         return DataTables::of($users)
-            ->addIndexColumn() 
-            ->addColumn('aksi', function ($user) { 
+            ->addIndexColumn()
+            ->addColumn('aksi', function ($user) {
+                if ($user->level_id === 1) { 
+                    return $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
+                    '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
+                        <i class="fas fa-info-circle"></i>
+                    </button> ';
+                }
+
                 $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
-                    '/show_ajax') . '\')"class="btn btn-sm btn-info" title="Detail">
+                    '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
                         <i class="fas fa-info-circle"></i>
                     </button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
@@ -57,7 +69,7 @@ class UserController extends Controller
                     </button> ';
                 return $btn;
             })
-            ->rawColumns(['aksi']) 
+            ->rawColumns(['aksi']) // Ensure the 'aksi' column is rendered as raw HTML
             ->make(true);
     }
 
@@ -65,7 +77,7 @@ class UserController extends Controller
     {
         $level = LevelModel::select('level_id', 'level_nama')->get();
 
-        return view('user.create_ajax')
+        return view('admin.user.create_ajax')
             ->with('level', $level);
     }
 
@@ -75,7 +87,6 @@ class UserController extends Controller
             $rules = [
                 'level_id' => 'required|integer',
                 'username' => 'required|string|min:3|unique:m_user,username',
-                'nama'     => 'required|string|max:100',
                 'password' => 'required|min:5'
             ];
 
@@ -173,13 +184,29 @@ class UserController extends Controller
     {
         $user = UserModel::find($id);
 
-        if ($user) {
-            return view('admin.user.show_ajax', ['user' => $user]);
-        } else {
+        if (!$user) {
             return response()->json([
                 'status' => false,
                 'message' => 'Data tidak ditemukan'
             ]);
         }
+
+        $admin = null;
+        $dosen = null;
+        $tendik = null;
+        $mahasiswa = null;
+
+        if ($user->level_id == 1) {
+            $admin = AdminModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 2) {
+            $dosen = DosenModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 3) {
+            $tendik = TendikModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 4) {
+            $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+        }
+
+        return view('admin.user.show_ajax', compact('user', 'admin', 'dosen', 'tendik', 'mahasiswa'));
     }
+
 }

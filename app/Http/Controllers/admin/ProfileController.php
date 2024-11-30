@@ -56,9 +56,57 @@ class ProfileController extends Controller
 
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'level_id' => 'nullable|numeric',
-                'username' => 'nullable|max:20|unique:m_user,username,' . $id . ',user_id',
+                'level_id' => 'required|numeric',
+                'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
                 'password' => 'nullable|min:6|max:20',
+            ];
+            
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, 
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $check = UserModel::find($id);
+
+            if ($check) {
+                $check->update([
+                    'username'  => $request->username,
+                    'password'  => $request->password ? bcrypt($request->password) : $check->password,
+                    'level_id'  => $request->level_id,
+                ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diupdate'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+
+        return redirect('/');
+    }
+
+    public function edit_profile(string $id)
+    {
+        $admin = AdminModel::where('user_id', $id)->first();
+
+        return view('admin.profile.edit_profile', ['admin' => $admin]);
+    }
+
+    public function update_profile(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'admin_nama' => 'required|string|max:100',
+                'admin_no_telp' => 'required|string|max:15'
             ];
             
             $validator = Validator::make($request->all(), $rules);

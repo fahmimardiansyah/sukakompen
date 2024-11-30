@@ -112,7 +112,6 @@
                 }
             });
 
-            // Fungsi untuk menampilkan field biodata sesuai level
             $('#level_id').change(function () {
                 const levelId = $(this).val();
                 let biodataFields = '';
@@ -139,7 +138,6 @@
             });
         });
 
-        // Fungsi generator untuk field sesuai level
         function generateAdminFields() {
             return `
                 <div class="input-group mb-3">
