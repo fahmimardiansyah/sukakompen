@@ -73,6 +73,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'pesan'], function () {
             Route::get('/', [App\Http\Controllers\Admin\PesanController::class, 'index']);
             Route::get('/apply', [App\Http\Controllers\Admin\PesanController::class, 'apply']);
+            Route::get('/tugas', [App\Http\Controllers\Admin\PesanController::class, 'tugas']);
         });
         
         Route::group(['prefix' => 'profil'], function() {
