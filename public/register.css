@@ -2,7 +2,7 @@ body {
     margin: 0;
     background-color: #ffffff;
     font-family: 'Poppins', sans-serif;
-    background-image: url('img/BG_Login.png'); /* Set your background image here */
+    background-image: url('img/login.png'); /* Set your background image here */
     background-size: cover; /* Cover the entire viewport */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent repeating the image */
