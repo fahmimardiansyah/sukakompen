@@ -23,4 +23,9 @@ class PesanController extends Controller
     {
         return view('admin.pesan.show_ajax');
     }
+
+    public function tugas()
+    {
+        return view('admin.pesan.acc_ajax');
+    }
 }
