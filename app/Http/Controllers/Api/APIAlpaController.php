@@ -10,7 +10,7 @@ class APIAlpaController extends Controller
 {
     public function index()
     {
-        $mahasiswa = AlpaModel::with(['progress.tugas'])->get();
+        $mahasiswa = AlpaModel::with(['approval.tugas'])->get();
         return response()->json($mahasiswa);
     }
 }
