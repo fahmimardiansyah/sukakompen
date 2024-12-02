@@ -58,6 +58,8 @@ Route::post('/acc', [APIApplyController::class, 'acc']);
 Route::post('/show_tugas', [APINotifController::class, 'show']);
 Route::post('/notif_terima_apply', [APINotifController::class, 'notifTerimaApply']);
 Route::post('/notif_tolak_apply', [APINotifController::class, 'notifTolakApply']);
+Route::post('/notif_terima_tugas', [APINotifController::class, 'notifTerimaTugas']);
+Route::post('/notif_tolak_tugas', [APINotifController::class, 'notifTolakTugas']);
 
 Route::post('/kirim', [APIApprovalController::class, 'kirim']);
 Route::post('/cek_tugas', [APIApprovalController::class, 'cek_tugas']);

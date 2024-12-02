@@ -22,7 +22,6 @@ class APIProfileDSNController extends Controller
             return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
         }
 
-        // Kembalikan data profil mahasiswa
         return response()->json($dosen);
     }
 }
