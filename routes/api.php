@@ -36,6 +36,10 @@ Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class
 Route::post('/tugas', [APITugasController::class, 'index']);
 Route::post('/tugas/detail_data', [APITugasController::class, 'show']);
 
+//history
+Route::middleware('auth:api')->post('/history', [APITugasController::class, 'history']);
+Route::post('/show_history', [APITugasController::class, 'show_history']);
+
 // Tugas Dosen Routes
 Route::post('/tugas_dosen', [APITugasDosenController::class, 'index']);
 Route::post('/tugas_dosen/create_data', [APITugasDosenController::class, 'store']);
