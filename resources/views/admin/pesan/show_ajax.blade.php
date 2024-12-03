@@ -7,6 +7,7 @@
             </button>
         <div class="modal-body text-center">
             <h4>Request Tugas!!</h4>
+            <hr>
             <h2>Membuat PPT</h2>
 
             <div class="mt-4">

@@ -120,6 +120,10 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'notif'], function () {
             Route::get('/', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'index']);
+            Route::get('/{id}/apply', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'apply']);
+            Route::post('/{id}/acc', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'acc']);
+            Route::post('/{id}/decline', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'decline']);
+            Route::get('/tugas', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'tugas']);
         });
     });
 
@@ -142,7 +146,8 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
-            Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::get('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::post('/{id}/apply_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply_tugas'])->name('task.apply');
         });
 
         Route::group(['prefix' => 'history'], function () {
