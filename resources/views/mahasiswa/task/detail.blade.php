@@ -46,7 +46,21 @@
             </div>
                 
             </div>
+            <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
+            <button onclick="modalAction('{{ url('/task/' . $description->tugas_id . '/apply') }}')" class="request-button">Apply</button>
         </div>
     </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 </div>
 @endsection
+
+@push('js')
+<script>
+    function modalAction(url = '') {
+        $('#myModal').load(url, function() {
+            $('#myModal').modal('show');
+        });
+    }
+</script>
+@endpush
+

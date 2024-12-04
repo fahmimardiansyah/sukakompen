@@ -68,22 +68,22 @@ class AuthController extends Controller
             ];
 
             switch ($request->level_id) {
-                case 1: // Admin
+                case 1: 
                     $rules['nip'] = 'required|string|max:20|unique:m_admin,nip';
                     $rules['admin_nama'] = 'required|string|max:100';
                     $rules['admin_no_telp'] = 'required|string|max:15';
                     break;
-                case 2: // Dosen
+                case 2:
                     $rules['nidn'] = 'required|string|max:20|unique:m_dosen,nidn';
                     $rules['dosen_nama'] = 'required|string|max:100';
                     $rules['dosen_no_telp'] = 'required|string|max:15';
                     break;
-                case 3: // Tendik
+                case 3: 
                     $rules['nip'] = 'required|string|max:20|unique:m_tendik,nip';
                     $rules['tendik_nama'] = 'required|string|max:100';
                     $rules['tendik_no_telp'] = 'required|string|max:15';
                     break;
-                case 4: // Mahasiswa
+                case 4:
                     $rules['nim'] = 'required|string|max:20|unique:m_mahasiswa,nim';
                     $rules['mahasiswa_nama'] = 'required|string|max:100';
                     $rules['prodi'] = 'required|string|max:100';

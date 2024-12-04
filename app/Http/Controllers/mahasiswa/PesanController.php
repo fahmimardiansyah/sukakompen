@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\TendikModel;
 use App\Models\MahasiswaModel;
 use App\Models\AdminModel;
+use App\Models\ProgressModel;
 
 class PesanController extends Controller
 {
@@ -35,6 +36,7 @@ class PesanController extends Controller
 
         $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with('tugas')
+            ->whereNotIn('tugas_id', ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
             ->get();
 
         $approval = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)

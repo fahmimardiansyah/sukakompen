@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProgressModel;
+use App\Models\ApprovalModel;
 use App\Models\MahasiswaModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +32,7 @@ class HistoryController extends Controller
                 ->with('error', 'Mahasiswa tidak ditemukan');
         }
 
-        $history = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+        $history = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with('tugas')
             ->get();
 
@@ -57,12 +57,12 @@ class HistoryController extends Controller
                 ->with('error', 'Data mahasiswa tidak ditemukan.');
         }
 
-        $history = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+        $history = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with([
                 'tugas' => function ($query) {
                     $query->select('tugas_id', 'tugas_No', 'tugas_nama', 'tugas_jam_kompen', 'user_id')
                         ->with(['users' => function ($query) {
-                            $query->select('user_id', 'nama');
+                            $query->select('user_id');
                         }]);
                 }
             ])

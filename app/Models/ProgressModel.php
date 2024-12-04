@@ -29,7 +29,7 @@ class ProgressModel extends Model
 
     public function apply()
     {
-        return $this->belongsTo(MahasiswaModel::class, 'apply_id', 'apply_id');
+        return $this->belongsTo(ApplyModel::class, 'apply_id', 'apply_id');
     }
 
     public function mahasiswa()

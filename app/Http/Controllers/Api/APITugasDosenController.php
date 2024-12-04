@@ -52,7 +52,7 @@ class APITugasDosenController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file_tugas' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:5120',
+            'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -112,57 +112,69 @@ class APITugasDosenController extends Controller
 
     // untuk edit tugas dosen/tendik
     public function edit(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'file_tugas' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:5120',
-        ]);
+{
+    // Validasi input
+    $validator = Validator::make($request->all(), [
+        'tugas_id' => 'required|exists:tugas,tugas_id',
+        'file_tugas' => 'nullable|file|mimes:pdf,doc,docx,ppt,pptx,xls,xlsx|max:5120',
+        'tugas_nama' => 'required|string|max:255',
+        'jenis_id' => 'required|exists:jenis,jenis_id',
+        'tugas_tipe' => 'required|string',
+        'tugas_deskripsi' => 'required|string',
+        'tugas_kuota' => 'required|integer',
+        'tugas_jam_kompen' => 'required|integer',
+        'tugas_tenggat' => 'required|date',
+        'kompetensi_id' => 'required|exists:kompetensi,kompetensi_id',
+    ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi gagal',
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        $data = TugasModel::all()->where("tugas_id", $request->tugas_id)->first();
-
-        if ($data->file_tugas) {
-            $oldFilePath = storage_path('app/public/posts/' . $data->file_tugas);
-
-            if (file_exists($oldFilePath)) {
-                unlink($oldFilePath);
-            }
-        }
-
-        if ($request->hasFile('file_tugas')) {
-            $file = $request->file('file_tugas');
-            
-            $fileName = time() . '_' . $file->hashName();
-            
-            $file->storeAs('posts', $fileName, 'public');
-            
-            $data->tugas_nama = $request->tugas_nama;
-            $data['tugas_No'] = (string) Str::uuid();
-            $data->jenis_id = $request->jenis_id;
-            $data->tugas_tipe = $request->tugas_tipe;
-            $data->tugas_deskripsi = $request->tugas_deskripsi;
-            $data->tugas_kuota = $request->tugas_kuota;
-            $data->tugas_jam_kompen = $request->tugas_jam_kompen;
-            $data->tugas_tenggat = $request->tugas_tenggat;
-            $data->file_tugas = $fileName;
-            $data->kompetensi_id = $request->kompetensi_id;
-            $data->save();
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Berhasil Menyimpan Data',
-                'data' => $data
-            ], 200);
-        }
-
-        return response()->json(['status' => false, 'message' => 'Gagal mengupload file'], 500);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Validasi gagal',
+            'errors' => $validator->errors(),
+        ], 422);
     }
+
+    // Temukan data tugas
+    $data = TugasModel::find($request->tugas_id);
+
+    if (!$data) {
+        return response()->json(['status' => false, 'message' => 'Data tidak ditemukan'], 404);
+    }
+
+    // Hapus file lama jika ada dan unggah file baru jika diberikan
+    if ($request->hasFile('file_tugas')) {
+        $oldFilePath = storage_path('app/public/posts/' . $data->file_tugas);
+
+        if (file_exists($oldFilePath)) {
+            unlink($oldFilePath);
+        }
+
+        $file = $request->file('file_tugas');
+        $fileName = time() . '_' . $file;
+        $file->storeAs('posts', $fileName, 'public');
+        $data->file_tugas = $fileName;
+    }
+
+    // Perbarui data tugas
+    $data->tugas_nama = $request->tugas_nama;
+    $data->tugas_No = (string) Str::uuid();
+    $data->jenis_id = $request->jenis_id;
+    $data->tugas_tipe = $request->tugas_tipe;
+    $data->tugas_deskripsi = $request->tugas_deskripsi;
+    $data->tugas_kuota = $request->tugas_kuota;
+    $data->tugas_jam_kompen = $request->tugas_jam_kompen;
+    $data->tugas_tenggat = $request->tugas_tenggat;
+    $data->kompetensi_id = $request->kompetensi_id;
+
+    $data->save();
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Berhasil memperbarui data',
+        'data' => $data,
+    ], 200);
+}
 
     // untuk delete tugas dosen/tendik
     public function destroy(Request $request)
