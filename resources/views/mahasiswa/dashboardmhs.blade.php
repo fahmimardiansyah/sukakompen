@@ -40,6 +40,27 @@
         </div>
 
         <section class="recommended-tasks">
+            <!-- @if(!is_null($progress))
+                <h2>Tugas Kompen</h2>
+                <div class="task-grid">
+                    @foreach ($progress as $item)
+                        <div class="task-card">
+                            <div class="card-header">
+                                <span class="task-category">Admin Task</span>
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
+                                <h3>{{ $item->tugas_nama }}</h3>
+                                <p>{{ $item->tugas_deskripsi }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <a href="{{ url('/task/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif -->
+
             <h2>Tugas Kompen</h2>
             <div class="task-grid">
                 @foreach ($tugas as $item)

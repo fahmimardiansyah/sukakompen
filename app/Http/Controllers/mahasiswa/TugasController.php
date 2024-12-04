@@ -7,6 +7,8 @@ use App\Models\ApplyModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
 use App\Models\MahasiswaModel;
+use App\Models\ProgressModel;
+use Illuminate\Support\Facades\Auth;
 use App\Models\TugasModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\support\Facades\Validator;
@@ -25,7 +27,19 @@ class TugasController extends Controller
 
         $activeMenu = 'kompen';
 
-        $tugas = TugasModel::with('jenis')->get();
+        $user = Auth::user();
+
+        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+
+        if (!$mahasiswa) {
+            return redirect()
+                ->route('dashboardmhs')
+                ->with('error', 'Mahasiswa tidak ditemukan');
+        }
+
+        $tugas = TugasModel::with('jenis')
+            ->whereNotIn('tugas_id', ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
+            ->get();
 
         return view('mahasiswa.task.index', [
             'breadcrumb' => $breadcrumb,
