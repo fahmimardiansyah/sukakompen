@@ -143,6 +143,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
             Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::post('/{id}/upload', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload'])->name('task.upload');
         });
 
         Route::group(['prefix' => 'history'], function () {

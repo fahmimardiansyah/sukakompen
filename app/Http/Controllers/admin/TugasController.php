@@ -46,12 +46,15 @@ class TugasController extends Controller
     }
 
     public function create_ajax() {
-        $jenis = JenisModel::select('jenis_id', 'jenis_nama')->get();
-
+        $jenis = JenisModel::select('jenis_id', 'jenis_nama')->get(); // Data Jenis
+        $kompetensi = KompetensiModel::select('kompetensi_id', 'kompetensi_nama')->get(); // Data Kompetensi
         $tipe = TugasModel::TIPE_ENUM;
-
-        return view('admin.tugas.create_ajax', ['tipe' => $tipe])
-                    ->with('jenis', $jenis);
+    
+        return view('admin.tugas.create_ajax', [
+            'tipe' => $tipe,
+            'jenis' => $jenis,
+            'kompetensi' => $kompetensi
+        ]);
     }
 
     public function store_ajax(Request $request)

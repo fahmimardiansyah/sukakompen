@@ -17,7 +17,7 @@
     <section class="recommended-tasks">
     @foreach ($jenis as $item)
     <div class="jenis-card">
-        <img alt="Profile picture of {{ $item->jenis_nama }}" height="50" src="{{ $item->image_url }}" width="50"/>
+        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
         <div class="jenis-info">
             <h3>{{ $item->jenis_nama }}</h3>
             <p>{{ $item->jenis_deskripsi }}</p>

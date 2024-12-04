@@ -154,7 +154,7 @@ html, body {
 position: relative;
 width: 100%;
 height: 600px;
-background-image: linear-gradient(to top, rgba(17, 17, 85, 0.624), rgba(20, 20, 80, 0.2)), url('img/work.jpg'); 
+background-image: linear-gradient(to top, rgba(17, 17, 85, 0.624), rgba(20, 20, 80, 0.2)), url('img/dashboard1.jpg'); 
 background-size: cover;
 background-position: center;
 display: flex;
@@ -428,7 +428,7 @@ table th:last-child {
 .search-bars {
     display: flex;
     gap: 10px;
-    justify-content: space-between;
+    justify-content: right;
     margin: 20px 0;
     margin-top: 0;
     background-color: #141450;
@@ -601,9 +601,9 @@ table th:last-child {
     justify-content: center;
     align-items: center;
     margin: 20px auto;
-    padding: 20px 50px;
+    padding: 20px 30px;
     width: 100%;
-    max-height: 500px;
+    max-width: 1600px; 
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
@@ -612,14 +612,16 @@ table th:last-child {
 
 .deskripsi-cont {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     gap: 20px;
     align-items: stretch;
+    flex-wrap: wrap; /* Agar otomatis wrap saat layar kecil */
     width: 100%;
 }
 
 .deskripsi-image img {
-    width: 700px;
+    width: 100%;
+    max-width: 700px;
     height: auto;
     aspect-ratio: 1 / 1;
     object-fit: cover;
@@ -628,27 +630,29 @@ table th:last-child {
 
 .deskripsi-content {
     flex: 1;
-    padding: 20px 40px;
+    padding: 20px;
 }
 
 .deskripsi-content h2 {
-    font-size: 60px;
+    font-size: 3rem;
     font-weight: bold;
     color: #333;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .deskripsi-tags {
     display: flex;
     gap: 8px;
     margin-bottom: 10px;
+    flex-wrap: wrap; /* Responsif untuk tag */
 }
 
 .tag {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 5px;
-    font-size: 17px;
+    font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
 }
@@ -674,16 +678,26 @@ table th:last-child {
 }
 
 .deskripsi-description {
-    font-size: 20px;
+    font-size: 1.2rem;
     color: #555;
     margin-bottom: 15px;
 }
 
+.deskripsi-info-container {
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .deskripsi-details {
     display: flex;
+    justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
 }
 
 .deskripsi-time,
@@ -691,23 +705,55 @@ table th:last-child {
 .deskripsi-deadline {
     display: flex;
     align-items: center;
-    gap: 5px;
-    font-size: 17px;
+    gap: 25px;
+    font-size: 1rem;
     color: #555;
 }
 
 .deskripsi-time i,
 .deskripsi-duration i,
 .deskripsi-deadline i {
+    /* font-size: 20px; */
     color: #333;
+}
+
+.deskripsi-download {
+    margin-top: 10px;
+    text-align: left;
+}
+
+.req-button{
+    margin-top: 30px;
+}
+
+
+.download-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap; /* Agar tombol bisa turun saat layar kecil */
 }
 
 .back-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #6c757d; 
+    background-color: #6c757d;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -718,14 +764,14 @@ table th:last-child {
 .back-button:hover {
     color: #ffffff;
     background-color: #5a6268;
-} 
+}
 
 .request-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #11c40b; 
+    background-color: #11c40b;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 1rem;
     border: none;
     border-radius: 5px;
     text-decoration: none;
@@ -736,8 +782,7 @@ table th:last-child {
 .request-button:hover {
     color: #ffffff;
     background-color: #149910;
-} 
-
+}
 
 /* jenis */
 .container {
@@ -756,6 +801,7 @@ table th:last-child {
             margin-top: 50px;
             display: flex;
             align-items: center;
+            gap: 20px;
         }
         .jenis-card img {
             border-radius: 50%;
@@ -808,6 +854,7 @@ table th:last-child {
             margin-top: 50px;
             display: flex;
             align-items: center;
+            gap: 20px;
         }
         .kompeten-card img {
             border-radius: 50%;
@@ -861,6 +908,7 @@ table th:last-child {
             margin-top: 50px;
             display: flex;
             align-items: center;
+            gap: 20px;
         }
         .pesan-card img {
             border-radius: 50%;
@@ -996,6 +1044,7 @@ background-color: #344efa; /* Warna saat hover */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 20px 0;
     padding: 20px;
+    gap: 20px;
 }
 .notification img {
     width: 50px;

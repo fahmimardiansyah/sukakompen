@@ -31,6 +31,9 @@
                     <label>Kompetensi Tugas</label>
                     <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
                         <option value="">- Pilih Kompetensi -</option>
+                        @foreach ($kompetensi as $k)
+                            <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
+                        @endforeach
                     </select>
                     <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
                 </div>
