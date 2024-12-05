@@ -10,6 +10,8 @@ use App\Models\TugasModel;
 use App\Models\MahasiswaModel;
 use Illuminate\Support\Facades\Auth;
 
+use function Laravel\Prompts\progress;
+
 class WelcomeController extends Controller
 {
     public function index()
@@ -28,7 +30,11 @@ class WelcomeController extends Controller
         $tugas = TugasModel::with('jenis')
             ->whereNotIn('tugas_id', ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
             ->get();
+        
+        $progress = TugasModel::with('jenis')
+            ->whereIn('tugas_id', ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
+            ->get();
 
-        return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas]);
+        return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'progress' => $progress]);
     }
 }
