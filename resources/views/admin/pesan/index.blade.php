@@ -13,7 +13,7 @@
 
     {{-- Pesan Cards --}}
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
-        <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
         <div class="pesan-info">
             <h3>Hasan Basyri</h3>
             <p>Request pekerjaan membuat PPT.</p>
@@ -22,7 +22,7 @@
     </div>
 
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
-        <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
         <div class="pesan-info">
             <h3>Fahmi Mardiansyah</h3>
             <p>Mengumpulkan pekerjaan.</p>
@@ -31,7 +31,7 @@
     </div>
     
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ca1717);">
-        <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
         <div class="pesan-info">
             <h3>Nasywa Syafinka</h3>
             <p>Tugas melewati tenggat</p>
@@ -45,7 +45,7 @@
 @section('styles')
 <style>
 
-/* Button Cek */
+Button Cek */
 /* .cek {
     background-color: #007bff;
     color: white;
@@ -59,7 +59,7 @@
 
 .cek:hover {
     background-color: #0056b3;
-} */
+}
 
 /* Modal Styles */
 .modal {

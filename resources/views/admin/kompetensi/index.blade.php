@@ -17,7 +17,7 @@
     <section class="recommended-tasks">
     @foreach ($kompetensi as $item)
     <div class="kompeten-card">
-        <img alt="Profile picture of {{ $item->kompetensi_nama }}" height="50" src="{{ $item->image_url }}" width="50"/>
+        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
         <div class="kompeten-info">
             <h3>{{ $item->kompetensi_nama }}</h3>
             <p>{{ $item->kompetensi_deskripsi }}</p>

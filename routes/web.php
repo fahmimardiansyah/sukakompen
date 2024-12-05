@@ -146,7 +146,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
-            Route::get('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
             Route::post('/{id}/apply_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply_tugas'])->name('task.apply');
         });
 

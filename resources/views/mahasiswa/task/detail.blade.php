@@ -18,6 +18,7 @@
             <p class="deskripsi-description">
                 {{ $description->tugas_deskripsi }}
             </p>
+            <div class="deskripsi-info-container">
             <div class="deskripsi-details">
                 <div class="deskripsi-time">
                     <span><i class="fas fa-clock"></i> {{ $description->tugas_tenggat->format('H:i A') }}</span>
@@ -26,17 +27,22 @@
                 <div class="deskripsi-duration">
                     <span><i class="fas fa-arrow-down"></i> Kuota: {{ $description->tugas_kuota }}</span>
                     <span>Jam Kompen: {{ $description->tugas_jam_kompen }}</span>
-                    <span>Kompetensi ID: {{ $description->kompetensi_id }}</span>
                 </div>
+            </div>
+            </div>
 
             <div class="deskripsi-download">
                 @if($description->tugas_file)
-                    <a href="{{ storage_path('app/public/tugas/' . $description->tugas_file) }}" class="download-button" download>
-                        <i class="fas fa-download"></i> Download Tugas
-                    </a>
+                <a href="{{ asset('uploads/tugas/filename.pdf') }}" class="btn btn-success" download>
+                    <i class="fas fa-download"></i> Download File
+                </a>
                 @else
                     <span>No file available for download.</span>
                 @endif
+                <div class="req-button">
+                    <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
+                    <a href="{{ url('apply') }}" class="request-button">apply</a>
+                </div>
             </div>
                 
             </div>

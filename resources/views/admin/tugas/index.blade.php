@@ -11,12 +11,6 @@
 
 <!-- Search Bar -->
 <div class="search-bars">
-    <div class="filter">
-        <i class="fas fa-filter"></i>
-        <select>
-            <option>Search by Level</option>
-        </select>
-    </div>
     <div class="search-input">
         <input type="text" placeholder="Search by Name" />
     </div>
@@ -77,7 +71,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
-                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Buka</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
                             <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
@@ -104,7 +98,7 @@
                         </div>
                         <div class="card-footer">
                             <a href="{{ url('/tugas/' . $item->tugas_id . '/edit') }}" class="btn btn-edit">Edit</a>
-                            <a href="{{ url('/tugas/' . $item->tugas_id) }}" class="btn">Buka</a>
+                            <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
                             <form action="{{ url('/tugas/' . $item->tugas_id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')

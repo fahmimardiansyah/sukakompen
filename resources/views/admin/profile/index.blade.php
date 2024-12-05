@@ -26,7 +26,7 @@
                     <div class="row mt-3">
                         <table class="table table-bordered table-striped table-hover table-sm">
                             <tr>
-                                <th>NIP</th>
+                                <th style="width: 15%">NIP</th>
                                 <td>{{ $admin->nip ?? 'N/A' }}</td>
                             </tr>
                             <tr>
