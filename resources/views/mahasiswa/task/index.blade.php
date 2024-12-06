@@ -14,11 +14,8 @@
     <div class="filter">
         <i class="fas fa-filter"></i>
         <select>
-            <option>Search by Level</option>
+            <option value="">- Pilih Jenis -</option>
         </select>
-    </div>
-    <div class="search-input">
-        <input type="text" placeholder="Search by Name" />
     </div>
 </div>
 <div class="notif">

@@ -7,21 +7,15 @@
             <h1>Tugas</h1>
         </div>
 
-        <!-- Search Bar -->
-        <div class="search-bars">
-            <div class="filter">
-                <i class="fas fa-filter"></i>
-                <select>
-                    <option>Search by Level</option>
-                </select>
-            </div>
-            <div class="search-input">
-                <input type="text" placeholder="Search by Name" />
-            </div>
-        </div>
-        <div class="notif">
-            <h2>Tugas</h2>
-        </div>
+<!-- Search Bar -->
+<div class="search-bars">
+    <div class="filter">
+        <i class="fas fa-filter"></i>
+        <select>
+            <option value="">- Pilih Jenis -</option>
+        </select>
+    </div>
+</div>
 
         <!-- Recommended Tasks Section -->
         <section class="recommended-tasks">
