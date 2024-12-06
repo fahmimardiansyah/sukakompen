@@ -40,13 +40,13 @@
         </div>
 
         <section class="recommended-tasks">
-            <!-- @if(!is_null($progress))
-                <h2>Tugas Kompen</h2>
+            @if(!is_null($progress))
+                <h2>Progress</h2>
                 <div class="task-grid">
                     @foreach ($progress as $item)
                         <div class="task-card">
                             <div class="card-header">
-                                <span class="task-category">Admin Task</span>
+                                <span class="task-category">Task</span>
                             </div>
                             <div class="card-body">
                                 <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
@@ -59,14 +59,14 @@
                         </div>
                     @endforeach
                 </div>
-            @endif -->
+            @endif 
 
             <h2>Tugas Kompen</h2>
             <div class="task-grid">
                 @foreach ($tugas as $item)
                     <div class="task-card">
                         <div class="card-header">
-                            <span class="task-category">Admin Task</span>
+                            <span class="task-category">Task</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
