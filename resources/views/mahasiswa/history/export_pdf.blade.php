@@ -119,7 +119,7 @@
     <title>Berita Acara Kompensasi Presensi</title>
     <style>
         @page {
-            size: A4 landscape;
+            size: A4;
             margin: 20mm;
         }
 
@@ -157,14 +157,14 @@
         }
 
         .header .title {
-            font-size: 14pt;
+            font-size: 10pt;
             font-weight: bold;
             margin-top: 10px;
             line-height: 1.2;
         }
 
         .header .subtitle {
-            font-size: 10pt;
+            font-size: 8pt;
             margin: 2px 0;
         }
 
@@ -213,13 +213,13 @@
 
         .qr-code {
             text-align: center;
-            font-size: 10pt;
+            font-size: 8pt;
             align-self: flex-start;
         }
 
         .qr-code img {
-            height: 80px;
-            width: 80px;
+            height: 100px;
+            width: 100px;
         }
 
         .note {

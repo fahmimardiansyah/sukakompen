@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -164,5 +165,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\PesanController::class, 'index']);
         });
     });
+
+
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 });

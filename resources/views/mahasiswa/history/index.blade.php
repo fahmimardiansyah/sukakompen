@@ -26,6 +26,9 @@
             <tr>
                 <td>{{ $data->tugas->tugas_nama }}</td>
                 <td>{{ $data->status ? 'Selesai' : 'Gagal dikerjakan' }}</td>
+                <td>
+                    <button class="btn-cetak" onclick="window.location.href='{{ url('/history/export_pdf') }}'">Cetak</button>
+                </td> 
                 @if($data->status === 1)
                     <td>
                         <button class="btn-cetak" onclick="window.location.href='{{ url('/history/export_pdf') }}'">Cetak</button>

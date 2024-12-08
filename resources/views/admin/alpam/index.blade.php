@@ -7,8 +7,9 @@
     <div class="hero">
         <h1>Alpa Mahasiswa</h1>
     </div>
-    <div class="notif">
+    <div class="notif-title">
         <h2>Tabel Alpa Mahasiswa</h2>
+        <button class="btn btn-success" id="importButton">Import</button>
     </div>
 
     <div class="table-alpa">

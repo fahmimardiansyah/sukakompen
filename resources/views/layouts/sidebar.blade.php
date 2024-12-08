@@ -162,4 +162,11 @@
             </li>
         </ul>
     </nav>
+
+    <div class="about-us-section mt-auto">
+        <a href="{{ url('/about') }}" class="nav-link text-center">
+            <i class="fas fa-info-circle"></i>
+            <p>About Us</p>
+        </a>
+    </div>
 </div>
