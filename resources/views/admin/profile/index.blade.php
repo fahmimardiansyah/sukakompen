@@ -7,11 +7,11 @@
             <div class="col-md-4 border-right">
                 <div class="p-3 py-5">
                     <div class="d-flex flex-column align-items-center text-center p-3 ">
-                    @if ($user->image === null)
-                        <img class="rounded mt-3 mb-2" width="250px" src="{{ $user->image }}">
-                    @else
-                        <i class="fa fa-user-circle" style="font-size: 120px;"></i>
-                    @endif
+                        @if ($user->image !== null)
+                            <img class="rounded mt-3 mb-2" width="250px" src="{{ url($user->image) }}">
+                        @else
+                            <i class="fa fa-user-circle" style="font-size: 120px;"></i>
+                        @endif
                     </div>
                     <div onclick="modalAction('{{ url('/profil/' . $user->user_id . '/edit_foto') }}')" class="mt-4 text-center">
                         <button class="btn btn-primary profile-button" type="button">Edit Foto</button>
@@ -44,9 +44,6 @@
                         <button onclick="modalAction('{{ url('/profil/' . $user->user_id . '/edit_profile') }}')" class="btn btn-primary profile-button">Edit Profile</button>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-
             </div>
         </div>
     </div>

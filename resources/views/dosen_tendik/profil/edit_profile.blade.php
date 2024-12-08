@@ -1,62 +1,91 @@
-@empty($admin)
+@if(empty($dosen) && empty($tendik))
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <div class="modal-body">
-                    <div class="alert alert-danger">
-                        <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                        Data yang anda cari tidak ditemukan
-                    </div>
-                    <a href="{{ url('/profil') }}" class="btn btn-warning">Kembali</a>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
+                    Data yang Anda cari tidak ditemukan.
                 </div>
+                <a href="{{ url('/profile') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
-    @else
-        <form action="{{ url('/profil/' . $admin->user_id . '/update_profile') }}" method="POST" id="form-edit"
-            enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div id="modal-master" class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile Anda</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
+    </div>
+@else
+    <form action="{{ url('/profile/' . ($dosen ? $dosen->user_id : $tendik->user_id) . '/update_profile') }}" method="POST" id="form-edit"
+        enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div id="modal-master" class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Profile Anda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    @if($dosen)
+                        <div class="form-group">
+                            <label>NIDN</label>
+                            <input value="{{ $dosen->nidn }}" type="text" name="nidn" id="nidn" class="form-control" readonly>
+                            <small id="error-nidn" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input value="{{ $dosen->dosen_nama }}" type="text" name="dosen_nama" id="dosen_nama" class="form-control" required>
+                            <small id="error-dosen_nama" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telp</label>
+                            <input value="{{ $dosen->dosen_no_telp }}" type="text" name="dosen_no_telp" id="dosen_no_telp" class="form-control" required>
+                            <small id="error-dosen_no_telp" class="error-text form-text text-danger"></small>
+                        </div>
+                    @elseif($tendik)
                         <div class="form-group">
                             <label>NIP</label>
-                            <input value="{{ $admin->nip }}" type="text" name="nip" id="nip" class="form-control" readonly>
+                            <input value="{{ $tendik->nip }}" type="text" name="nip" id="nip" class="form-control" readonly>
                             <small id="error-nip" class="error-text form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label>Nama</label>
-                            <input value="{{ $admin->admin_nama }}" type="text" name="admin_nama" id="admin_nama" class="form-control" required>
-                            <small id="error-admin_nama" class="error-text form-text text-danger"></small>
+                            <input value="{{ $tendik->tendik_nama }}" type="text" name="tendik_nama" id="tendik_nama" class="form-control" required>
+                            <small id="error-tendik_nama" class="error-text form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label>No. Telp</label>
-                            <input value="{{ $admin->admin_no_telp }}" type="text" name="admin_no_telp" id="admin_no_telp" class="form-control" required>
-                            <small id="error-admin_no_telp" class="error-text form-text text-danger"></small>
+                            <input value="{{ $tendik->tendik_no_telp }}" type="text" name="tendik_no_telp" id="tendik_no_telp" class="form-control" required>
+                            <small id="error-tendik_no_telp" class="error-text form-text text-danger"></small>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </div>
-        </form>
+        </div>
+    </form>
+@endif
+
         <script>
             $(document).ready(function() {
                 $("#form-edit").validate({
                     rules: {
-                        admin_nama: {
+                        dosen_nama: {
                             required: true,
                             maxlength: 100
                         },
-                        admin_no_telp: {
+                        dosen_no_telp: {
+                            required: true,
+                            maxlength: 15
+                        },
+                        tendik_nama: {
+                            required: true,
+                            maxlength: 100
+                        },
+                        tendik_no_telp: {
                             required: true,
                             maxlength: 15
                         },
@@ -116,4 +145,3 @@
                 });
             });
         </script>
-    @endempty

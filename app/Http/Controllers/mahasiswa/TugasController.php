@@ -4,6 +4,7 @@ namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\ApplyModel;
+use App\Models\ApprovalModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
 use App\Models\MahasiswaModel;
@@ -15,6 +16,7 @@ use Illuminate\support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TugasController extends Controller
 {
@@ -125,6 +127,56 @@ class TugasController extends Controller
             'status' => false,
             'message' => 'Permintaan tidak valid.'
         ], 400);
+    }
+
+    public function upload($id)
+    {
+        $description = ProgressModel::find($id);
+
+        $breadcrumb = (object) [
+            'title' => 'Detail Tugas',
+            'list' => ['Home', 'Tugas', 'Detail']
+        ];
+
+        $page = (object) [
+            'title' => 'Detail Tugas'
+        ];
+
+        $activeMenu = 'tugas'; 
+
+        $fileData = null;
+        if ($description && $description->file_tugas) {
+            $filePath = asset('storage/posts/tugas/' . $description->file_tugas);
+            $fileName = basename($description->file_tugas);
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+            $icons = [
+                'pdf' => 'fas fa-file-pdf',
+                'doc' => 'fas fa-file-word',
+                'docx' => 'fas fa-file-word',
+                'xls' => 'fas fa-file-excel',
+                'xlsx' => 'fas fa-file-excel',
+                'ppt' => 'fas fa-file-powerpoint',
+                'pptx' => 'fas fa-file-powerpoint',
+                'zip' => 'fas fa-file-archive',
+                'rar' => 'fas fa-file-archive',
+                'default' => 'fas fa-file',
+            ];
+            $iconClass = $icons[$fileExtension] ?? $icons['default'];
+
+            $fileData = [
+                'path' => $filePath,
+                'name' => $fileName,
+                'icon' => $iconClass,
+            ];
+        }
+
+        return view('mahasiswa.task.upload', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page, 'fileData' => $fileData]);
+    }
+
+    public function upload_tugas($id) {
+        $tugas = ProgressModel::where('progress_id', $id)->first();
+
+        return view('mahasiswa.task.upload_tugas', ['tugas' => $tugas]);
     }
     
 }

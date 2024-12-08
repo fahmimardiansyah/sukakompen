@@ -23,7 +23,6 @@ class PesanController extends Controller
 
         $user = Auth::user();
         
-        // Fetch a collection of TugasModel where user_id matches the logged-in user's user_id
         $data = TugasModel::where('user_id', $user->user_id)->get();
 
         if ($data->isEmpty()) {
@@ -32,7 +31,6 @@ class PesanController extends Controller
                 ->with('error', 'Data tidak ditemukan');
         }
 
-        // Fetch ApplyModel and ApprovalModel records for each tugas_id in the collection
         $apply = ApplyModel::whereIn('tugas_id', $data->pluck('tugas_id'))
             ->with('mahasiswa')
             ->get();

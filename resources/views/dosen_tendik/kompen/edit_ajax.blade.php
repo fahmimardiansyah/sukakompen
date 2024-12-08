@@ -76,6 +76,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label>Upload File Tugas</label>
+                        <input type="file" name="file_tugas" id="file_tugas" class="form-control">
+                        <small id="error-file_tugas" class="error-text form-text text-danger"></small>
+                    </div>
+
+                    <div class="form-group">
                         <label>Jam Kompen</label>
                         <input value="{{ $tugas->tugas_jam_kompen }}" type="number" name="tugas_jam_kompen" id="tugas_jam_kompen" class="form-control" required>
                         <small id="error-tugas_jam_kompen" class="error-text form-text text-danger"></small>
@@ -119,68 +125,72 @@
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             $("#form-edit").validate({
                 rules: {
                     tugas_nama: { required: true, minlength: 3, maxlength: 100 },
                     jenis_id: { required: true, number: true },
-                    tugas_tipe: { required: true},
+                    tugas_tipe: { required: true },
                     tugas_deskripsi: { required: true, minlength: 10 },
                     tugas_kuota: { required: true, number: true, max: 10 },
                     tugas_jam_kompen: { required: true, number: true, max: 50 },
-                    tugas_tenggat: { required: true},
-                    kompetensi_id: { required: true, number: true }
+                    tugas_tenggat: { required: true },
+                    kompetensi_id: { required: true, number: true },
+                    file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" },
                 },
-                submitHandler: function(form) {
+                submitHandler: function (form) {
+                    let formData = new FormData(form); // Mendukung file upload
+
                     $.ajax({
                         url: form.action,
-                        type: 'POST',
-                        data: $(form).serialize(),
-                        success: function(response) {
+                        type: "POST",
+                        data: formData,
+                        processData: false, // Jangan proses data
+                        contentType: false, // Jangan set header Content-Type
+                        success: function (response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');
                                 Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message
+                                    icon: "success",
+                                    title: "Berhasil",
+                                    text: response.message,
                                 });
-                                dataTugas.ajax.reload(); 
+                                dataTugas.ajax.reload(); // Refresh datatable
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
+                                $.each(response.msgField, function (prefix, val) {
                                     $('#error-' + prefix).text(val[0]);
                                 });
                                 Swal.fire({
-                                    icon: 'error',
-                                    title: 'Terjadi Kesalahan',
-                                    text: response.message
+                                    icon: "error",
+                                    title: "Terjadi Kesalahan",
+                                    text: response.message,
                                 });
                             }
                         },
-                        error: function(xhr, status, error) {
-                            console.error("Status: " + status);
-                            console.error("Error: " + error);
-                            console.error("Response: " + xhr.responseText);
+                        error: function (xhr, status, error) {
+                            console.error(xhr.responseText);
                             Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: 'Gagal mengirim data.'
+                                icon: "error",
+                                title: "Terjadi Kesalahan",
+                                text: "Gagal mengirim data.",
                             });
-                        }
+                        },
                     });
+
                     return false;
                 },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
+                errorElement: "span",
+                errorPlacement: function (error, element) {
+                    error.addClass("invalid-feedback");
+                    element.closest(".form-group").append(error);
                 },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
+                highlight: function (element) {
+                    $(element).addClass("is-invalid");
                 },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
+                unhighlight: function (element) {
+                    $(element).removeClass("is-invalid");
+                },
             });
         });
     </script>

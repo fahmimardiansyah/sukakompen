@@ -93,8 +93,10 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'profile'], function() {
             Route::get('/', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'index']);
-            Route::get('/{id}/edit_ajax', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'update_ajax']);
+            Route::get('/{id}/edit_username', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'edit_username']);
+            Route::put('/{id}/update_username', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'update_username']);
+            Route::get('/{id}/edit_profile', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'edit_profile']);
+            Route::put('/{id}/update_profile', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'update_profile']);
             Route::get('/{id}/edit_foto', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'edit_foto']);
             Route::put('/{id}/update_foto', [App\Http\Controllers\Dosen_tendik\ProfileController::class, 'update_foto']);
         });
@@ -146,8 +148,10 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
-            Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::get('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
             Route::post('/{id}/apply_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply_tugas'])->name('task.apply');
+            Route::get('/{id}/upload', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload']); 
+            Route::get('/{id}/upload_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload_tugas']);
         });
 
         Route::group(['prefix' => 'history'], function () {

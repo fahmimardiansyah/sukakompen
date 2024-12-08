@@ -11,27 +11,30 @@
 
 <section class="recommended-tasks">
 
-    {{-- Pesan Cards --}}
-    <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
-        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
-        <div class="pesan-info">
-            <h3>Hasan Basyri</h3>
-            <p>Request pekerjaan membuat PPT.</p>
-        </div>
-        <button onclick="modalAction('{{ url('/pesan/apply') }}')" class="cek">Cek</button>
-    </div>
+    @foreach($apply as $data)
+        @if(is_null($data->apply_status))
+            <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
+                <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+                <div class="pesan-info">
+                    <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                    <p>Request pekerjaan {{ $data->tugas->tugas_nama }}.</p>
+                </div>
+                <button onclick="modalAction('{{ url('/notif/' . $data->apply_id . '/apply') }}')" class="cek">Cek</button>
+            </div>
+        @endif
+    @endforeach
 
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
-        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
+        <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
         <div class="pesan-info">
             <h3>Fahmi Mardiansyah</h3>
             <p>Mengumpulkan pekerjaan.</p>
         </div>
-        <button onclick="modalAction('{{ url('/pesan/tugas') }}')" class="cek">Cek</button>
+        <button onclick="modalAction('{{ url('/notif/tugas') }}')" class="cek">Cek</button>
     </div>
     
     <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ca1717);">
-        <i class="fas fa-user-circle" style="font-size: 50px;"></i>
+        <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
         <div class="pesan-info">
             <h3>Nasywa Syafinka</h3>
             <p>Tugas melewati tenggat</p>
@@ -45,7 +48,7 @@
 @section('styles')
 <style>
 
-Button Cek */
+/* Button Cek */
 /* .cek {
     background-color: #007bff;
     color: white;
@@ -59,7 +62,7 @@ Button Cek */
 
 .cek:hover {
     background-color: #0056b3;
-}
+} */
 
 /* Modal Styles */
 .modal {

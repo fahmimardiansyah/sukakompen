@@ -19,35 +19,24 @@
                 {{ $description->tugas_deskripsi }}
             </p>
             <div class="deskripsi-info-container">
-            <div class="deskripsi-details">
-                <div class="deskripsi-time">
-                    <span><i class="fas fa-clock"></i> {{ $description->tugas_tenggat->format('H:i A') }}</span>
-                    <span><i class="fas fa-calendar-alt"></i> {{ $description->tugas_tenggat->format('m/d/Y') }}</span>
+                <div class="deskripsi-details">
+                    <div class="deskripsi-time">
+                        <span><i class="fas fa-clock"></i> {{ $description->tugas_tenggat->format('H:i A') }}</span>
+                        <span><i class="fas fa-calendar-alt"></i> {{ $description->tugas_tenggat->format('m/d/Y') }}</span>
+                    </div>
+                    <div class="deskripsi-duration">
+                        <span><i class="fas fa-arrow-down"></i> Kuota: {{ $description->tugas_kuota }}</span>
+                        <span>Jam Kompen: {{ $description->tugas_jam_kompen }}</span>
+                    </div>
                 </div>
-                <div class="deskripsi-duration">
-                    <span><i class="fas fa-arrow-down"></i> Kuota: {{ $description->tugas_kuota }}</span>
-                    <span>Jam Kompen: {{ $description->tugas_jam_kompen }}</span>
-                </div>
-            </div>
             </div>
 
             <div class="deskripsi-download">
-                @if($description->tugas_file)
-                <a href="{{ asset('uploads/tugas/filename.pdf') }}" class="btn btn-success" download>
-                    <i class="fas fa-download"></i> Download File
-                </a>
-                @else
-                    <span>No file available for download.</span>
-                @endif
                 <div class="req-button">
                     <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-                    <a href="{{ url('apply') }}" class="request-button">apply</a>
+                    <button onclick="modalAction('{{ url('/task/' . $description->tugas_id . '/apply') }}')" class="request-button">Apply</button>
                 </div>
             </div>
-                
-            </div>
-            <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-            <button onclick="modalAction('{{ url('/task/' . $description->tugas_id . '/apply') }}')" class="request-button">Apply</button>
         </div>
     </div>
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>

@@ -32,7 +32,7 @@
             </div>
 
             <div class="deskripsi-download">
-                @if($description->tugas_file)
+                @if($description->file_tugas)
                 <a href="{{ asset('uploads/tugas/filename.pdf') }}" class="btn btn-success" download>
                     <i class="fas fa-download"></i> Download File
                 </a>
@@ -40,8 +40,7 @@
                     <span>No file available for download.</span>
                 @endif
                 <div class="req-button">
-                    <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-                    <a href="{{ url('apply') }}" class="request-button">apply</a>
+                    <a href="{{ url('tugas') }}" class="back-button">Back to Tugas List</a>
                 </div>
             </div>
                 

@@ -43,7 +43,6 @@
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, diterima.</p>
                     </div>
-                    <a href="{{ url('/inbox/upload') }}" class="btn cek">Cek</a>
                 </div>
             @elseif($data->status === 0 && $data->pengguna)
                 <div class="notification" style="background: linear-gradient(135deg, #ffffff, #ec3939);">
@@ -52,9 +51,7 @@
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, ditolak.</p>
                     </div>
-                    <button onclick="modalAction('{{ url('/inbox/upload') }}')" class="cek">Cek</button>
                 </div>
-                <a href="{{ url('/inbox/upload') }}" class="cek">Cek</a>
             @endif
         @endforeach
     </section>

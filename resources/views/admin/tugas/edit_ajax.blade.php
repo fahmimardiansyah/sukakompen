@@ -76,9 +76,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="tugas_file">Upload File Tugas</label>
-                        <input type="file" name="tugas_file" id="tugas_file" class="form-control" accept=".doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx,.zip,.rar" required>
-                        <small id="error-tugas_file" class="error-text form-text text-danger"></small>
+                        <label>Upload File Tugas</label>
+                        <input type="file" name="file_tugas" id="file_tugas" class="form-control" required>
+                        <small id="error-file_tugas" class="error-text form-text text-danger"></small>
                     </div>
 
                     <div class="form-group">
@@ -135,7 +135,8 @@
                     tugas_kuota: { required: true, number: true, max: 10 },
                     tugas_jam_kompen: { required: true, number: true, max: 50 },
                     tugas_tenggat: { required: true},
-                    kompetensi_id: { required: true, number: true }
+                    kompetensi_id: { required: true, number: true },
+                    file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" }
                 },
                 submitHandler: function(form) {
                     $.ajax({

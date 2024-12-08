@@ -1,4 +1,4 @@
-<form action="{{ url('/kompen/ajax') }}" method="POST" id="form-tambah">
+<form action="{{ url('/kompen/ajax') }}" method="POST" id="form-tambah" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Form Fields -->
+                
                 <div class="form-group">
                     <label>Nama Tugas</label>
                     <input type="text" name="tugas_nama" id="tugas_nama" class="form-control" required>
@@ -26,11 +26,14 @@
                     </select>
                     <small id="error-jenis_id" class="error-text form-text text-danger"></small>
                 </div>
-
+                
                 <div class="form-group">
                     <label>Kompetensi Tugas</label>
                     <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
                         <option value="">- Pilih Kompetensi -</option>
+                        @foreach ($kompetensi as $k)
+                            <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
+                        @endforeach
                     </select>
                     <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
                 </div>
@@ -56,6 +59,12 @@
                     <label>Kuota Tugas</label>
                     <input type="number" name="tugas_kuota" id="tugas_kuota" class="form-control" required>
                     <small id="error-tugas_kuota" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload File Tugas</label>
+                    <input type="file" name="file_tugas" id="file_tugas" class="form-control" required>
+                    <small id="error-file_tugas" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="form-group">
@@ -123,16 +132,18 @@
                 tugas_kuota: { required: true, number: true, max: 10 },
                 tugas_jam_kompen: { required: true, number: true, max: 50 },
                 tugas_tenggat: { required: true},
-                kompetensi_id: { required: true, number: true }
+                kompetensi_id: { required: true, number: true },
+                file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" }
             },
             submitHandler: function(form) {
+                let formData = new FormData(form);
+
                 $.ajax({
                     url: form.action,
                     type: 'POST',
-                    data: $(form).serialize(),
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
@@ -143,9 +154,9 @@
                             });
                             dataTugas.ajax.reload(); 
                         } else {
-                            $('.error-text').text('');
+                            $('.error-text').text(''); 
                             $.each(response.msgField, function(prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
+                                $('#error-' + prefix).text(val[0]); 
                             });
                             Swal.fire({
                                 icon: 'error',
@@ -165,7 +176,7 @@
                         });
                     }
                 });
-                return false;
+                return false; 
             },
             errorElement: 'span',
             errorPlacement: function(error, element) {

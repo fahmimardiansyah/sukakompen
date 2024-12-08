@@ -69,11 +69,11 @@ class TugasController extends Controller
                 'tugas_jam_kompen' => ['required', 'integer', 'max:50'],
                 'tugas_tenggat' => ['required', 'date'],
                 'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id'],
-                'tugas_file' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:20480']
+                'file_tugas' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:2048'],
             ];
-    
+
             $validator = Validator::make($request->all(), $rules);
-    
+
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
@@ -81,28 +81,29 @@ class TugasController extends Controller
                     'msgField' => $validator->errors(),
                 ]);
             }
-    
-            try {
-                $data = $request->all();
-                $data['tugas_No'] = (string) Str::uuid();
-                $data['user_id'] = auth()->user()->user_id ?? null; 
 
-                if ($request->hasFile('tugas_file')) {
-                    $file = $request->file('tugas_file');
-                    $fileName = time() . '_' . $file->getClientOriginalName(); // Buat nama file unik
-                    $file->storeAs('uploads/tugas', $fileName, 'public'); // Simpan di direktori storage/app/public/uploads/tugas
-                    $data['tugas_file'] = $fileName; // Simpan nama file ke database
-                }
-                
+            try {
+                $data = $request->except('file_tugas'); 
+                $data['tugas_No'] = (string) Str::uuid();
+                $data['user_id'] = auth()->user()->user_id ?? null;
+
+                if ($request->hasFile('file_tugas')) {
+                    $file = $request->file('file_tugas');
+                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $file->storeAs('posts/tugas', $fileName, 'public');
+                    $data['file_tugas'] = $fileName;
+                }                
+
                 TugasModel::create($data);
+
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data tugas berhasil disimpan'
+                    'message' => 'Data tugas berhasil disimpan',
                 ]);
             } catch (\Exception $e) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
+                    'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage(),
                 ], 500);
             }
         }
@@ -155,7 +156,7 @@ class TugasController extends Controller
                 'tugas_jam_kompen' => ['required', 'integer', 'max:50'],
                 'tugas_tenggat' => ['required', 'date'],
                 'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id'],
-                'tugas_file' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:20480'] // Maks 20MB
+                'file_tugas' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:2048'],
             ];
     
             $validator = Validator::make($request->all(), $rules);
@@ -172,16 +173,16 @@ class TugasController extends Controller
     
             if ($check) {
                 try {
-                    if ($request->hasFile('tugas_file')) {
-                        $file = $request->file('tugas_file');
+                    if ($request->hasFile('file_tugas')) {
+                        $file = $request->file('file_tugas');
                         $filename = time() . '_' . $file->getClientOriginalName();
-                        $file->storeAs('uploads/tugas', $filename, 'public'); // Simpan file ke direktori 'storage/app/public/uploads/tugas'
+                        $file->storeAs('posts/tugas', $filename, 'public');
     
-                        if ($check->tugas_file && Storage::disk('public')->exists('uploads/tugas/' . $check->tugas_file)) {
-                            Storage::disk('public')->delete('uploads/tugas/' . $check->tugas_file);
+                        if ($check->file_tugas && Storage::disk('public')->exists('posts/tugas/' . $check->file_tugas)) {
+                            Storage::disk('public')->delete('posts/tugas/' . $check->file_tugas);
                         }
     
-                        $request->merge(['tugas_file' => $filename]); // Tambahkan nama file baru ke request
+                        $request->merge(['file_tugas' => $filename]);
                     }
     
                     $check->update($request->all());

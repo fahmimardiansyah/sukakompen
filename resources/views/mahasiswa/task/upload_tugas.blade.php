@@ -10,7 +10,7 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/kompen') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/task') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
@@ -27,7 +27,11 @@
                 </div>
                 <div class="modal-body text-center">
                     <h2>{{ $tugas->tugas_nama }}</h2>
-                    <p>Yakin ingin apply tugas ini?</p>
+                    <div class="form-group">
+                        <label>Pilih File</label>
+                        <input type="file" name="file_barang" id="file_barang" class="form-control" required>
+                        <small id="error-file_barang" class="error-text form-text text-danger"></small>
+                    </div>
                     <div class="mt-4">
                         <button class="btn btn-warning" type="button" data-dismiss="modal">Kembali</button>
                         <button type="submit" class="btn btn-success">Apply</button>
@@ -39,7 +43,7 @@
     <script>
         $(document).ready(function() {
             $("#form-apply").validate({
-                rules: {}, // Tambahkan aturan validasi jika diperlukan
+                rules: {}, 
                 submitHandler: function(form) {
                     $.ajax({
                         url: form.action,

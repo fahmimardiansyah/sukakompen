@@ -34,7 +34,7 @@
         <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
                 <!-- Tombol "Tambah Tugas" -->
-    <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">+ Tambah Tugas</button>
+            <button onclick="modalAction('{{ url('/tugas/create_ajax') }}')" class="add-task">+ Tambah Tugas</button>
             <div class="task-grid">
                 @foreach ($tugasAdmin as $item)
                     <div class="task-card">
@@ -110,7 +110,6 @@
             </div>
         </div>
     </section>
-</div>
 </div>
 <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 

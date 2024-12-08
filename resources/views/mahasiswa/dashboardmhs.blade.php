@@ -50,11 +50,11 @@
                             </div>
                             <div class="card-body">
                                 <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                                <h3>{{ $item->tugas_nama }}</h3>
-                                <p>{{ $item->tugas_deskripsi }}</p>
+                                <h3>{{ $item->tugas->tugas_nama }}</h3>
+                                <p>{{ $item->tugas->tugas_deskripsi }}</p>
                             </div>
                             <div class="card-footer">
-                                <a href="{{ url('/task/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
+                                <a href="{{ url('/task/' . $item->progress_id . '/upload') }}" class="btn">Upload</a>
                             </div>
                         </div>
                     @endforeach

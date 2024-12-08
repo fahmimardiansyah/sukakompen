@@ -15,7 +15,7 @@
             </div>
         </div>
     @else
-        <form action="{{ url('/profil/' . session('user_id') . '/update_foto') }}" method="POST" id="form-edit"
+        <form action="{{ url('/profile/' . $user->user_id . '/update_foto') }}" method="POST" id="form-edit"
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
@@ -29,9 +29,9 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="formFileLg" class="form-label">Pilih Foto</label>
-                            <input type="file" name="avatar" id="formFileLg" class="form-control form-control-lg"
+                            <input type="file" name="image" id="formFileLg" class="form-control form-control-lg"
                                 accept=".png,.jpg,.jpeg">
-                            <small id="error-avatar" class="error-text form-text text-danger"></small>
+                            <small id="error-image" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -45,7 +45,7 @@
             $(document).ready(function() {
                 $("#form-edit").validate({
                     rules: {
-                        avatar: {
+                        image: {
                             required: true,
                             accept: "png,jpg,jpeg"
                         },
@@ -57,7 +57,7 @@
                             url: form.action,
                             type: form.method,
                             data: formData,
-                            processData: false, // setting processData dan contentType ke false, untuk menghandle file 
+                            processData: false,
                             contentType: false,
                             success: function(response) {
                                 if (response.status) {

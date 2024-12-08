@@ -35,15 +35,6 @@ class ProfileController extends Controller
         return view('admin.profile.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'user' => $user,'activeMenu' => $activeMenu, 'admin' => $admin]);
     }
 
-    public function show(string $id)
-    {
-        $user = UserModel::with('level')->find($id);
-        $breadcrumb = (object) ['title' => 'Detail User', 'list' => ['Home', 'User', 'Detail']];
-        $page = (object) ['title' => 'Detail user'];
-        $activeMenu = 'user'; // set menu yang sedang aktif
-        return view('admin.user.show', ['breadcrumb' => $breadcrumb, 'page' => $page, 'user' => $user, 'activeMenu' => $activeMenu]);
-    }
-
     public function edit_username(string $id)
     {
         $user = UserModel::find($id);
@@ -153,11 +144,9 @@ class ProfileController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'foto'   => 'required|mimes:jpeg,png,jpg|max:4096'
+                'image'   => 'required|mimes:jpeg,png,jpg|max:4096'
             ];
 
-            $folderPath = 'uploads/profile_pictures/'.auth()->user()->username.'/';
-            
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -169,19 +158,20 @@ class ProfileController extends Controller
 
             $check = UserModel::find($id);
             if ($check) {
-                if ($request->hasFile('foto')) {
-                    $file = $request->file('foto');
+                if ($request->hasFile('image')) {
+                    $file = $request->file('image');
                     $extension = $file->getClientOriginalExtension();
-                    $filename = time() . '.' . $extension;
-                    $path = 'image/profile/';
+                    $filename = time() . auth()->user()->user_id . "." . $extension;
+
+                    $folderPath = 'image/';
                     
-                    $file->move(public_path($path), $filename);
+                    $path = $file->storeAs('public/' . $folderPath, $filename);
 
                     $check->update([
-                        'foto' => $path . $filename
+                        'image' => 'storage/' . $folderPath . $filename
                     ]);
 
-                    session(['profile_img_path' => $path . $filename]);
+                    session(['profile_img_path' => 'storage/' . $folderPath . $filename]);
 
                     return response()->json([
                         'status' => true,

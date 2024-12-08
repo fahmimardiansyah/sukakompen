@@ -14,7 +14,7 @@ class TugasModel extends Model
     protected $primaryKey = 'tugas_id'; 
     protected $fillable = [
         'tugas_No', 'tugas_nama', 'jenis_id', 'tugas_tipe', 'tugas_deskripsi', 
-        'tugas_kuota', 'tugas_jam_kompen', 'tugas_tenggat', 'kompetensi_id', 'user_id', 'tugas_file'
+        'tugas_kuota', 'tugas_jam_kompen', 'tugas_tenggat', 'kompetensi_id', 'user_id', 'file_tugas'
     ];
 
     const TIPE_ENUM = ['Online', 'Offline'];

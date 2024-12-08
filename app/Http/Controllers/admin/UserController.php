@@ -38,38 +38,35 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
+        $levelId = $request->query('level_id'); // Ambil level_id dari query string
         $users = UserModel::select('user_id', 'username', 'level_id')
             ->with('level');
 
-        if ($request->level_id) {
-            $users->where('level_id', $request->level_id);
+        if ($levelId) { // Terapkan filter jika level_id ada
+            $users->where('level_id', $levelId);
         }
 
         return DataTables::of($users)
             ->addIndexColumn()
             ->addColumn('aksi', function ($user) {
                 if ($user->level_id === 1) { 
-                    return $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
-                    '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
-                        <i class="fas fa-info-circle"></i>
-                    </button> ';
+                    return '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
+                                <i class="fas fa-info-circle"></i>
+                            </button>';
                 }
 
-                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
-                    '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
-                        <i class="fas fa-info-circle"></i>
-                    </button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
-                    '/edit_ajax') . '\')" class="btn btn-sm btn-warning" title="Edit">
-                        <i class="fas fa-edit"></i>
-                    </button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id .
-                    '/delete_ajax') . '\')" class="btn btn-sm btn-danger" title="Hapus">
-                        <i class="fas fa-trash-alt"></i>
-                    </button> ';
+                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
+                            <i class="fas fa-info-circle"></i>
+                        </button>';
+                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/edit_ajax') . '\')" class="btn btn-sm btn-warning" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </button>';
+                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/delete_ajax') . '\')" class="btn btn-sm btn-danger" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>';
                 return $btn;
             })
-            ->rawColumns(['aksi']) // Ensure the 'aksi' column is rendered as raw HTML
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 
