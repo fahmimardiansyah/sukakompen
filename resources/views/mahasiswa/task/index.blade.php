@@ -24,7 +24,6 @@
 
 <!-- Tabs and Add Task Button -->
 <div class="content">
-    
         <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
                 <!-- Tombol "Tambah Tugas" -->

@@ -23,7 +23,7 @@
                     <div class="row mt-3">
                         <table class="table table-bordered table-striped table-hover table-sm">
                             <tr>
-                                <th>ID</th>
+                                <th style="width: 15%">ID</th>
                                 <td>{{ $user->user_id }}</td>
                             </tr>
                             <tr>

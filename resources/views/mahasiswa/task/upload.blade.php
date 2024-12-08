@@ -31,37 +31,26 @@
             </div>
             </div>
 
-            
-            <div class="deskripsi-download">
-                @if($description->tugas_file)
-                <a href="{{ asset('uploads/tugas/filename.pdf') }}" class="btn btn-success" download>
-                    <i class="fas fa-download"></i> Download File
-                </a>
-                @else
-                    <span>No file available for download.</span>
-                @endif
-                <div class="req-button">
-                    <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-                    <button onclick="modalAction('{{ url('/task/' . $description->tugas_id . '/apply') }}')" class="request-button">Apply</button>
+            <div class="upload-info-container">
+                <div class="form-group">
+                    <div class="file-upload-box">
+                        <input type="file" name="tugas_file" id="tugas_file" class="form-control-file" required>
+                        <div class="file-placeholder">
+                            <i class="fas fa-bars"></i>
+                            <p>Upload File Here</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-                
+
+            <div class="deskripsi-download">
+                <div class="req-button">
+                    <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
+                    <button onclick="modalAction('{{ url('/task/' . $description->tugas_id . '/apply') }}')" class="request-button">Upload</button>
+                </div>
             </div>
+            
         </div>
     </div>
-    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 </div>
 @endsection
-
-@push('js')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-</script>
-@endpush
-

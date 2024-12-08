@@ -39,28 +39,31 @@
             </div>
         </div>
 
-        <section class="recommended-tasks">
-            <h2>Tugas Kompen</h2>
-            <div class="task-grid">
-                @foreach($tugas as $data)
-                    <div class="task-card">
-                        <div class="card-header">
-                            <span class="task-category">{{ $data->jenis->jenis_nama }}</span>
+        <div class="content">
+            <section class="recommended-tasks">
+                <h2>Tugas Kompen</h2>
+                <div class="task-grid">
+                    @foreach ($tugasAdmin as $item)
+                        <div class="task-card">
+                            <div class="card-header">
+                                <span class="task-category">Admin Task</span>
+                            </div>
+                            <div class="card-body">
+                                <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
+                                <h3>{{ $item->tugas_nama }}</h3>
+                                <p>{{ $item->tugas_deskripsi }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/edit_ajax') }}')" class="btn btn-edit">Edit</button>
+                                <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
+                                <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/delete_ajax') }}')" class="btn btn-delete">Delete</button>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">
-                            <h3>{{ $data->tugas_nama }}</h3>
-                            <p>{{ $data->tugas_deskripsi }}</p>
-                        </div>
-                        <div class="card-footer">
-                            <button onclick="modalAction('{{ url('/kompen/' . $data->tugas_id . '/edit_ajax') }}')" class="btn btn-edit">Edit</button>
-                            <a href="{{ url('/kompen/' . $data->tugas_id . '/detail') }}" class="btn">Buka</a>
-                            <button onclick="modalAction('{{ url('/kompen/' . $data->tugas_id . '/delete_ajax') }}')" class="btn btn-delete">Delete</button>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </section>
+                    @endforeach
+                </div>
+            </section>
+        </div>
+
     </div>
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 

@@ -41,7 +41,9 @@
 
         <section class="recommended-tasks">
             @if(!is_null($progress))
-                <h2>Progress</h2>
+            <div class="center-text">
+                <h2>✦ Progress ✦</h2>
+            </div>
                 <div class="task-grid">
                     @foreach ($progress as $item)
                         <div class="task-card">
@@ -59,9 +61,12 @@
                         </div>
                     @endforeach
                 </div>
-            @endif 
-
-            <h2>Tugas Kompen</h2>
+            @endif
+        
+            <hr>
+            <div class="center-text">
+                <h2>✦ Tugas Kompen ✦</h2>
+            </div>
             <div class="task-grid">
                 @foreach ($tugas as $item)
                     <div class="task-card">
@@ -79,8 +84,7 @@
                     </div>
                 @endforeach
             </div>
-        </div>
-    </section>
+        </section>
 </div>
 </div>
 <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>

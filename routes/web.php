@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 
 Route::pattern('id', '[0-9]+');
@@ -146,7 +147,7 @@ Route::middleware('auth')->group(function () {
         Route::group(['prefix' => 'task'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\TugasController::class, 'index']);
             Route::get('/{id}/detail', [App\Http\Controllers\Mahasiswa\TugasController::class, 'detail'])->name('task.detail'); 
-            Route::post('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
+            Route::get('/{id}/apply', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply']);
             Route::post('/{id}/apply_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply_tugas'])->name('task.apply');
         });
 
@@ -160,5 +161,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\PesanController::class, 'index']);
         });
     });
+
+
+    Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 });
