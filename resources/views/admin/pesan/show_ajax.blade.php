@@ -10,7 +10,7 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/notif') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/pesan') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
@@ -29,8 +29,8 @@
                     <h2>{{ $apply->tugas->tugas_nama }}</h2>
                     <p>Mahasiswa {{ $apply->mahasiswa->mahasiswa_nama }} ingin mengerjakan tugas {{ $apply->tugas->tugas_nama }}, terima?</p>
                     <div class="mt-4">
-                        <button type="button" id="btn-tolak" class="btn btn-danger" onclick="submitForm('{{ url('/notif/' . $apply->apply_id . '/decline') }}')">Tolak</button>
-                        <button type="button" id="btn-terima" class="btn btn-success" onclick="submitForm('{{ url('/notif/' . $apply->apply_id . '/acc') }}')">Terima</button>
+                        <button type="button" id="btn-tolak" class="btn btn-danger" onclick="submitForm('{{ url('/pesan/' . $apply->apply_id . '/decline') }}')">Tolak</button>
+                        <button type="button" id="btn-terima" class="btn btn-success" onclick="submitForm('{{ url('/pesan/' . $apply->apply_id . '/acc') }}')">Terima</button>
                     </div>
                 </div>
             </div>

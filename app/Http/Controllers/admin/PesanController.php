@@ -53,7 +53,7 @@ class PesanController extends Controller
     {
         $apply = ApplyModel::where('apply_id', $id)->first();
 
-        return view('dosen_tendik.notif.show_ajax', ['apply' => $apply]);
+        return view('admin.pesan.show_ajax', ['apply' => $apply]);
     }
 
     public function acc(Request $request, $id)
