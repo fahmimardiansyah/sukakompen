@@ -680,36 +680,27 @@ table th:last-child {
     display: flex;
     gap: 8px;
     margin-bottom: 10px;
-    flex-wrap: wrap; /* Responsif untuk tag */
+    flex-wrap: wrap; 
 }
 
-.tag {
+.tag span {
     display: inline-block;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
+    margin-right: 5px;
 }
 
-.tag.online {
-    background-color: #3a5a98; 
+.tipe {
+    background-color: #252788; 
 }
-
-.tag.offline {
-    background-color: #3a5a98; 
+.jenis {
+    background-color: #19992f;
 }
-
-.tag.Teknis {
-    background-color: #ffc107; 
-}
-
-.tag.Pengabdian {
-    background-color: #ffc107; 
-}
-
-.tag.Penelitian {
-    background-color: #ffc107; 
+.kompetensi {
+    background-color: #f7a800; 
 }
 
 .deskripsi-description {

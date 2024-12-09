@@ -10,9 +10,9 @@
             <h2>{{ $description->tugas->tugas_nama }}</h2>
             <div class="deskripsi-tags">
                 <div class="tag">
-                    <span class="tag {{ $description->tugas->tugas_tipe }}">{{ ucfirst($description->tugas->tugas_tipe) }}</span>
-                    <span class="tag {{ $description->tugas->jenis_id }}">{{ ucfirst($description->tugas->jenis->jenis_nama) }}</span>
-                    <span class="tag {{ $description->tugas->kompetensi_id }}">{{ ucfirst($description->tugas->kompetensi->kompetensi_nama) }}</span>
+                    <span class="tipe {{ $description->tugas->tugas_tipe }}">{{ ucfirst($description->tugas->tugas_tipe) }}</span>
+                    <span class="jenis {{ $description->tugas->jenis_id }}">{{ ucfirst($description->tugas->jenis->jenis_nama) }}</span>
+                    <span class="kompetensi {{ $description->tugas->kompetensi_id }}">{{ ucfirst($description->tugas->kompetensi->kompetensi_nama) }}</span>
                 </div>
             </div>
             <p class="deskripsi-description">
