@@ -17,8 +17,7 @@ class AlpaSeeder extends Seeder
                 'alpa_id' => 1,
                 'mahasiswa_alpa_nim' => '2030456789',
                 'mahasiswa_alpa_nama' => 'Faiz Abiyu',
-                'approval_id' => 1,
-                'jam_alpa' => 3,
+                'jam_alpa' => 20,
             ],
         ];
 

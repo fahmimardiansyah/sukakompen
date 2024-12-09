@@ -62,7 +62,7 @@
 
                 <div class="form-group">
                     <label>Upload File Tugas</label>
-                    <input type="file" name="file_tugas" id="file_tugas" class="form-control" required>
+                    <input type="file" name="file_tugas" id="file_tugas" class="form-control">
                     <small id="error-file_tugas" class="error-text form-text text-danger"></small>
                 </div>
 

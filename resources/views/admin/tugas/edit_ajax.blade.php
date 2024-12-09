@@ -15,7 +15,7 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/tugas/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ url('/tugas/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -139,24 +139,34 @@
                     file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" }
                 },
                 submitHandler: function(form) {
+                    var formData = new FormData(form);
+                    
                     $.ajax({
                         url: form.action,
-                        type: 'POST',
-                        data: $(form).serialize(),
+                        type: form.method,
+                        data: formData,
+                        processData: false, // Jangan proses data menjadi string
+                        contentType: false, // Jangan tentukan tipe konten
                         success: function(response) {
                             if (response.status) {
-                                $('#myModal').modal('hide');
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message
+                                }).then(() => {
+                                    // Tutup modal
+                                    $('#modal-master').modal('hide');
+                                    
+                                    // Jika perlu, segarkan halaman atau elemen tertentu
+                                    location.reload(); // Atau segarkan bagian tertentu jika tidak ingin reload seluruh halaman
                                 });
-                                dataTugas.ajax.reload(); 
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
+                                if (response.msgField) {
+                                    $.each(response.msgField, function(prefix, val) {
+                                        $('#error-' + prefix).text(val[0]);
+                                    });
+                                }
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Terjadi Kesalahan',
@@ -164,18 +174,16 @@
                                 });
                             }
                         },
-                        error: function(xhr, status, error) {
-                            console.error("Status: " + status);
-                            console.error("Error: " + error);
-                            console.error("Response: " + xhr.responseText);
+                        error: function(xhr) {
                             Swal.fire({
                                 icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: 'Gagal mengirim data.'
+                                title: 'Kesalahan Server',
+                                text: xhr.responseJSON ? xhr.responseJSON.message : 'Terjadi kesalahan, silakan coba lagi.'
                             });
                         }
                     });
-                    return false;
+
+                    return false; // Mencegah submit bawaan
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

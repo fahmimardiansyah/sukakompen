@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlpaModel;
 use App\Models\ApplyModel;
 use App\Models\ApprovalModel;
+use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
 use Illuminate\Http\Request;
 use App\Models\TugasModel;
@@ -109,8 +111,97 @@ class PesanController extends Controller
         return redirect('/');
     }
 
-    public function tugas()
+    public function tugas($id)
     {
-        return view('admin.pesan.acc_ajax');
+        $approve = ApprovalModel::where('approval_id', $id)->first();
+
+        $fileTugas = null;
+        if ($approve && $approve->progress->file_mahasiswa) {
+            $filePath = asset('storage/posts/pengumpulan/' . $approve->progress->file_mahasiswa);
+            $fileName = basename($approve->progress->file_mahasiswa);
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+            $icons = [
+                'pdf' => 'fas fa-file-pdf',
+                'doc' => 'fas fa-file-word',
+                'docx' => 'fas fa-file-word',
+                'xls' => 'fas fa-file-excel',
+                'xlsx' => 'fas fa-file-excel',
+                'ppt' => 'fas fa-file-powerpoint',
+                'pptx' => 'fas fa-file-powerpoint',
+                'zip' => 'fas fa-file-archive',
+                'rar' => 'fas fa-file-archive',
+                'default' => 'fas fa-file',
+            ];
+            $iconClass = $icons[$fileExtension] ?? $icons['default'];
+
+            $fileTugas = [
+                'path' => $filePath,
+                'name' => $fileName,
+                'icon' => $iconClass,
+            ];
+        }
+
+        return view('admin.pesan.acc_ajax', ['approve' => $approve, 'fileTugas' => $fileTugas]);
+    }
+
+    public function acc_tugas(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $approval = ApprovalModel::find($id);
+
+            $mahasiswa= MahasiswaModel::find($approval->mahasiswa_id);
+
+            $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
+
+            if ($approval && $mahasiswa && $alpa) {
+                $approval->update([
+                    'status' => true
+                ]);
+
+                $mahasiswa->update([
+                    'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
+                ]);
+
+                $alpa->update([
+                    'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
+                ]);
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Tugas Diterima'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
+    public function decline_tugas(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $approval = ApprovalModel::find($id);
+
+            if ($approval) {
+                $approval->update([
+                    'status' => false
+                ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Tugas Ditolak'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
     }
 }

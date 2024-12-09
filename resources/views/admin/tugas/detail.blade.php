@@ -32,10 +32,10 @@
             </div>
 
             <div class="deskripsi-download">
-                @if($description->file_tugas)
-                <a href="{{ asset('uploads/tugas/filename.pdf') }}" class="btn btn-success" download>
-                    <i class="fas fa-download"></i> Download File
-                </a>
+                @if($fileData)
+                    <a href="{{ $fileData['path'] }}" class="btn btn-info" download>
+                        <i class="{{ $fileData['icon'] }}"></i> {{ $fileData['name'] }}
+                    </a>
                 @else
                     <span>No file available for download.</span>
                 @endif

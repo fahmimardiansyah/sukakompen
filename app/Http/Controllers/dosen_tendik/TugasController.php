@@ -80,7 +80,7 @@ class TugasController extends Controller
 
                 if ($request->hasFile('file_tugas')) {
                     $file = $request->file('file_tugas');
-                    $fileName = time() . '_' . $file->getClientOriginalName();
+                    $fileName = time() . '_' .  $file->getClientOriginalName();
                     $file->storeAs('posts/tugas', $fileName, 'public');
                     $data['file_tugas'] = $fileName;
                 }                
@@ -126,7 +126,7 @@ class TugasController extends Controller
         $fileData = null;
         if ($description && $description->file_tugas) {
             $filePath = asset('storage/posts/tugas/' . $description->file_tugas);
-            $fileName = basename($description->file_tugas);
+            $fileName = explode('_', $description->file_tugas, 2)[1] ?? $description->file_tugas;
             $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
             $icons = [
                 'pdf' => 'fas fa-file-pdf',
@@ -200,7 +200,7 @@ class TugasController extends Controller
 
                     if ($request->hasFile('file_tugas')) {
                         $file = $request->file('file_tugas');
-                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $filename = time() . '_' .  $file->getClientOriginalName();
                         $file->storeAs('posts/tugas', $filename, 'public');
 
                         if ($check->file_tugas && Storage::disk('public')->exists('posts/tugas/' . $check->file_tugas)) {

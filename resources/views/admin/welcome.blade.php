@@ -43,7 +43,7 @@
             <section class="recommended-tasks">
                 <h2>Tugas Kompen</h2>
                 <div class="task-grid">
-                    @foreach ($tugasAdmin as $item)
+                    @foreach ($tugas as $item)
                         <div class="task-card">
                             <div class="card-header">
                                 <span class="task-category">Admin Task</span>
@@ -57,7 +57,7 @@
                                 <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/edit_ajax') }}')" class="btn btn-edit">Edit</button>
                                 <a href="{{ url('/tugas/' . $item->tugas_id . '/detail') }}" class="btn">Buka</a>
                                 <button onclick="modalAction('{{ url('/tugas/' . $item->tugas_id . '/delete_ajax') }}')" class="btn btn-delete">Delete</button>
-                            </div>
+                        </div>
                         </div>
                     @endforeach
                 </div>

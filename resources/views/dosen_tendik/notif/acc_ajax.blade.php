@@ -62,9 +62,9 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" id="btn-tolak" class="btn btn-danger" onclick="submitForm('{{ url('/pesan/' . $approve->approval_id . '/decline_tugas') }}')">Tolak</button>
+                <button type="button" id="btn-tolak" class="btn btn-danger" onclick="submitForm('{{ url('/notif/' . $approve->approval_id . '/decline_tugas') }}')">Tolak</button>
 
-                <button type="button" id="btn-terima" class="btn btn-success" onclick="submitForm('{{ url('/pesan/' . $approve->approval_id . '/acc_tugas') }}')">Terima</button>
+                <button type="button" id="btn-terima" class="btn btn-success" onclick="submitForm('{{ url('/notif/' . $approve->approval_id . '/acc_tugas') }}')">Terima</button>
             </div>
         </div>
     </div>

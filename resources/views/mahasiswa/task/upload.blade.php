@@ -16,7 +16,7 @@
                 </div>
             </div>
             <p class="deskripsi-description">
-                {{ $description->tugas_deskripsi }}
+                {{ $description->tugas->tugas_deskripsi }}
             </p>
             <div class="deskripsi-info-container">
                 <div class="deskripsi-details">
@@ -43,12 +43,19 @@
             <br>
             <div class="form-group">
                 <button onclick="modalAction('{{ url('/task/' . $description->progress_id . '/upload_tugas') }}')" class="btn btn-info" style="background: transparent; color: black;"><i class="fas fa-upload"></i> Upload File</button>
+                @if($fileTugas)
+                    <a href="{{ $fileTugas['path'] }}" download>
+                        <i class="{{ $fileTugas['icon'] }}"></i> {{ $fileTugas['name'] }}
+                    </a>
+                @else
+                    <span>No file available for download.</span>
+                @endif
                 <small id="error-file_barang" class="error-text form-text text-danger"></small>
             </div>
             <div class="deskripsi-download">
                 <div class="req-button">
                     <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
-                    <button type="submit" class="request-button">Kirim</button>
+                    <button onclick="modalAction('{{ url('/task/' . $description->progress_id . '/kirim') }}')" class="request-button">Kirim</button>
                 </div>
             </div>
         </div>
@@ -58,11 +65,11 @@
 @endsection
 
 @push('js')
-<script>
-    function modalAction(url = '') {
-        $('#myModal').load(url, function() {
-            $('#myModal').modal('show');
-        });
-    }
-</script>
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+    </script>
 @endpush

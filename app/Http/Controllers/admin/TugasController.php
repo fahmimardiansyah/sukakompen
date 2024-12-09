@@ -132,7 +132,39 @@ class TugasController extends Controller
 
         $activeMenu = 'tugas'; 
 
-        return view('admin.tugas.detail', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page]);
+        $fileData = null;
+        if ($description && $description->file_tugas) {
+            $filePath = asset('storage/posts/tugas/' . $description->file_tugas);
+            $fileName = explode('_', $description->file_tugas, 2)[1] ?? $description->file_tugas;
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+            $icons = [
+                'pdf' => 'fas fa-file-pdf',
+                'doc' => 'fas fa-file-word',
+                'docx' => 'fas fa-file-word',
+                'xls' => 'fas fa-file-excel',
+                'xlsx' => 'fas fa-file-excel',
+                'ppt' => 'fas fa-file-powerpoint',
+                'pptx' => 'fas fa-file-powerpoint',
+                'zip' => 'fas fa-file-archive',
+                'rar' => 'fas fa-file-archive',
+                'default' => 'fas fa-file',
+            ];
+            $iconClass = $icons[$fileExtension] ?? $icons['default'];
+
+            $fileData = [
+                'path' => $filePath,
+                'name' => $fileName,
+                'icon' => $iconClass,
+            ];
+        }
+
+        return view('admin.tugas.detail', [
+            'description' => $description,
+            'activeMenu' => $activeMenu,
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'fileData' => $fileData,
+        ]);
     }
 
     public function edit_ajax(string $id) {
@@ -173,19 +205,23 @@ class TugasController extends Controller
     
             if ($check) {
                 try {
+                    $data = $request->except('file_tugas');
+
                     if ($request->hasFile('file_tugas')) {
                         $file = $request->file('file_tugas');
-                        $filename = time() . '_' . $file->getClientOriginalName();
+                        $filename = time() . '_' .  $file->getClientOriginalName();
                         $file->storeAs('posts/tugas', $filename, 'public');
-    
+
                         if ($check->file_tugas && Storage::disk('public')->exists('posts/tugas/' . $check->file_tugas)) {
                             Storage::disk('public')->delete('posts/tugas/' . $check->file_tugas);
                         }
-    
-                        $request->merge(['file_tugas' => $filename]);
+
+                        $data['file_tugas'] = $filename;
                     }
-    
-                    $check->update($request->all());
+
+                    $check->update(
+                        $data
+                    );
     
                     return response()->json([
                         'status' => true,

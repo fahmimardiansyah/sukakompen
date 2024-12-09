@@ -15,12 +15,7 @@ class AlpaModel extends Model
     protected $fillable = [
         'mahasiswa_alpa_nim',
         'mahasiswa_alpa_nama',
-        'approval_id',
+        'jam_kompen',
         'jam_alpa',
     ];
-
-    public function approval()
-    {
-        return $this->belongsTo(ApprovalModel::class, 'approval_id', 'approval_id');
-    }
 }

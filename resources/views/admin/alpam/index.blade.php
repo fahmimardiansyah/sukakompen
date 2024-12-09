@@ -9,7 +9,7 @@
     </div>
     <div class="notif-title">
         <h2>Tabel Alpa Mahasiswa</h2>
-        <button class="btn btn-success" id="importButton">Import</button>
+        <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-success" id="importButton">Import</button>
     </div>
 
     <div class="table-alpa">
@@ -20,7 +20,6 @@
                     <th>Nama Mahasiswa</th>
                     <th>Jam Kompen</th>
                     <th>Jumlah Alpa</th>
-                    <!-- <th>Aksi</th> -->
                 </tr>
             </thead>
             <tbody>
@@ -28,23 +27,24 @@
                 <tr>
                     <td>{{ $data->mahasiswa_alpa_nim }}</td>
                     <td>{{ $data->mahasiswa_alpa_nama }}</td>
-                    @if($data->approval->status === 1)
-                        <td>{{ $data->approval->tugas->tugas_jam_kompen ?? '0' }} Jam</td>
-                    @else
-                        <td>0 Jam</td>
-                    @endif
+                    <td>{{ $data->jam_kompen}} Jam</td>
                     <td>{{ $data->jam_alpa }} Jam</td>
-                    {{-- <td>
-                        <form action="{{ route('cetak.alpa', ['nim' => $data['mahasiswa_alpa_nim']]) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">Cetak</button>
-                        </form>
-                    </td> --}}
                 </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
 </div>
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 
 @endsection
+
+@push('js')
+    <script>
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+    </script>
+@endpush

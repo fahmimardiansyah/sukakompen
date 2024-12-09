@@ -18,7 +18,7 @@ class MahasiswaSeeder extends Seeder
                 'user_id'=> 4,
                 'nim'=> '2030456789',
                 'mahasiswa_nama'=> 'Faiz Abiyu',
-                'jumlah_alpa'=> 22,
+                'jumlah_alpa'=> 20,
                 'prodi'=> 'Sistem Informasi Bisnis',
                 'semester'=> 5,
             ],

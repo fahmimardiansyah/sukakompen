@@ -31,6 +31,6 @@ class WelcomeController extends Controller
             })
             ->count();
 
-        return view('dosen_tendik.landing', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'alpa' => $alpa, 'approval' => $approval]);
+        return view('admin.welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'alpa' => $alpa, 'approval' => $approval]);
     }
 }

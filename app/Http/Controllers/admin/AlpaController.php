@@ -5,6 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AlpaModel;
+use App\Models\MahasiswaModel;
+use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class AlpaController extends Controller
 {
@@ -17,7 +20,7 @@ class AlpaController extends Controller
 
         $activeMenu = 'alpam';
 
-        $mahasiswa = AlpaModel::with(['approval.tugas'])->get();
+        $mahasiswa = AlpaModel::all();
 
         return view('admin.alpam.index', [
             'mahasiswa' => $mahasiswa,
@@ -25,4 +28,78 @@ class AlpaController extends Controller
             'activeMenu' => $activeMenu,
         ]);
     }
+
+    public function import()
+    {
+        return view('admin.alpam.import');
+    }
+
+    public function import_ajax(Request $request)
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'file_alpa' => [
+                'required', 
+                'mimes:xlsx', 
+                'max:51200'
+            ]
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+
+        $file = $request->file('file_alpa'); 
+
+        $reader = IOFactory::createReader('Xlsx');  
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file->getRealPath()); 
+        $sheet = $spreadsheet->getActiveSheet(); 
+
+        $data = $sheet->toArray(null, false, true, true); 
+
+        if (count($data) > 1) { 
+            foreach ($data as $baris => $value) {
+                if ($baris > 1) { 
+                    $existing = AlpaModel::where('mahasiswa_alpa_nim', $value['A'])
+                                         ->where('mahasiswa_alpa_nama', $value['B'])
+                                         ->first();
+
+                    $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])
+                                         ->where('mahasiswa_nama', $value['B'])
+                                         ->first();
+
+                    if ($existing) {
+                        $existing->increment('jam_alpa', $value['C']);
+                        $existingMahasiswa->increment('jumlah_alpa', $value['C']);
+                    } else {
+                        AlpaModel::create([
+                            'mahasiswa_alpa_nim' => $value['A'],
+                            'mahasiswa_alpa_nama' => $value['B'],
+                            'jam_alpa' => $value['C'],
+                            'created_at' => now(),
+                        ]);
+                    }
+                }
+            }
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diimport'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data yang diimport'
+            ]);
+        }
+    }
+    return redirect('/');
+}
+
 }

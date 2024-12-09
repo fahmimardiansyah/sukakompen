@@ -15,11 +15,9 @@ return new class extends Migration
             $table->id('alpa_id');
             $table->string('mahasiswa_alpa_nim')->unique();
             $table->string('mahasiswa_alpa_nama');
-            $table->unsignedBigInteger('approval_id');
+            $table->integer('jam_kompen')->default(0);
             $table->integer('jam_alpa');
             $table->timestamps();
-
-            $table->foreign('approval_id')->references('approval_id')->on('t_approval_tugas');
         });
     }
 

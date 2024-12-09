@@ -33,7 +33,7 @@
 
             <div class="deskripsi-download">
                 @if($fileData)
-                    <a href="{{ $fileData['path'] }}" class="btn btn-success" download>
+                    <a href="{{ $fileData['path'] }}" class="btn btn-info" download>
                         <i class="{{ $fileData['icon'] }}"></i> {{ $fileData['name'] }}
                     </a>
                 @else

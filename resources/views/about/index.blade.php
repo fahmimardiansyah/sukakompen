@@ -18,7 +18,7 @@
             <div class="col-md-6 text-center mb-4">
                 <img src="/images/member1.jpg" alt="M. Hasan Basri" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                 <h4>Naswya Syafinka Widyamara</h4>
-                <p>System Analyst</p>
+                <p>System Analyst | Quality Assurance</p>
             </div>
             <!-- Member 2 -->
             <div class="col-md-6 text-center mb-4">
@@ -30,7 +30,7 @@
             <div class="col-md-6 text-center mb-4">
                 <img src="/images/member3.jpg" alt="Faiz Abiyu Atha Fawas" class="img-fluid rounded-circle" style="width: 150px; height: 150px;">
                 <h4>Faiz Abiyu Atha Fawas</h4>
-                <p>Back-End Developer</p>
+                <p>Back-End Developer | API Developer</p>
             </div>
             <!-- Member 4 -->
             <div class="col-md-6 text-center mb-4">

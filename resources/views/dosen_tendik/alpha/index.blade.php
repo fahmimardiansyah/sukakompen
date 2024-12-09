@@ -27,7 +27,7 @@
                 <tr>
                     <td>{{ $data->mahasiswa_alpa_nim }}</td>
                     <td>{{ $data->mahasiswa_alpa_nama }}</td>
-                    <td>{{ $data->progress->tugas->tugas_jam_kompen ?? '0' }} Jam</td>
+                    <td>{{ $data->jam_kompen }} Jam</td>
                     <td>{{ $data->jam_alpa }} Jam</td>
                     {{-- <td>
                         <form action="{{ route('cetak.alpa', ['nim' => $data['mahasiswa_alpa_nim']]) }}" method="POST">

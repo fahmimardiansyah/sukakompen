@@ -15,27 +15,31 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/task/' . $progress->progress_id . '/upload_file') }}" method="POST" id="form-upload" enctype="multipart/form-data">
+    <form action="{{ url('/task/' . $progress->progress_id . '/kirim_tugas') }}" method="POST" id="form-kirim">
         @csrf
-        @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content" style="border-radius: 20px; padding: 20px;">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Upload Tugas</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Mengirim Tugas</h5>
                     <button type="button" class="close" aria-label="Close" data-dismiss="modal" style="position: absolute; top: 10px; right: 15px; font-size: 24px; border: none; background: none; cursor: pointer;"> 
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body text-center">
                     <h2>{{ $progress->tugas->tugas_nama }}</h2>
-                    <div class="form-group">
-                        <label>Pilih File</label>
-                        <input type="file" name="file_mahasiswa" id="file_mahasiswa" class="form-control" required>
-                        <small id="error-file_mahasiswa" class="error-text form-text text-danger"></small>
-                    </div>
+                    <p>Yakin ingin mengirim tugas ini?</p>
+                    <p>
+                        @if($fileTugas)
+                            <a href="{{ $fileTugas['path'] }}" download>
+                                <i class="{{ $fileTugas['icon'] }}"></i> {{ $fileTugas['name'] }}
+                            </a>
+                        @else
+                            <span>No file available for download.</span>
+                        @endif
+                    </p>
                     <div class="mt-4">
                         <button class="btn btn-warning" type="button" data-dismiss="modal">Kembali</button>
-                        <button type="submit" class="btn btn-success">Upload</button>
+                        <button type="submit" class="btn btn-success">Kirim</button>
                     </div>
                 </div>
             </div>
@@ -43,19 +47,13 @@
     </form>
     <script>
         $(document).ready(function() {
-            $("#form-upload").validate({
-                rules: {
-                    file_mahasiswa: { required: true, extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" }
-                }, 
+            $("#form-kirim").validate({
+                rules: {},
                 submitHandler: function(form) {
-                    var formData = new FormData(form);
-                    
                     $.ajax({
                         url: form.action,
                         type: form.method,
-                        data: formData,
-                        processData: false, // Jangan proses data menjadi string
-                        contentType: false, // Jangan tentukan tipe konten
+                        data: $(form).serialize(),
                         success: function(response) {
                             if (response.status) {
                                 Swal.fire({
@@ -63,11 +61,7 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 }).then(() => {
-                                    // Tutup modal
-                                    $('#modal-master').modal('hide');
-                                    
-                                    // Jika perlu, segarkan halaman atau elemen tertentu
-                                    location.reload(); // Atau segarkan bagian tertentu jika tidak ingin reload seluruh halaman
+                                    window.location.href = "/dashboardmhs";
                                 });
                             } else {
                                 $('.error-text').text('');
@@ -91,7 +85,6 @@
                             });
                         }
                     });
-
                     return false; // Mencegah submit bawaan
                 },
                 errorElement: 'span',

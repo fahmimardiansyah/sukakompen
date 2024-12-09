@@ -10,7 +10,7 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/kompen') }}" class="btn btn-warning">Kembali</a>
+                <a data-dismiss="modal" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
     <script>
         $(document).ready(function() {
             $("#form-apply").validate({
-                rules: {}, // Tambahkan aturan validasi jika diperlukan
+                rules: {},
                 submitHandler: function(form) {
                     $.ajax({
                         url: form.action,

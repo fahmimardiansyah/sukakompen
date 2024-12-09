@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'alpam'], function () {
             Route::get('/', [App\Http\Controllers\Admin\AlpaController::class, 'index']);
+            Route::get('/import', [App\Http\Controllers\Admin\AlpaController::class, 'import']);
+            Route::post('/import_ajax', [App\Http\Controllers\Admin\AlpaController::class, 'import_ajax']);
         });
 
         Route::group(['prefix' => 'kompenma'], function () {
@@ -126,18 +128,21 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/apply', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'apply']);
             Route::post('/{id}/acc', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'acc']);
             Route::post('/{id}/decline', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'decline']);
-            Route::get('/tugas', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'tugas']);
+            Route::get('/{id}/tugas', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'tugas']);
+            Route::post('/{id}/acc_tugas', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'acc_tugas']);
+            Route::post('/{id}/decline_tugas', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'decline_tugas']);
         });
     });
 
-    // Mahasiswa
     Route::middleware(['authorize:MHS'])->group(function(){
         Route::get('/dashboardmhs', [App\Http\Controllers\Mahasiswa\WelcomeController::class, 'index'])->name('dashboardmhs');
 
         Route::group(['prefix' => 'profilemhs'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'index']);
-            Route::get('/{id}/edit_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_ajax']);
+            Route::get('/{id}/edit_username', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_username']);
+            Route::put('/{id}/update_username', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_username']);
+            Route::get('/{id}/edit_profile', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_profile']);
+            Route::put('/{id}/update_profile', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_profile']);
             Route::get('/{id}/edit_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'edit_foto']);
             Route::put('/{id}/update_foto', [App\Http\Controllers\Mahasiswa\ProfileController::class, 'update_foto']);
         });
@@ -153,6 +158,9 @@ Route::middleware('auth')->group(function () {
             Route::post('/{id}/apply_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'apply_tugas'])->name('task.apply');
             Route::get('/{id}/upload', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload']); 
             Route::get('/{id}/upload_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload_tugas']);
+            Route::put('/{id}/upload_file', [App\Http\Controllers\Mahasiswa\TugasController::class, 'upload_file']);
+            Route::get('/{id}/kirim', [App\Http\Controllers\Mahasiswa\TugasController::class, 'kirim']);
+            Route::post('/{id}/kirim_tugas', [App\Http\Controllers\Mahasiswa\TugasController::class, 'kirim_tugas']);
         });
 
         Route::group(['prefix' => 'history'], function () {
@@ -160,12 +168,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
         });
         
-
         Route::group(['prefix' => 'inbox'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\PesanController::class, 'index']);
         });
     });
-
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 

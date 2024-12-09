@@ -3,58 +3,49 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="modal-body">
                     <div class="alert alert-danger">
                         <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                         Data yang anda cari tidak ditemukan
                     </div>
-                    <a href="{{ url('/profilemhs') }}" class="btn btn-warning">Kembali</a>
+                    <a data-dismiss="modal" class="btn btn-warning">Kembali</a>
                 </div>
             </div>
         </div>
     @else
-        <form action="{{ url('/profilemhs/' . session('user_id') . '/update_ajax') }}" method="POST" id="form-edit"
+        <form action="{{ url('/profilemhs/' . $user->user_id . '/update_username') }}" method="POST" id="form-edit"
             enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div id="modal-master" class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Profile Anda</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                aria-hidden="true">&times;</span></button>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit Username/Password Anda</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Level Pengguna</label>
-                            <select name="level_id" id="level_id" class="form-control" required>
+                            <select name="level_id" id="level_id" class="form-control" disabled>
                                 <option value="">- Pilih Level -</option>
                                 @foreach ($level as $l)
                                     <option {{ $l->level_id == $user->level_id ? 'selected' : '' }}
                                         value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
                                 @endforeach
                             </select>
+                            <input type="hidden" name="level_id" value="{{ $user->level_id }}">
                             <small id="error-level_id" class="error-text form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label>Username</label>
-                            <input value="{{ $user->username }}" type="text" name="username" id="username"
-                                class="form-control" required>
+                            <input value="{{ $user->username }}" type="text" name="username" id="username" class="form-control" required>
                             <small id="error-username" class="error-text form-text text-danger"></small>
-                        </div>
-                        <div class="form-group">
-                            <label>Nama</label>
-                            <input value="{{ $user->nama }}" type="text" name="nama" id="nama"
-                                class="form-control" required>
-                            <small id="error-nama" class="error-text form-text text-danger"></small>
                         </div>
                         <div class="form-group">
                             <label>Password</label>
                             <input value="" type="password" name="password" id="password" class="form-control">
-                            <small class="form-text text-muted">Abaikan jika tidak ingin ubah
-                                password</small>
+                            <small class="form-text text-muted">Abaikan jika tidak ingin ubah password</small>
                             <small id="error-password" class="error-text form-text text-danger"></small>
                         </div>
                     </div>
@@ -70,18 +61,12 @@
                 $("#form-edit").validate({
                     rules: {
                         level_id: {
-                            required: true,
                             number: true
                         },
                         username: {
                             required: true,
                             minlength: 3,
                             maxlength: 20
-                        },
-                        nama: {
-                            required: true,
-                            minlength: 3,
-                            maxlength: 100
                         },
                         password: {
                             minlength: 6,
@@ -94,9 +79,7 @@
                         $.ajax({
                             url: form.action,
                             type: form.method,
-                            data: formData,
-                            processData: false, // setting processData dan contentType ke false, untuk menghandle file 
-                            contentType: false,
+                            data: $(form).serialize(),
                             success: function(response) {
                                 if (response.status) {
                                     $('#myModal').modal('hide');
@@ -119,6 +102,14 @@
                                         text: response.message
                                     });
                                 }
+                            },
+                            error: function(xhr, status, error) {
+                                console.log('Response:', xhr.responseText);  
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: 'Ada masalah saat mengirim permintaan.'
+                                });
                             }
                         });
                         return false;

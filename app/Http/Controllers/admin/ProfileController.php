@@ -110,13 +110,12 @@ class ProfileController extends Controller
                 ]);
             }
 
-            $check = UserModel::find($id);
+            $check = AdminModel::where('user_id', $id)->first();
 
             if ($check) {
                 $check->update([
-                    'username'  => $request->username,
-                    'password'  => $request->password ? bcrypt($request->password) : $check->password,
-                    'level_id'  => $request->level_id,
+                    'admin_nama'  => $request->admin_nama,
+                    'admin_no_telp'  => $request->admin_no_telp,
                 ]);
                 return response()->json([
                     'status' => true,
