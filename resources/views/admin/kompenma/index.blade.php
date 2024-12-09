@@ -23,13 +23,31 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $data)
+            @foreach($mahasiswa as $data )
             <tr>
                 <td>{{ $data->mahasiswa->mahasiswa_nama }}</td>
                 <td>{{ $data->mahasiswa->nim }}</td>
                 <td>{{ $data->tugas->tugas_nama }}</td>
-                <td>{{ $data->tugas->tugas_jam_kompen }}</td>
-                <td>{{ $data->status ? 'Selesai' : 'Belum Selesai' }}</td>
+                <td>{{ $data->tugas->tugas_jam_kompen }} Jam</td>
+                @if($data->status === 1)
+                    <td>Selesai (Tugas Diterima)</td>
+                @elseif($data->status === 0)
+                    <td>Tugas Ditolak</td>
+                @elseif($data->status === null)
+                    <td>Selesai (Menunggu persetujuan)</td>
+                @endif
+            </tr>
+            @endforeach
+
+            @foreach($progress as $item )
+            <tr>
+                <td>{{ $item->mahasiswa->mahasiswa_nama }}</td>
+                <td>{{ $item->mahasiswa->nim }}</td>
+                <td>{{ $item->tugas->tugas_nama }}</td>
+                <td>{{ $item->tugas->tugas_jam_kompen }} Jam</td>
+                @if($item->status === 0)
+                    <td>Belum Selesai (Progress)</td>
+                @endif
             </tr>
             @endforeach
         </tbody>

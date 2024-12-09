@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
+use App\Models\KompetensiTgsModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,12 +69,13 @@ class TugasController extends Controller
                 'tugas_kuota' => ['required', 'integer', 'max:10'],
                 'tugas_jam_kompen' => ['required', 'integer', 'max:50'],
                 'tugas_tenggat' => ['required', 'date'],
-                'kompetensi_id' => ['required', 'integer', 'exists:t_kompetensi,kompetensi_id'],
+                'kompetensi_id' => ['required', 'array', 'min:1'], 
+                'kompetensi_id.*' => ['integer', 'exists:t_kompetensi,kompetensi_id'],
                 'file_tugas' => ['nullable', 'file', 'mimes:doc,docx,pdf,ppt,pptx,xls,xlsx,zip,rar', 'max:2048'],
             ];
-
+    
             $validator = Validator::make($request->all(), $rules);
-
+    
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
@@ -81,34 +83,49 @@ class TugasController extends Controller
                     'msgField' => $validator->errors(),
                 ]);
             }
-
+    
             try {
-                $data = $request->except('file_tugas'); 
+                DB::beginTransaction();
+    
+                $data = $request->except('file_tugas', 'kompetensi_id');
                 $data['tugas_No'] = (string) Str::uuid();
                 $data['user_id'] = auth()->user()->user_id ?? null;
-
+    
                 if ($request->hasFile('file_tugas')) {
                     $file = $request->file('file_tugas');
                     $fileName = time() . '_' . $file->getClientOriginalName();
                     $file->storeAs('posts/tugas', $fileName, 'public');
                     $data['file_tugas'] = $fileName;
-                }                
-
-                TugasModel::create($data);
-
+                }
+    
+                $tugas = TugasModel::create($data);  
+    
+                $kompetensiData = array_map(function ($kompetensiId) use ($tugas) {
+                    return [
+                        'tugas_id' => $tugas->tugas_id,  
+                        'kompetensi_id' => $kompetensiId,
+                    ];
+                }, $request->kompetensi_id);
+    
+                KompetensiTgsModel::insert($kompetensiData);  // Insert kompetensi terkait
+    
+                DB::commit();
+    
                 return response()->json([
                     'status' => true,
                     'message' => 'Data tugas berhasil disimpan',
                 ]);
             } catch (\Exception $e) {
+                DB::rollBack();
                 return response()->json([
                     'status' => false,
                     'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage(),
                 ], 500);
             }
         }
+    
         return redirect('/');
-    }
+    }    
 
     public function kompetensi($jenis_id)
     {
@@ -120,6 +137,8 @@ class TugasController extends Controller
     public function detail($id)
     {
         $description = TugasModel::find($id);
+
+        $kompetensi = KompetensiTgsModel::where('tugas_id', $description->tugas_id)->get();
 
         $breadcrumb = (object) [
             'title' => 'Detail Tugas',
@@ -160,6 +179,7 @@ class TugasController extends Controller
 
         return view('admin.tugas.detail', [
             'description' => $description,
+            'kompetensi' => $kompetensi,
             'activeMenu' => $activeMenu,
             'breadcrumb' => $breadcrumb,
             'page' => $page,

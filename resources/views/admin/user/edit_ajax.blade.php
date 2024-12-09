@@ -44,17 +44,70 @@
                             class="form-control" required>
                         <small id="error-username" class="error-text form-text textdanger"></small>
                     </div>
-                    <div class="form-group">
-                        <label>Nama</label>
-                        <input value="{{ $user->nama }}" type="text" name="nama" id="nama" class="form-control"
-                            required>
-                        <small id="error-nama" class="error-text form-text text-danger"></small>
-                    </div>
+                    @if($dosen)
+                        <div class="form-group">
+                            <label>NIDN</label>
+                            <input value="{{ $dosen->nidn }}" type="text" name="nidn" id="nidn" class="form-control" readonly>
+                            <small id="error-nidn" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input value="{{ $dosen->dosen_nama }}" type="text" name="dosen_nama" id="dosen_nama" class="form-control" required>
+                            <small id="error-dosen_nama" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telp</label>
+                            <input value="{{ $dosen->dosen_no_telp }}" type="text" name="dosen_no_telp" id="dosen_no_telp" class="form-control" required>
+                            <small id="error-dosen_no_telp" class="error-text form-text text-danger"></small>
+                        </div>
+                    @elseif($tendik)
+                        <div class="form-group">
+                            <label>NIP</label>
+                            <input value="{{ $tendik->nip }}" type="text" name="nip" id="nip" class="form-control" readonly>
+                            <small id="error-nip" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input value="{{ $tendik->tendik_nama }}" type="text" name="tendik_nama" id="tendik_nama" class="form-control" required>
+                            <small id="error-tendik_nama" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>No. Telp</label>
+                            <input value="{{ $tendik->tendik_no_telp }}" type="text" name="tendik_no_telp" id="tendik_no_telp" class="form-control" required>
+                            <small id="error-tendik_no_telp" class="error-text form-text text-danger"></small>
+                        </div>
+                    @elseif($mahasiswa)
+                        <div class="form-group">
+                            <label>NIM</label>
+                            <input value="{{ $mahasiswa->nim }}" type="text" name="nim" id="nim" class="form-control" readonly>
+                            <small id="error-nim" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Nama</label>
+                            <input value="{{ $mahasiswa->mahasiswa_nama }}" type="text" name="mahasiswa_nama" id="mahasiswa_nama" class="form-control" required>
+                            <small id="error-mahasiswa_nama" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Prodi</label>
+                            <select name="level_id" id="level_id" class="form-control" required>
+                                <option value="">- Pilih Level -</option>
+                                @foreach ($prodi as $p)
+                                    <option {{ $p->prodi_id == $mahasiswa->prodi_id ? 'selected' : '' }}
+                                        value="{{ $p->prodi_id }}">{{ $p->prodi_nama }}</option>
+                                @endforeach
+                            </select>
+                            <small id="error-level_id" class="error-text form-text textdanger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Semester</label>
+                            <input value="{{ $mahasiswa->semester }}" type="text" name="semester" id="semester" class="form-control" readonly>
+                            <small id="error-semester" class="error-text form-text text-danger"></small>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <label>Password</label>
                         <input value="" type="password" name="password" id="password" class="form-control">
-                        <small class="form-text text-muted">Abaikan jika tidak ingin ubah
-                            password</small>
+                        <small class="form-text text-muted">Abaikan jika tidak ingin ubah password</small>
                         <small id="error-password" class="error-text form-text textdanger"></small>
                     </div>
                 </div>

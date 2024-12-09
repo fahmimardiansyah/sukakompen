@@ -18,6 +18,7 @@ class TendikModel extends Model
         'nip',
         'tendik_nama',
         'tendik_no_telp',
+        'tendik_email'
     ];
 
     public function user()

@@ -19,7 +19,7 @@ class MahasiswaSeeder extends Seeder
                 'nim'=> '2030456789',
                 'mahasiswa_nama'=> 'Faiz Abiyu',
                 'jumlah_alpa'=> 20,
-                'prodi'=> 'Sistem Informasi Bisnis',
+                'prodi_id'=> 2,
                 'semester'=> 5,
             ],
         ];

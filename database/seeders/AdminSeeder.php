@@ -19,6 +19,7 @@ class AdminSeeder extends Seeder
             'nip' => '234567',
             'admin_nama' => 'Ian',
             'admin_no_telp' => '08123458675',
+            'admin_email' => 'faizabiyu93@gmail.com',
         ];
 
         DB::table('m_admin')->insert($data);

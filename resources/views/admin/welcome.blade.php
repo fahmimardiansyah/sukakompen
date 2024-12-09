@@ -6,7 +6,7 @@
             <div class="welcome-content">
                 <h1>SELAMAT DATANG DI SUKA KOMPEN</h1>
                 <p>Butuh bantuan pekerja? Cari mahasiswa kompen disini</p>
-                <a href="/kompen" class="start-button">Start Now</a>
+                <a href="/tugas" class="start-button">Start Now</a>
             </div>
         </div>
 
@@ -20,7 +20,7 @@
                 <h2>
                     {{ $alpa }} Orang
                 </h2>
-                <a href="{{ url('/alpha') }}">
+                <a href="{{ url('/alpam') }}">
                     Lihat Selengkapnya
                 </a>
             </div>
@@ -33,7 +33,7 @@
                 <h2>
                     {{ $approval }} Orang
                 </h2>
-                <a href="{{ url('/kompenmhs') }}">
+                <a href="{{ url('/kompenma') }}">
                     Lihat Selengkapnya
                 </a>
             </div>

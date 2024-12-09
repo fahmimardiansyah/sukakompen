@@ -28,12 +28,17 @@
                 
                 <div class="form-group">
                     <label>Kompetensi Tugas</label>
-                    <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
-                        <option value="">- Pilih Kompetensi -</option>
-                        @foreach ($kompetensi as $k)
-                            <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
-                        @endforeach
-                    </select>
+                    <div id="kompetensi-container">
+                        <div class="kompetensi-group">
+                            <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
+                                <option value="">- Pilih Kompetensi -</option>
+                                @foreach ($kompetensi as $k)
+                                    <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" id="add-kompetensi" class="btn btn-sm btn-success mt-2">Tambah Kompetensi</button>
                     <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
                 </div>
 
@@ -97,27 +102,40 @@
         }
     });
 
-    $(document).ready(function() {
-        $('#jenis_id').on('change', function() {
-            let jenisId = $(this).val();
-            $('#kompetensi_id').empty().append('<option value="">- Pilih Kompetensi -</option>');
+    $(document).ready(function () {
+        const kompetensiOptions = @json($kompetensi);
 
-            if (jenisId) {
-                $.ajax({
-                    url: `/tugas/getkompetensi/${jenisId}`,
-                    type: 'GET',
-                    success: function(response) {
-                        response.forEach(function(kompetensi) {
-                            $('#kompetensi_id').append(
-                                `<option value="${kompetensi.kompetensi_id}">${kompetensi.kompetensi_nama}</option>`
-                            );
-                        });
-                    },
-                    error: function() {
-                        alert('Gagal mengambil data kompetensi');
+        $('#add-kompetensi').click(function () {
+            const newDropdown = $('<div class="kompetensi-group mt-2">')
+                .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
+                .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
+
+            $('#kompetensi-container').append(newDropdown);
+
+            kompetensiOptions.forEach(option => {
+                newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+            });
+        });
+
+        $(document).on('click', '.remove-kompetensi', function () {
+            $(this).closest('.kompetensi-group').remove();
+        });
+
+        $(document).on('change', '.kompetensi-select', function () {
+            const existingSelections = $('.kompetensi-select').map(function () {
+                return $(this).val();
+            }).get();
+
+            $('.kompetensi-select').each(function () {
+                const currentValue = $(this).val();
+                $(this).find('option').each(function () {
+                    if ($(this).val() && existingSelections.includes($(this).val()) && $(this).val() !== currentValue) {
+                        $(this).prop('disabled', true);
+                    } else {
+                        $(this).prop('disabled', false);
                     }
                 });
-            }
+            });
         });
     });
 

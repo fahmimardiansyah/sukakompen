@@ -18,6 +18,7 @@ class AdminModel extends Model
         'nip',
         'admin_nama',
         'admin_no_telp',
+        'admin_email'
     ];
 
     public function user()

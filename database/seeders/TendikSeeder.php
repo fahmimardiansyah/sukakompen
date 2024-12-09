@@ -16,6 +16,7 @@ class TendikSeeder extends Seeder
             'nip' => '54321098',
             'tendik_nama' => 'Hasan Basyri',
             'tendik_no_telp' => '08123456789',
+            'tendik_email' => 'iykyknow09@gmail.com',
         ];
 
         DB::table('m_tendik')->insert($data);

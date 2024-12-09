@@ -99,30 +99,6 @@
     });
 
     $(document).ready(function() {
-        $('#jenis_id').on('change', function() {
-            let jenisId = $(this).val();
-            $('#kompetensi_id').empty().append('<option value="">- Pilih Kompetensi -</option>');
-
-            if (jenisId) {
-                $.ajax({
-                    url: `/kompen/getkompetensi/${jenisId}`,
-                    type: 'GET',
-                    success: function(response) {
-                        response.forEach(function(kompetensi) {
-                            $('#kompetensi_id').append(
-                                `<option value="${kompetensi.kompetensi_id}">${kompetensi.kompetensi_nama}</option>`
-                            );
-                        });
-                    },
-                    error: function() {
-                        alert('Gagal mengambil data kompetensi');
-                    }
-                });
-            }
-        });
-    });
-
-    $(document).ready(function() {
         $("#form-tambah").validate({
             rules: {
                 tugas_nama: { required: true, minlength: 3, maxlength: 100 },

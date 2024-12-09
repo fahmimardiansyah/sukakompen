@@ -174,7 +174,7 @@ class TugasController extends Controller
         $fileTugas = null;
         if ($description && $description->file_mahasiswa) {
             $fileTugasPath = asset('storage/posts/pengumpulan/' . $description->file_mahasiswa);
-            $fileTugasName = basename($description->file_mahasiswa);
+            $fileTugasName = explode('_', $description->file_tugas, 2)[1] ?? $description->file_mahasiswa;
             $fileTugasExtension = pathinfo($fileTugasName, PATHINFO_EXTENSION);
             $icons = [
                 'pdf' => 'fas fa-file-pdf',

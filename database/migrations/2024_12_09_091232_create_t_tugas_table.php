@@ -22,12 +22,10 @@ return new class extends Migration
             $table->integer('tugas_kuota');
             $table->integer('tugas_jam_kompen');
             $table->dateTime('tugas_tenggat');
-            $table->unsignedBigInteger('kompetensi_id');
             $table->string('file_tugas')->default(null)->nullable();
             $table->timestamps();
 
             $table->foreign('jenis_id')->references('jenis_id')->on('m_jenis');
-            $table->foreign('kompetensi_id')->references('kompetensi_id')->on('t_kompetensi');
             $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
