@@ -50,7 +50,7 @@
                             title: 'Berhasil',
                             text: response.message
                         }).then(() => {
-                            window.location.href = "/pesan";
+                            window.location.href = "{{ url('/pesan') }}";
                         });
                     } else {
                         $('.error-text').text('');

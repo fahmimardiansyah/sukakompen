@@ -29,7 +29,7 @@ class TugasController extends Controller
             'list' => ['Home', 'Tugas']
         ];
 
-        $activeMenu = 'kompen';
+        $activeMenu = 'task';
 
         $user = Auth::user();
 
@@ -45,10 +45,21 @@ class TugasController extends Controller
             ->whereNotIn('tugas_id', ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
             ->get();
 
+        $progressCounts = ProgressModel::whereIn('tugas_id', $tugas->pluck('tugas_id'))
+            ->groupBy('tugas_id')
+            ->selectRaw('tugas_id, count(*) as progress_count')
+            ->get()
+            ->keyBy('tugas_id');
+
+        $tampil = $tugas->filter(function($task) use ($progressCounts) {
+            $progressCount = $progressCounts->get($task->tugas_id)->progress_count ?? 0;
+            return $task->tugas_kuota > $progressCount; 
+        });
+
         return view('mahasiswa.task.index', [
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu,
-            'tugas' => $tugas,
+            'tugas' => $tampil,
         ]);
     }
 
@@ -77,7 +88,7 @@ class TugasController extends Controller
             'title' => 'Detail Tugas'
         ];
 
-        $activeMenu = 'tugas';
+        $activeMenu = 'task';
 
         return view('mahasiswa.task.detail', [
             'description' => $description,
@@ -113,6 +124,17 @@ class TugasController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'Anda sudah mendaftar untuk tugas ini.'
+                    ], 400);
+                }
+
+                $progress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                    ->where('status', 0)
+                    ->exists();
+
+                if ($progress) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Masih ada progress atau tugas yang belum diselesaikan.'
                     ], 400);
                 }
 
@@ -185,7 +207,7 @@ class TugasController extends Controller
         $fileTugas = null;
         if ($description && $description->file_mahasiswa) {
             $fileTugasPath = asset('storage/posts/pengumpulan/' . $description->file_mahasiswa);
-            $fileTugasName = explode('_', $description->file_tugas, 2)[1] ?? $description->file_mahasiswa;
+            $fileTugasName = explode('_', $description->file_mahasiswa, 2)[1] ?? $description->file_mahasiswa;
             $fileTugasExtension = pathinfo($fileTugasName, PATHINFO_EXTENSION);
             $icons = [
                 'pdf' => 'fas fa-file-pdf',

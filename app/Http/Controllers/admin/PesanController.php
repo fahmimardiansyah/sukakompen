@@ -21,7 +21,7 @@ class PesanController extends Controller
             'list' => ['Home', 'Pesan Tugas']
         ];
 
-        $activeMenu = 'notif';
+        $activeMenu = 'pesan';
 
         $user = Auth::user();
         

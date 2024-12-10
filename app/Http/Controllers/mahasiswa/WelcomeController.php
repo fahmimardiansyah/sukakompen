@@ -4,6 +4,7 @@ namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\AkumulasiModel;
+use App\Models\AlpaModel;
 use App\Models\ApplyModel;
 use App\Models\ApprovalModel;
 use App\Models\ProgressModel;
@@ -38,7 +39,7 @@ class WelcomeController extends Controller
             ->whereNotIn('tugas_id', ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
             ->get();
 
-        $total = AkumulasiModel::where('semester', $mahasiswa->semester)->first();
+        $total = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
         return view('mahasiswa.dashboardmhs', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'progress' => $progress, 'alpa' => $mahasiswa, 'total' => $total]);
     }

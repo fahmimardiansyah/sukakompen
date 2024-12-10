@@ -41,20 +41,17 @@
 
             @foreach($progress as $item )
             <tr>
-                <td>{{ $item->mahasiswa->mahasiswa_nama }}</td>
-                <td>{{ $item->mahasiswa->nim }}</td>
-                <td>{{ $item->tugas->tugas_nama }}</td>
-                <td>{{ $item->tugas->tugas_jam_kompen }} Jam</td>
                 @if($item->status === 0)
+                    <td>{{ $item->mahasiswa->mahasiswa_nama }}</td>
+                    <td>{{ $item->mahasiswa->nim }}</td>
+                    <td>{{ $item->tugas->tugas_nama }}</td>
+                    <td>{{ $item->tugas->tugas_jam_kompen }} Jam</td>
                     <td>Belum Selesai (Progress)</td>
                 @endif
             </tr>
             @endforeach
         </tbody>
     </table>
-    <!-- <div class="card-tools">
-        <button onclick="modalAction('{{ url('/supplier/import') }}')" class="btn btn-info btn-sm">Import supplier</button>
-    </div> -->
 </div>
 </div>
 @endsection

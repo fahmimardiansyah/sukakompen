@@ -81,7 +81,7 @@
                             title: 'Berhasil',
                             text: response.message
                         }).then(() => {
-                            window.location.href = "/notif";
+                            window.location.href = "{{ url('/notif') }}";
                         });
                     } else {
                         $('.error-text').text('');

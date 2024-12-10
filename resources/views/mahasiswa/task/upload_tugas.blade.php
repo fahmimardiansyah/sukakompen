@@ -63,11 +63,8 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 }).then(() => {
-                                    // Tutup modal
                                     $('#modal-master').modal('hide');
-                                    
-                                    // Jika perlu, segarkan halaman atau elemen tertentu
-                                    location.reload(); // Atau segarkan bagian tertentu jika tidak ingin reload seluruh halaman
+                                    location.reload();
                                 });
                             } else {
                                 $('.error-text').text('');

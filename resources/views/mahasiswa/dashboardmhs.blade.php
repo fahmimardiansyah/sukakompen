@@ -6,7 +6,7 @@
             <div class="welcome-content">
                 <h1>SELAMAT DATANG DI SUKA KOMPEN</h1>
                 <p>Mau ngurangin jam alpa kamu? Yuk kompenin aja!</p>
-                <a href="/task" class="start-button">Start Now</a>
+                <a href="{{ url('/task') }}" class="start-button">Start Now</a>
             </div>
         </div>
 
@@ -31,7 +31,7 @@
                    Total Alpha
                 </h5>
                 <h2>
-                   {{ $total->jumlah_alpa }} Jam
+                   {{ $total->jam_alpa ?? '0' }} Jam
                 </h2>
                 <a href="{{ url('/akumulasi') }}">
                     Lihat Selengkapnya

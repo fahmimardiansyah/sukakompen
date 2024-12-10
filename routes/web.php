@@ -168,13 +168,14 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'history'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'index']);
-            Route::get('/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
         });
         
         Route::group(['prefix' => 'inbox'], function () {
             Route::get('/', [App\Http\Controllers\Mahasiswa\PesanController::class, 'index']);
         });
     });
+
+    Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 

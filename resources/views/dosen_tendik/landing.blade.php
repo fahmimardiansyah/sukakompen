@@ -6,7 +6,7 @@
             <div class="welcome-content">
                 <h1>SELAMAT DATANG DI SUKA KOMPEN</h1>
                 <p>Butuh bantuan pekerja? Cari mahasiswa kompen disini</p>
-                <a href="/kompen" class="start-button">Start Now</a>
+                <a href="{{ url('/kompen') }}" class="start-button">Start Now</a>
             </div>
         </div>
 

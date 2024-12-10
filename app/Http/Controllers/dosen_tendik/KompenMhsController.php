@@ -16,7 +16,7 @@ class KompenMhsController extends Controller
             'list' => ['Home', 'Kompen Mahasiswa']
         ];
     
-        $activeMenu = 'kompenma';
+        $activeMenu = 'kompenmhs';
 
         $user = auth()->user();
 

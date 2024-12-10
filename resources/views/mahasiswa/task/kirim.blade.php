@@ -61,7 +61,7 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 }).then(() => {
-                                    window.location.href = "/dashboardmhs";
+                                    window.location.href = "{{ url('/dashboardmhs') }}";
                                 });
                             } else {
                                 $('.error-text').text('');
@@ -85,7 +85,7 @@
                             });
                         }
                     });
-                    return false; // Mencegah submit bawaan
+                    return false; 
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
