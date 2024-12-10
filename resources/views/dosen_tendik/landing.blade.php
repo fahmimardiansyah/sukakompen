@@ -31,7 +31,7 @@
                     Mahasiswa Kompen
                 </h5>
                 <h2>
-                    {{ $approval }} Orang
+                    {{ $progress }} Orang
                 </h2>
                 <a href="{{ url('/kompenmhs') }}">
                     Lihat Selengkapnya

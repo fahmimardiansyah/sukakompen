@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\mahasiswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\KompetensiMhsModel;
+use App\Models\KompetensiModel;
 use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -29,9 +32,11 @@ class ProfileController extends Controller
 
         $mahasiswa = MahasiswaModel::where('user_id', $userId)->first();
 
+        $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
+
         $level = LevelModel::all(); 
         
-        return view('mahasiswa.profilemhs.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'user' => $user,'activeMenu' => $activeMenu, 'mahasiswa' => $mahasiswa]);
+        return view('mahasiswa.profilemhs.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'level' => $level, 'user' => $user,'activeMenu' => $activeMenu, 'mahasiswa' => $mahasiswa, 'kompetensi' => $kompetensi]);
     }
 
     public function edit_username(string $id)
@@ -88,46 +93,103 @@ class ProfileController extends Controller
     {
         $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
 
-        return view('mahasiswa.profilemhs.edit_profile', ['mahasiswa' => $mahasiswa]);
+        $kompetensiMahasiswa = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
+
+        $kompetensi = KompetensiModel::select('kompetensi_id', 'kompetensi_nama')->get();
+
+        return view('mahasiswa.profilemhs.edit_profile', ['mahasiswa' => $mahasiswa, 'kompetensi' => $kompetensi, 'kompetensiMahasiswa' => $kompetensiMahasiswa]);
     }
 
     public function update_profile(Request $request, $id)
-    {
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'mahasiswa_nama' => 'required|string|max:100',
-            ];
-            
-            $validator = Validator::make($request->all(), $rules);
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'mahasiswa_nama' => 'required|string|max:100',
+            'kompetensi_id' => ['required', 'array'],
+            'kompetensi_id.*' => ['integer', 'exists:t_kompetensi,kompetensi_id'],
+        ];
+        
+        $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false, 
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors()
-                ]);
-            }
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false, 
+                'message' => 'Validasi gagal.',
+                'msgField' => $validator->errors()
+            ]);
+        }
 
-            $check = MahasiswaModel::where('user_id', $id)->first();
+        $check = MahasiswaModel::where('user_id', $id)->first();
 
-            if ($check) {
+        if ($check) {
+            DB::beginTransaction(); // Start transaction
+
+            try {
+                // Update mahasiswa profile
                 $check->update([
                     'mahasiswa_nama' => $request->mahasiswa_nama,
                 ]);
+
+                // Delete old kompetensi data
+                KompetensiMhsModel::where('mahasiswa_id', $check->mahasiswa_id)->delete();
+
+                // Validate if there are duplicate kompetensi IDs
+                $kompetensiIds = $request->kompetensi_id;
+                if (count($kompetensiIds) !== count(array_unique($kompetensiIds))) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Kompetensi ID duplikat ditemukan dalam input.'
+                    ]);
+                }
+
+                // Prepare new kompetensi data
+                $kompetensiData = [];
+                foreach ($kompetensiIds as $kompetensiId) {
+                    $existing = KompetensiMhsModel::where('mahasiswa_id', $check->mahasiswa_id) 
+                        ->where('kompetensi_id', $kompetensiId)
+                        ->exists();
+
+                    if ($existing) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Kompetensi ID ' . $kompetensiId . ' sudah ada untuk tugas ini.'
+                        ]);
+                    }
+
+                    $kompetensiData[] = [
+                        'mahasiswa_id' => $check->mahasiswa_id, 
+                        'kompetensi_id' => $kompetensiId,
+                    ];
+                }
+
+                KompetensiMhsModel::insert($kompetensiData);
+
+                DB::commit(); 
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil diupdate'
                 ]);
-            } else {
+            } catch (\Exception $e) {
+                DB::rollback();
+
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Terjadi kesalahan saat mengupdate data: ' . $e->getMessage(),
+                    'trace' => $e->getTraceAsString(),
                 ]);
             }
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ]);
         }
-
-        return redirect('/');
     }
+
+    return redirect('/');
+}
+
 
     public function edit_foto(string $id)
     {

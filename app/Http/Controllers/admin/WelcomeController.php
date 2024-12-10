@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\AlpaModel;
 use App\Models\ApprovalModel;
+use App\Models\ProgressModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 
@@ -25,12 +26,13 @@ class WelcomeController extends Controller
 
         $alpa = AlpaModel::with(['approval.tugas'])->count();
 
-        $approval = ApprovalModel::with(['tugas', 'mahasiswa', 'progress'])
+        $progress = ProgressModel::with(['tugas', 'mahasiswa'])
             ->whereHas('tugas', function ($query) use ($user) {
                 $query->where('user_id', $user->user_id);
             })
+            ->where('status', 0) // Tambahkan kondisi where untuk status
             ->count();
 
-        return view('admin.welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'alpa' => $alpa, 'approval' => $approval]);
+        return view('admin.welcome', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'alpa' => $alpa, 'progress' => $progress]);
     }
 }

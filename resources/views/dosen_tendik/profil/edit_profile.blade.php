@@ -42,6 +42,11 @@
                             <input value="{{ $dosen->dosen_no_telp }}" type="text" name="dosen_no_telp" id="dosen_no_telp" class="form-control" required>
                             <small id="error-dosen_no_telp" class="error-text form-text text-danger"></small>
                         </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input value="{{ $dosen->dosen_email }}" type="email" name="dosen_email" id="dosen_email" class="form-control" required>
+                            <small id="error-dosen_email" class="error-text form-text text-danger"></small>
+                        </div>
                     @elseif($tendik)
                         <div class="form-group">
                             <label>NIP</label>
@@ -57,6 +62,11 @@
                             <label>No. Telp</label>
                             <input value="{{ $tendik->tendik_no_telp }}" type="text" name="tendik_no_telp" id="tendik_no_telp" class="form-control" required>
                             <small id="error-tendik_no_telp" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input value="{{ $tendik->tendik_email }}" type="email" name="tendik_email" id="tendik_email" class="form-control" required>
+                            <small id="error-tendik_email" class="error-text form-text text-danger"></small>
                         </div>
                     @endif
                 </div>
@@ -81,6 +91,10 @@
                             required: true,
                             maxlength: 15
                         },
+                        dosen_email: {
+                            required: true,
+                            maxlength: 100
+                        },
                         tendik_nama: {
                             required: true,
                             maxlength: 100
@@ -89,6 +103,10 @@
                             required: true,
                             maxlength: 15
                         },
+                        tendik_email: {
+                            required: true,
+                            maxlength: 100
+                        }
                     },
                     submitHandler: function(form) {
                         var formData = new FormData(

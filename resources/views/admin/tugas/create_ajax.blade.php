@@ -105,22 +105,51 @@
     $(document).ready(function () {
         const kompetensiOptions = @json($kompetensi);
 
+        // Add Competency
         $('#add-kompetensi').click(function () {
+            const selectedCompetency = $('#kompetensi-container .kompetensi-select:last').val();  // Check last selected competency
+
+            if (!selectedCompetency) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pilih Kompetensi Terlebih Dahulu',
+                    text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
+                });
+                return;
+            }
+
+            const existingSelections = $('.kompetensi-select').map(function () {
+                return $(this).val();
+            }).get();
+
+            const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k.kompetensi_id.toString()));
+
+            if (filteredOptions.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Tidak Ada Kompetensi Tersisa',
+                    text: 'Semua kompetensi telah dipilih.'
+                });
+                return;
+            }
+
             const newDropdown = $('<div class="kompetensi-group mt-2">')
                 .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
                 .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
 
-            $('#kompetensi-container').append(newDropdown);
-
-            kompetensiOptions.forEach(option => {
+            filteredOptions.forEach(option => {
                 newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
             });
+
+            $('#kompetensi-container').append(newDropdown);
         });
 
+        // Remove Competency
         $(document).on('click', '.remove-kompetensi', function () {
             $(this).closest('.kompetensi-group').remove();
         });
 
+        // Handle Competency Change Logic
         $(document).on('change', '.kompetensi-select', function () {
             const existingSelections = $('.kompetensi-select').map(function () {
                 return $(this).val();
@@ -136,6 +165,18 @@
                     }
                 });
             });
+
+            // Ensure that when a competency is changed, we remove from the bottom first
+            const changedCompetency = $(this).val();
+            const competencies = $('.kompetensi-select').toArray();
+            const index = competencies.findIndex(c => c === this);
+
+            if (index !== -1) {
+                // Remove from bottom to the changed one
+                for (let i = competencies.length - 1; i > index; i--) {
+                    $(competencies[i]).closest('.kompetensi-group').remove();
+                }
+            }
         });
     });
 
@@ -163,13 +204,15 @@
                     contentType: false,
                     success: function(response) {
                         if (response.status) {
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide'); 
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            dataTugas.ajax.reload(); 
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000);
                         } else {
                             $('.error-text').text(''); 
                             $.each(response.msgField, function(prefix, val) {

@@ -7,6 +7,7 @@ use App\Models\ApplyModel;
 use App\Models\ApprovalModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
+use App\Models\KompetensiTgsModel;
 use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,8 @@ class TugasController extends Controller
     {
         $description = TugasModel::find($id);
 
+        $kompetensi = KompetensiTgsModel::where('tugas_id', $description->tugas_id)->get();
+
         $breadcrumb = (object) [
             'title' => 'Detail Tugas',
             'list' => ['Home', 'Tugas', 'Detail']
@@ -74,9 +77,15 @@ class TugasController extends Controller
             'title' => 'Detail Tugas'
         ];
 
-        $activeMenu = 'tugas'; 
+        $activeMenu = 'tugas';
 
-        return view('mahasiswa.task.detail', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page]);
+        return view('mahasiswa.task.detail', [
+            'description' => $description,
+            'kompetensi' => $kompetensi,
+            'activeMenu' => $activeMenu,
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+        ]);
     }
 
     public function apply($id)
@@ -133,6 +142,8 @@ class TugasController extends Controller
     public function upload($id)
     {
         $description = ProgressModel::find($id);
+
+        $kompetensi = KompetensiTgsModel::where('tugas_id', $description->tugas_id)->get();
 
         $breadcrumb = (object) [
             'title' => 'Detail Tugas',
@@ -197,7 +208,7 @@ class TugasController extends Controller
             ];
         }
 
-        return view('mahasiswa.task.upload', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page, 'fileData' => $fileData, 'fileTugas' => $fileTugas]);
+        return view('mahasiswa.task.upload', ['description' => $description, 'activeMenu' => $activeMenu, 'breadcrumb' => $breadcrumb, 'page' => $page, 'fileData' => $fileData, 'fileTugas' => $fileTugas, 'kompetensi' => $kompetensi]);
     }
 
     public function upload_tugas($id) {
@@ -300,31 +311,32 @@ class TugasController extends Controller
 
     public function kirim_tugas(Request $request, $id) {
         if ($request->ajax() || $request->wantsJson()) {
-
             $progress = ProgressModel::find($id);
-
+    
+            if (!$progress || !$progress->file_mahasiswa) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada file yang diunggah. Anda harus mengunggah file terlebih dahulu sebelum mengirim tugas.'
+                ], 400); 
+            }
+    
             ApprovalModel::create([
                 'progress_id' => $progress->progress_id,
                 'tugas_id' => $progress->tugas_id,
                 'mahasiswa_id' => $progress->mahasiswa_id,
             ]);
-
-            if ($progress) {
-                $progress->update([
-                    'status' => true
-                ]);
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Tugas Terkirim'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
-                ]);
-            }
+    
+            $progress->update([
+                'status' => true
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'Tugas berhasil dikirim'
+            ]);
         }
+    
         return redirect('/');
-    }
+    }    
     
 }

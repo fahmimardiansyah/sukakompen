@@ -28,17 +28,13 @@ class KompetensiController extends Controller
     }
 
     public function create_ajax() {
-        $jenis = JenisModel::select('jenis_id', 'jenis_nama')->get();
-
-        return view('admin.kompetensi.create_ajax')
-                    ->with('jenis', $jenis);
+        return view('admin.kompetensi.create_ajax');
     }
 
     public function store_ajax(Request $request) {
         
         if($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'jenis_id'=> 'required|integer|exists:m_jenis,jenis_id',
                 'kompetensi_kode' => 'required|string|min:3|unique:t_kompetensi,kompetensi_kode',
                 'kompetensi_nama' => 'required|string|max:100',
                 'kompetensi_deskripsi' => 'required|string|max:500'
@@ -66,26 +62,24 @@ class KompetensiController extends Controller
 
     public function edit_ajax(string $id) {
         $kompetensi = KompetensiModel::find($id);
-        $jenis = JenisModel::select('jenis_id', 'jenis_nama')->get();
 
-        return view('admin.kompetensi.edit_ajax', ['kompetensi' => $kompetensi, 'jenis' => $jenis]);
+        return view('admin.kompetensi.edit_ajax', ['kompetensi' => $kompetensi]);
     }
 
     public function update_ajax(Request $request, $id)
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'jenis_id'=> 'required|integer|exists:m_jenis,jenis_id',
-                'kompetensi_kode' => 'required|string|min:3|unique:t_kompetensi,kompetensi_kode',
+                'kompetensi_kode' => 'required|string|min:3|unique:t_kompetensi,kompetensi_kode,' . $id . ',kompetensi_id',
                 'kompetensi_nama' => 'required|string|max:100',
                 'kompetensi_deskripsi' => 'required|string|max:500'
-            ] ;
+            ];
 
             $validator = Validator::make($request->all(), $rules);
-            
+
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false, 
+                    'status' => false,
                     'message' => 'Validasi gagal.',
                     'msgField' => $validator->errors()
                 ]);

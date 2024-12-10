@@ -32,10 +32,6 @@
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
-                            <th class="text-right col-3">Jenis Kompetensi :</th>
-                            <td class="col-9">{{ $kompetensi->jenis->jenis_nama }}</td>
-                        </tr>
-                        <tr>
                             <th class="text-right col-3">Kode :</th>
                             <td class="col-9">{{ $kompetensi->kompetensi_kode }}</td>
                         </tr>
@@ -73,7 +69,9 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                dataKompetensi.ajax.reload();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {

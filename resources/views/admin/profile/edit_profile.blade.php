@@ -40,6 +40,11 @@
                             <input value="{{ $admin->admin_no_telp }}" type="text" name="admin_no_telp" id="admin_no_telp" class="form-control" required>
                             <small id="error-admin_no_telp" class="error-text form-text text-danger"></small>
                         </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input value="{{ $admin->admin_email }}" type="email" name="admin_email" id="admin_email" class="form-control" required>
+                            <small id="error-admin_email" class="error-text form-text text-danger"></small>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
@@ -59,6 +64,10 @@
                         admin_no_telp: {
                             required: true,
                             maxlength: 15
+                        },
+                        admin_email: {
+                            required: true,
+                            maxlength: 100
                         },
                     },
                     submitHandler: function(form) {

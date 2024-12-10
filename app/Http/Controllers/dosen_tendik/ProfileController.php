@@ -102,8 +102,10 @@ class ProfileController extends Controller
             $rules = [
                 'dosen_nama' => 'sometimes|required|string|max:100',
                 'dosen_no_telp' => 'sometimes|required|string|max:15',
+                'dosen_email' => 'sometimes|required|string|max:100',
                 'tendik_nama' => 'sometimes|required|string|max:100',
                 'tendik_no_telp' => 'sometimes|required|string|max:15',
+                'tendik_email' => 'sometimes|required|string|max:100',
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -123,11 +125,13 @@ class ProfileController extends Controller
                 $dosen->update([
                     'dosen_nama' => $request->dosen_nama,
                     'dosen_no_telp' => $request->dosen_no_telp,
+                    'dosen_email' =>$request->dosen_email
                 ]);
             } elseif ($tendik) {
                 $tendik->update([
                     'tendik_nama' => $request->tendik_nama,
                     'tendik_no_telp' => $request->tendik_no_telp,
+                    'tendik_email' => $request->tendik_email,
                 ]);
             } else {
                 return response()->json([

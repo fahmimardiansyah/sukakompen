@@ -35,9 +35,29 @@
                             <input value="{{ $mahasiswa->mahasiswa_nama }}" type="text" name="mahasiswa_nama" id="mahasiswa_nama" class="form-control" required>
                             <small id="error-mahasiswa_nama" class="error-text form-text text-danger"></small>
                         </div>
+
+                        <div class="form-group">
+                            <label>Kompetensi Tugas</label>
+                            <div id="kompetensi-container">
+                                @foreach ($kompetensiMahasiswa as $kt)
+                                    <div class="kompetensi-group">
+                                        <select name="kompetensi_id[]" class="form-control kompetensi-select" readonly>
+                                            <option value="">- Pilih Kompetensi -</option>
+                                            @foreach ($kompetensi as $k)
+                                                <option value="{{ $k->kompetensi_id }}" {{ $kt->kompetensi_id == $k->kompetensi_id ? 'selected' : '' }}>{{ $k->kompetensi_nama }}</option>
+                                            @endforeach
+                                        </select>
+                                        <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <button type="button" id="add-kompetensi" class="btn btn-sm btn-success mt-2">Tambah Kompetensi</button>
+                            <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
+                        </div>
+
                         <div class="form-group">
                             <label>Prodi</label>
-                            <input value="{{ $mahasiswa->prodi }}" type="text" name="prodi" id="prodi" class="form-control" readonly>
+                            <input value="{{ $mahasiswa->prodi->prodi_nama }}" type="text" name="prodi" id="prodi" class="form-control" readonly>
                             <small id="error-prodi" class="error-text form-text text-danger"></small>
                         </div>
                         <div class="form-group">
@@ -54,12 +74,62 @@
             </div>
         </form>
         <script>
+            $(document).ready(function () {
+                const kompetensiOptions = @json($kompetensi);
+
+                $('#add-kompetensi').click(function () {
+                    const selectedCompetency = $('#kompetensi-container .kompetensi-select:last').val();  // Check last selected competency
+
+                    if (!selectedCompetency) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Pilih Kompetensi Terlebih Dahulu',
+                            text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
+                        });
+                        return;
+                    }
+
+                    const existingSelections = $('.kompetensi-select').map(function () {
+                        return $(this).val();
+                    }).get();
+
+                    const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k.kompetensi_id.toString()));
+
+                    if (filteredOptions.length === 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Tidak Ada Kompetensi Tersisa',
+                            text: 'Semua kompetensi telah dipilih.'
+                        });
+                        return;
+                    }
+
+                    const newDropdown = $('<div class="kompetensi-group mt-2">')
+                        .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
+                        .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
+
+                    filteredOptions.forEach(option => {
+                        newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+                    });
+
+                    $('#kompetensi-container').append(newDropdown);
+                });
+
+                $(document).on('click', '.remove-kompetensi', function () {
+                    $(this).closest('.kompetensi-group').remove();
+                });
+            });
+
             $(document).ready(function() {
                 $("#form-edit").validate({
                     rules: {
                         mahasiswa_nama: {
                             required: true,
                             maxlength: 100
+                        },
+                        kompetensi_id: { 
+                            required: true, 
+                            number: true 
                         },
                     },
                     submitHandler: function(form) {
