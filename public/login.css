@@ -8,85 +8,81 @@ body {
     background-repeat: no-repeat; /* Prevent repeating the image */
 }
 
-.login {
-    color: white;
+.login-box {
+    width: 400px; /* Atur lebar sesuai kebutuhan */
+    margin: 100px auto; /* Pusatkan di tengah layar */
 }
 
-.login a {
-    color: #ffffff;
+.card {
+    background: #ffffff44; /* Transparansi latar belakang */
+    border: none; /* Hapus border */
+    border-radius: 15px; /* Bulatkan sudut */
+    backdrop-filter: blur(10px); /* Blur efek di belakang */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* Bayangan halus */
 }
 
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; 
-    position: relative;
+.card-header {
+    border-bottom: none; /* Hapus border bawah */
 }
 
-.login-form {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    border-radius: 15px;
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 600px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.5); /* Optional border */
+.card-body {
+    padding: 20px; /* Tambahkan padding di dalam card */
 }
 
-.login-form h2 {
-    font-weight: 700;
-    margin-bottom: 40px;
-    color: #EBBA09;
+.input-group {
+    margin-bottom: 20px; /* Spasi antar input */
 }
 
-h1 {
-    font-weight: 600;
-    color: #EBBA09;
+.input-group .form-control {
+    background: #ffffff44; /* Transparansi input */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Border transparan */
+    color: #fff; /* Warna teks */
 }
 
-.form-group {
-    margin-bottom: 20px;
+.input-group .input-group-text {
+    background: rgba(255, 255, 255, 0.2); /* Transparansi ikon */
+    border: 1px solid rgba(255, 255, 255, 0.5); /* Border transparan */
+    color: #fff; /* Warna ikon */
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: #ffffff;
-    text-align: left;
+.btn-primary {
+    background: #ffe60aee; /* Warna tombol dengan transparansi */
+    border: none; /* Hapus border */
+    border-radius: 20px;
+    margin-bottom: 15px;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+.btn-primary:hover {
+    background: #ffc400f6; /* Warna tombol saat hover */
 }
 
-.btn {
-    padding: 10px 20px;
-    background-color: #EBBA09;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
+.login-box-msg {
+    color: #fff; /* Warna teks pesan login */
 }
 
-.signup {
-    margin-top: 10px;
+.error-text {
+    font-size: 0.9rem; /* Ukuran font untuk pesan error */
 }
 
-.signup a {
-    color: #EBBA09; /* Link color */
-    text-decoration: none; /* No underline */
+.card-header a {
+    color: #ffffff; /* Ganti dengan warna yang Anda inginkan untuk "SukaKompen" */
+    text-decoration: none; /* Menghilangkan garis bawah */
 }
 
-.signup a:hover {
-    text-decoration: underline; /* Underline on hover */
+.card-header a:hover {
+    color: #ffc400; /* Ganti dengan warna saat hover */
 }
 
-p{
-    margin-top: 20px;
+.login-box-msg a {
+    color: #0d3d7c; /* Ganti dengan warna yang Anda inginkan untuk "Daftar Sekarang" */
+    text-decoration: underline; /* Menambahkan garis bawah pada link */
+}
+
+.login-box-msg a:hover {
+    color: #ffc400; /* Ganti dengan warna saat hover */
+}
+
+.card.card-outline.card-primary {
+    border-color: #ffc107;
+    margin: 0 20px;
 }

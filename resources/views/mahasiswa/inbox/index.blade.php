@@ -38,7 +38,7 @@
         @foreach($approval as $data)
             @if($data->status === 1 && $data->pengguna)
                 <div class="notification" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
-                    <img alt="Profile picture of {{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama }}" height="50" src="https://storage.googleapis.com/a1aa/image/dVqQymORCvozEpawKsIaEH2CXnmO8Ucevf3CYZJtz1ujHsrTA.jpg" width="50"/>
+                    <img alt="Profile picture of {{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama }}" height="50" src="img/usericon.png" width="50"/>
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, diterima.</p>
@@ -46,7 +46,7 @@
                 </div>
             @elseif($data->status === 0 && $data->pengguna)
                 <div class="notification" style="background: linear-gradient(135deg, #ffffff, #ec3939);">
-                    <img alt="Profile picture of {{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama }}" height="50" src="https://storage.googleapis.com/a1aa/image/dVqQymORCvozEpawKsIaEH2CXnmO8Ucevf3CYZJtz1ujHsrTA.jpg" width="50"/>
+                    <img alt="Profile picture of {{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama }}" height="50" src="img/usericon.png" width="50"/>
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, ditolak.</p>

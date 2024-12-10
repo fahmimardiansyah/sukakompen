@@ -6,9 +6,9 @@
         <div class="row" id="profile">
             <div class="col-md-4 border-right">
                 <div class="p-3 py-5">
-                    <div class="d-flex flex-column align-items-center text-center p-3 ">
+                    <div class="d-flex flex-column align-items-center text-center p-3">
                         @if ($user->image !== null)
-                            <img class="rounded mt-3 mb-2" width="250px" src="{{ url($user->image) }}">
+                            <img class="rounded-circle mt-3 mb-2" width="250px" src="{{ url($user->image) }}">
                         @else
                             <i class="fa fa-user-circle" style="font-size: 120px;"></i>
                         @endif

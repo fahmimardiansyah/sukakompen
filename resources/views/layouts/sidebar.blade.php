@@ -80,12 +80,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>Profile</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ url('kompen') }}" class="nav-link {{ $activeMenu == 'kompen' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tasks"></i>
                         <p>Tugas Kompen</p>
@@ -109,6 +103,12 @@
                         <p>Inbox</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ url('profile') }}" class="nav-link {{ $activeMenu == 'profil' ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Profile</p>
+                    </a>
+                </li>
             @endif
 
             <!-- MAHASISWA -->
@@ -118,12 +118,6 @@
                     <a href="{{ url('dashboardmhs') }}" class="nav-link {{ $activeMenu == 'dashboardmhs' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
-                        <i class="nav-icon fas fa-user"></i>
-                        <p>Profile</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -148,6 +142,12 @@
                     <a href="{{ url('inbox') }}" class="nav-link {{ $activeMenu == 'inbox' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>Inbox</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ url('profilemhs') }}" class="nav-link {{ $activeMenu == 'profilemhs' ? 'active' : '' }}">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>Profile</p>
                     </a>
                 </li>
             @endif

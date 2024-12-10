@@ -13,7 +13,6 @@ html, body {
     /* min-height: 100vh;  */
 }
 
-
 .sidebar {
     position: fixed;
     top: 0;
@@ -303,7 +302,7 @@ background-color: #141450;
 
 .task-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(800px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 50px;
     margin-top: 20px;
 }
@@ -349,6 +348,7 @@ background-color: #141450;
     text-align: left;
     background-color: #f9f9f9; /* Warna latar belakang body card */
     min-height: 100px;
+    max-height: 1000px;
     flex-grow: 1;
 }
 
@@ -365,7 +365,7 @@ background-color: #141450;
     padding: 20px 0;
     background-color: #f7f7f7;
     border-top: 1px solid #ddd; /* Border atas pada footer */
-    height: auto;
+    height: 100%;
 }
 
 /* Tombol pada Card */
@@ -433,6 +433,7 @@ background-color: #141450;
 .card.card-outline.card-primary {
     border-color: #ffc107;
     margin: 0 20px;
+    margin-bottom: 40px;
 }
 
 .table-alpa {
@@ -1317,3 +1318,75 @@ footer {
 }
 
 
+
+/* RESPONSIVENESS ADDED */
+@media (max-width: 992px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .navbar ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .welcome-banner {
+        height: auto;
+        padding: 20px;
+    }
+
+    .task-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .header {
+        text-align: center;
+    }
+
+    .navbar ul {
+        display: block;
+    }
+
+    .profile-picture {
+        width: 30px;
+        height: 30px;
+    }
+
+    .welcome-content {
+        max-width: 90%;
+    }
+
+    .task-card {
+        margin: 5px;
+    }
+
+    .search-bars {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    .navbar .btn {
+        padding: 5px 10px;
+    }
+
+    .task-card .btn {
+        font-size: 0.8rem;
+        padding: 5px 10px;
+    }
+
+    .notification img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .notification .text h3 {
+        font-size: 16px;
+    }
+}
