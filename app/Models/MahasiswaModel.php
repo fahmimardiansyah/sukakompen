@@ -17,10 +17,15 @@ class MahasiswaModel extends Model
      * @var array
      * 
      */
-    protected $fillable = ['user_id', 'nim', 'mahasiswa_nama', 'jumlah_alpa', 'prodi', 'semester'];
+    protected $fillable = ['user_id', 'nim', 'mahasiswa_nama', 'jumlah_alpa', 'prodi_id', 'semester'];
 
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
+    }
+
+    public function prodi()
+    {
+        return $this->belongsTo(ProdiModel::class, 'prodi_id', 'prodi_id');
     }
 }

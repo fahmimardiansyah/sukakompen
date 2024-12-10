@@ -97,7 +97,8 @@ class ProfileController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'admin_nama' => 'required|string|max:100',
-                'admin_no_telp' => 'required|string|max:15'
+                'admin_no_telp' => 'required|string|max:15',
+                'admin_email' => 'required|string|max:100',
             ];
             
             $validator = Validator::make($request->all(), $rules);
@@ -116,6 +117,7 @@ class ProfileController extends Controller
                 $check->update([
                     'admin_nama'  => $request->admin_nama,
                     'admin_no_telp'  => $request->admin_no_telp,
+                    'admin_email' => $request->admin_email
                 ]);
                 return response()->json([
                     'status' => true,

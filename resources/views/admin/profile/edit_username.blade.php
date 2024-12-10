@@ -88,9 +88,6 @@
                                         title: 'Berhasil',
                                         text: response.message
                                     });
-                                    setTimeout(function() {
-                                        location.reload();
-                                    }, 2000);
                                 } else {
                                     $('.error-text').text('');
                                     $.each(response.msgField, function(prefix, val) {

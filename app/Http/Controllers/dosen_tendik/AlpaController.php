@@ -19,7 +19,7 @@ class AlpaController extends Controller
 
         $mahasiswa = AlpaModel::all();
 
-        return view('admin.alpam.index', [
+        return view('dosen_tendik.alpha.index', [
             'mahasiswa' => $mahasiswa,
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu,

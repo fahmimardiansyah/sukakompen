@@ -19,7 +19,6 @@
                     <th>Nama Mahasiswa</th>
                     <th>Jam Kompen</th>
                     <th>Jumlah Alpa</th>
-                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -29,12 +28,6 @@
                     <td>{{ $data->mahasiswa_alpa_nama }}</td>
                     <td>{{ $data->jam_kompen }} Jam</td>
                     <td>{{ $data->jam_alpa }} Jam</td>
-                    {{-- <td>
-                        <form action="{{ route('cetak.alpa', ['nim' => $data['mahasiswa_alpa_nim']]) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="btn btn-primary btn-sm">Cetak</button>
-                        </form>
-                    </td> --}}
                 </tr>
                 @endforeach
             </tbody>

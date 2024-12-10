@@ -291,25 +291,32 @@ class APINotifController extends Controller
         }
 
         $apply = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
-            ->with(['tugas', 'tugas.users']) 
+            ->with(['tugas', 'tugas.users'])
             ->get();
 
-        $applyGrouped = $apply->groupBy('apply_status');
+        if ($apply->isEmpty()) {
+            return response()->json(['message' => 'No apply records found'], 404);
+        }
+
+        $applyGrouped = $apply->groupBy('status');
+        
+        if (!$applyGrouped->has(0)) {
+            return response()->json(['message' => 'No accepted tasks found'], 404);
+        }
+
         $applyAccepted = $applyGrouped->get(0, collect());
 
         $result = [
             'decline' => $applyAccepted->map(function ($applyItem) {
 
-                $tugas = $applyItem->tugas; 
-                
+                $tugas = $applyItem->tugas;
+
                 if (!$tugas) {
-                    return null; 
+                    return null;
                 }
 
-                $dosen = DosenModel::where('user_id', $tugas->user_id)->first(); 
-
+                $dosen = DosenModel::where('user_id', $tugas->user_id)->first();
                 $tendik = TendikModel::where('user_id', $tugas->user_id)->first();
-                
                 $admin = AdminModel::where('user_id', $tugas->user_id)->first();
 
                 $pemberiTugas = null;
@@ -318,7 +325,7 @@ class APINotifController extends Controller
                     $pemberiTugas = [
                         'nidn' => $dosen->nidn,
                         'dosen_nama' => $dosen->dosen_nama,
-                        'dosen_no_telp' => $dosen->dosen_no_telp
+                        'dosen_no_telp' => $dosen->dosen_no_telp,
                     ];
                 } elseif ($tendik) {
                     $pemberiTugas = [
@@ -352,4 +359,5 @@ class APINotifController extends Controller
 
         return response()->json($result);
     }
+
 }

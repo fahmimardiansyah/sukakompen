@@ -15,7 +15,7 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/kompen/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ url('/kompen/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
@@ -42,16 +42,26 @@
                         </select>
                         <small id="error-jenis_id" class="error-text form-text text-danger"></small>
                     </div>
+
                     <div class="form-group">
                         <label>Kompetensi Tugas</label>
-                        <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
-                        <option value="">- Pilih Kompetensi -</option>
-                        @foreach ($kompetensi as $k)
-                            <option {{ $k->kompetensi_id == $tugas->kompetensi_id ? 'selected' : '' }} value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
-                        @endforeach
-                        </select>
+                        <div id="kompetensi-container">
+                            @foreach ($kompetensiTugas as $kt)
+                                <div class="kompetensi-group">
+                                    <select name="kompetensi_id[]" class="form-control kompetensi-select" required readonly>
+                                        <option value="">- Pilih Kompetensi -</option>
+                                        @foreach ($kompetensi as $k)
+                                            <option value="{{ $k->kompetensi_id }}" {{ $kt->kompetensi_id == $k->kompetensi_id ? 'selected' : '' }}>{{ $k->kompetensi_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button type="button" id="add-kompetensi" class="btn btn-sm btn-success mt-2">Tambah Kompetensi</button>
                         <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
                     </div>
+                
                     <div class="form-group">
                         <label>Deskripsi Tugas</label>
                         <textarea name="tugas_deskripsi" id="tugas_deskripsi" class="form-control" rows="4" required>{{ $tugas->tugas_deskripsi }}</textarea>
@@ -101,96 +111,121 @@
         </div>
     </form>
     <script>
-        $(document).ready(function() {
-            $('#jenis_id').on('change', function() {
-                let jenisId = $(this).val();
-                $('#kompetensi_id').empty().append('<option value="">- Pilih Kompetensi -</option>');
+        $(document).ready(function () {
+            const kompetensiOptions = @json($kompetensi);
 
-                if (jenisId) {
-                    $.ajax({
-                        url: `/kompen/getkompetensi/${jenisId}`,
-                        type: 'GET',
-                        success: function(response) {
-                            response.forEach(function(kompetensi) {
-                                $('#kompetensi_id').append(
-                                    `<option value="${kompetensi.kompetensi_id}">${kompetensi.kompetensi_nama}</option>`
-                                );
-                            });
-                        },
-                        error: function() {
-                            alert('Gagal mengambil data kompetensi');
-                        }
+            $('#add-kompetensi').click(function () {
+                const selectedCompetency = $('#kompetensi-container .kompetensi-select:last').val();  // Check last selected competency
+
+                if (!selectedCompetency) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Pilih Kompetensi Terlebih Dahulu',
+                        text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
                     });
+                    return;
                 }
+
+                const existingSelections = $('.kompetensi-select').map(function () {
+                    return $(this).val();
+                }).get();
+
+                const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k.kompetensi_id.toString()));
+
+                if (filteredOptions.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak Ada Kompetensi Tersisa',
+                        text: 'Semua kompetensi telah dipilih.'
+                    });
+                    return;
+                }
+
+                const newDropdown = $('<div class="kompetensi-group mt-2">')
+                    .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
+                    .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
+
+                filteredOptions.forEach(option => {
+                    newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+                });
+
+                $('#kompetensi-container').append(newDropdown);
+            });
+
+            $(document).on('click', '.remove-kompetensi', function () {
+                $(this).closest('.kompetensi-group').remove();
             });
         });
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#form-edit").validate({
                 rules: {
                     tugas_nama: { required: true, minlength: 3, maxlength: 100 },
                     jenis_id: { required: true, number: true },
-                    tugas_tipe: { required: true },
+                    tugas_tipe: { required: true},
                     tugas_deskripsi: { required: true, minlength: 10 },
                     tugas_kuota: { required: true, number: true, max: 10 },
                     tugas_jam_kompen: { required: true, number: true, max: 50 },
-                    tugas_tenggat: { required: true },
+                    tugas_tenggat: { required: true},
                     kompetensi_id: { required: true, number: true },
-                    file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" },
+                    file_tugas: { extension: "doc|docx|pdf|ppt|pptx|xls|xlsx|zip|rar" }
                 },
-                submitHandler: function (form) {
-                    let formData = new FormData(form); // Mendukung file upload
-
+                submitHandler: function(form) {
+                    var formData = new FormData(form);
+                    
                     $.ajax({
                         url: form.action,
-                        type: "POST",
+                        type: form.method,
                         data: formData,
-                        processData: false, // Jangan proses data
-                        contentType: false, // Jangan set header Content-Type
-                        success: function (response) {
+                        processData: false, 
+                        contentType: false, 
+                        success: function(response) {
                             if (response.status) {
-                                $('#myModal').modal('hide');
+                                $('#myModal').modal('hide'); 
                                 Swal.fire({
-                                    icon: "success",
-                                    title: "Berhasil",
-                                    text: response.message,
+                                    icon: 'success',
+                                    title: 'Berhasil',
+                                    text: response.message
                                 });
-                                dataTugas.ajax.reload(); // Refresh datatable
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function (prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
+                                if (response.msgField) {
+                                    $.each(response.msgField, function(prefix, val) {
+                                        $('#error-' + prefix).text(val[0]);
+                                    });
+                                }
                                 Swal.fire({
-                                    icon: "error",
-                                    title: "Terjadi Kesalahan",
-                                    text: response.message,
+                                    icon: 'error',
+                                    title: 'Terjadi Kesalahan',
+                                    text: response.message
                                 });
                             }
                         },
-                        error: function (xhr, status, error) {
-                            console.error(xhr.responseText);
+                        error: function(xhr) {
                             Swal.fire({
-                                icon: "error",
-                                title: "Terjadi Kesalahan",
-                                text: "Gagal mengirim data.",
+                                icon: 'error',
+                                title: 'Kesalahan Server',
+                                text: xhr.responseJSON ? xhr.responseJSON.message : 'Terjadi kesalahan, silakan coba lagi.'
                             });
-                        },
+                        }
                     });
 
-                    return false;
+                    return false; 
                 },
-                errorElement: "span",
-                errorPlacement: function (error, element) {
-                    error.addClass("invalid-feedback");
-                    element.closest(".form-group").append(error);
+                errorElement: 'span',
+                errorPlacement: function(error, element) {
+                    error.addClass('invalid-feedback');
+                    element.closest('.form-group').append(error);
                 },
-                highlight: function (element) {
-                    $(element).addClass("is-invalid");
+                highlight: function(element, errorClass, validClass) {
+                    $(element).addClass('is-invalid');
                 },
-                unhighlight: function (element) {
-                    $(element).removeClass("is-invalid");
-                },
+                unhighlight: function(element, errorClass, validClass) {
+                    $(element).removeClass('is-invalid');
+                }
             });
         });
     </script>

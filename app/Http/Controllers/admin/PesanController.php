@@ -41,7 +41,7 @@ class PesanController extends Controller
             ->with('mahasiswa')
             ->get();
 
-        return view('dosen_tendik.notif.index', [
+        return view('admin.pesan.index', [
             'breadcrumb' => $breadcrumb, 
             'activeMenu' => $activeMenu, 
             'apply' => $apply, 

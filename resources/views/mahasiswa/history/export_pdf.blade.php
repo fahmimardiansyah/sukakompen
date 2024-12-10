@@ -252,7 +252,7 @@
                 <div class="value"></div>
             </div>
             <div class="row">
-                <div class="label">NIP:  {{ $nidn ?? '-' }}</div>
+                <div class="label">NIP:  {{ $nomor_induk ?? '-' }}</div>
                 <div class="value"></div>
             </div>
             <div class="row">

@@ -5,8 +5,11 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\AdminModel;
 use App\Models\DosenModel;
+use App\Models\KompetensiMhsModel;
+use App\Models\KompetensiModel;
 use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
+use App\Models\ProdiModel;
 use App\Models\TendikModel;
 use App\Models\User;
 use App\Models\UserModel;
@@ -110,7 +113,14 @@ class UserController extends Controller
         $user = UserModel::find($id);
         $level = LevelModel::select('level_id', 'level_nama')->get();
 
-        return view('admin.user.edit_ajax', ['user' => $user, 'level' => $level]);
+        $dosen = DosenModel::where('user_id', $id)->first();
+
+        $tendik = TendikModel::where('user_id', $id)->first();
+
+        $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
+        $prodi = ProdiModel::select('prodi_id', 'prodi_nama')->get();
+
+        return view('admin.user.edit_ajax', ['user' => $user, 'level' => $level, 'dosen' => $dosen, 'tendik' => $tendik, 'mahasiswa' => $mahasiswa, 'prodi' => $prodi]);
     }
 
     public function update_ajax(Request $request, $id)
@@ -192,6 +202,7 @@ class UserController extends Controller
         $dosen = null;
         $tendik = null;
         $mahasiswa = null;
+        $kompetensi = null;
 
         if ($user->level_id == 1) {
             $admin = AdminModel::where('user_id', $user->user_id)->first();
@@ -201,9 +212,10 @@ class UserController extends Controller
             $tendik = TendikModel::where('user_id', $user->user_id)->first();
         } elseif ($user->level_id == 4) {
             $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+            $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
         }
 
-        return view('admin.user.show_ajax', compact('user', 'admin', 'dosen', 'tendik', 'mahasiswa'));
+        return view('admin.user.show_ajax', compact('user', 'admin', 'dosen', 'tendik', 'mahasiswa', 'kompetensi'));
     }
 
 }

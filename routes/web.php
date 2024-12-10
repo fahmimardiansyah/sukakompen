@@ -46,7 +46,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/create_ajax', [App\Http\Controllers\Admin\TugasController::class, 'create_ajax']);
             Route::post('/ajax', [App\Http\Controllers\Admin\TugasController::class, 'store_ajax']);
             Route::get('/{id}/detail', [App\Http\Controllers\Admin\TugasController::class, 'detail']);
-            Route::get('/getkompetensi/{jenis_id}', [App\Http\Controllers\Admin\TugasController::class, 'kompetensi']);
             Route::get('/{id}/edit_ajax', [App\Http\Controllers\Admin\TugasController::class, 'edit_ajax']);     
             Route::put('/{id}/update_ajax', [App\Http\Controllers\Admin\TugasController::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [App\Http\Controllers\Admin\TugasController::class, 'confirm_ajax']);  
@@ -75,8 +74,12 @@ Route::middleware('auth')->group(function () {
 
         Route::group(['prefix' => 'pesan'], function () {
             Route::get('/', [App\Http\Controllers\Admin\PesanController::class, 'index']);
-            Route::get('/apply', [App\Http\Controllers\Admin\PesanController::class, 'apply']);
-            Route::get('/tugas', [App\Http\Controllers\Admin\PesanController::class, 'tugas']);
+            Route::get('/{id}/apply', [App\Http\Controllers\Admin\PesanController::class, 'apply']);
+            Route::post('/{id}/acc', [App\Http\Controllers\Admin\PesanController::class, 'acc']);
+            Route::post('/{id}/decline', [App\Http\Controllers\Admin\PesanController::class, 'decline']);
+            Route::get('/{id}/tugas', [App\Http\Controllers\Admin\PesanController::class, 'tugas']);
+            Route::post('/{id}/acc_tugas', [App\Http\Controllers\Admin\PesanController::class, 'acc_tugas']);
+            Route::post('/{id}/decline_tugas', [App\Http\Controllers\Admin\PesanController::class, 'decline_tugas']);
         });
         
         Route::group(['prefix' => 'profil'], function() {
@@ -109,10 +112,10 @@ Route::middleware('auth')->group(function () {
             Route::get('/create_ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'create_ajax']);
             Route::post('/ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'store_ajax']);
             Route::get('/{id}/detail', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'detail']);
-            Route::get('/getkompetensi/{jenis_id}', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'kompetensi']);
             Route::get('/{id}/edit_ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'edit_ajax']);     
             Route::put('/{id}/update_ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'confirm_ajax']);  
+            Route::delete('/{id}/delete_ajax', [App\Http\Controllers\Dosen_tendik\TugasController::class, 'delete_ajax']);
         });
     
         Route::group(['prefix' => 'alpha'], function () {

@@ -12,10 +12,6 @@ class KompetensiModel extends Model
 
     protected $table = 't_kompetensi';      
     protected $primaryKey = 'kompetensi_id';  
-    protected $fillable = ['jenis_id', 'kompetensi_kode', 'kompetensi_nama', 'kompetensi_deskripsi'];
+    protected $fillable = ['kompetensi_kode', 'kompetensi_nama', 'kompetensi_deskripsi'];
 
-    public function jenis()
-    {
-        return $this->belongsTo(JenisModel::class, 'jenis_id', 'jenis_id');
-    }
 }

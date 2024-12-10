@@ -28,16 +28,6 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Jenis Kompetensi</label>
-                        <select name="jenis_id" id="jenis_id" class="form-control" required>
-                            <option value="">- Pilih Level -</option>
-                            @foreach ($jenis as $j)
-                                <option {{ $j->jenis_id == $kompetensi->jenis_id ? 'selected' : '' }} value="{{ $j->jenis_id }}">{{ $j->jenis_nama }}</option>
-                            @endforeach
-                        </select>
-                        <small id="error-jenis_id" class="error-text form-text text-danger"></small>
-                    </div>
-                    <div class="form-group">
                         <label>Kode</label>
                         <input value="{{ $kompetensi->kompetensi_kode }}" type="text" name="kompetensi_kode" id="kompetensi_kode" class="form-control" required>
                         <small id="error-kompetensi_kode" class="error-text form-text text-danger"></small>
@@ -64,7 +54,6 @@
         $(document).ready(function() {
             $("#form-edit").validate({
                 rules: {
-                    jenis_id: {required: true, number: true},
                     kompetensi_kode: {required: true, minlength: 3, maxlength: 20},
                     kompetensi_nama: {required: true, minlength: 3, maxlength: 100},
                     kompetensi_deskripsi: {required: true, minlength: 10, maxlength: 500}
@@ -82,7 +71,9 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                dataKompetensi.ajax.reload();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {

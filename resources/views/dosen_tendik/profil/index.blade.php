@@ -44,6 +44,10 @@
                                 <th>No. Telp</th>
                                 <td>{{ $dosen->dosen_no_telp ?? $tendik->tendik_no_telp ?? 'N/A' }}</td>
                             </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ $dosen->dosen_email ?? $tendik->tendik_email ?? 'N/A' }}</td>
+                            </tr>
                         </table>
                     </div>
                     <div class="mt-3 text-center">

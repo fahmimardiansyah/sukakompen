@@ -37,6 +37,10 @@
                                 <th>No. Telp</th>
                                 <td>{{ $admin->admin_no_telp ?? 'N/A' }}</td>
                             </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ $admin->admin_email ?? 'N/A' }}</td>
+                            </tr>
                         </table>
                     </div>
                     <div class="mt-3 text-center">

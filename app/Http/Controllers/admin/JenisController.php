@@ -65,16 +65,16 @@ class JenisController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'jenis_kode' => 'required|string|min:3|unique:m_jenis,jenis_kode',
+                'jenis_kode' => 'required|string|min:3|unique:m_jenis,jenis_kode,' . $id . ',jenis_id',
                 'jenis_nama' => 'required|string|max:100',
                 'jenis_deskripsi' => 'required|string|max:500'
-            ] ;
+            ];
 
             $validator = Validator::make($request->all(), $rules);
-            
+
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false, 
+                    'status' => false,
                     'message' => 'Validasi gagal.',
                     'msgField' => $validator->errors()
                 ]);

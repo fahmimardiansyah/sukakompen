@@ -57,7 +57,7 @@
                             url: form.action,
                             type: form.method,
                             data: formData,
-                            processData: false, // setting processData dan contentType ke false, untuk menghandle file 
+                            processData: false,
                             contentType: false,
                             success: function(response) {
                                 if (response.status) {
@@ -67,7 +67,9 @@
                                         title: 'Berhasil',
                                         text: response.message
                                     });
-                                    $(document).reload();
+                                    setTimeout(function() {
+                                        location.reload();
+                                    }, 2000);
                                 } else {
                                     $('.error-text').text('');
                                     $.each(response.msgField, function(prefix, val) {

@@ -12,7 +12,9 @@
                 <div class="tag">
                     <span class="tipe {{ $description->tugas_tipe }}">{{ ucfirst($description->tugas_tipe) }}</span>
                     <span class="jenis {{ $description->jenis->jenis_id }}">{{ ucfirst($description->jenis->jenis_nama) }}</span>
-                    <span class="kompetensi {{ $description->kompetensi->kompetensi_id }}">{{ ucfirst($description->kompetensi->kompetensi_nama) }}</span>
+                    @foreach ($kompetensi as $data)
+                        <span class="kompetensi {{ $data->kompetensi->kompetensi_id }}">{{ ucfirst($data->kompetensi->kompetensi_nama) }}</span>
+                    @endforeach
                 </div>
             </div>
             <p class="deskripsi-description">

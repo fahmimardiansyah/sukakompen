@@ -16,6 +16,7 @@ class DosenSeeder extends Seeder
             'nidn' => '87654321',
             'dosen_nama' => 'Fahmi Mardiansyah',
             'dosen_no_telp' => '08123456789',
+            'dosen_email' => 'faizabiyu72@gmail.com',
         ];
 
         DB::table('m_dosen')->insert($data);

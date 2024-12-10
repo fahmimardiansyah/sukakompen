@@ -25,7 +25,6 @@ class TugasSeeder extends Seeder
                 'tugas_kuota' => 2,
                 'tugas_jam_kompen' => 4,
                 'tugas_tenggat' => '2024-11-07 23:59:00',
-                'kompetensi_id' => 5
             ],
             [
                 'tugas_id' => 2,
@@ -38,7 +37,6 @@ class TugasSeeder extends Seeder
                 'tugas_kuota' => 4,
                 'tugas_jam_kompen' => 8,
                 'tugas_tenggat' => '2024-11-15 23:59:00',
-                'kompetensi_id' => 1
             ],
             [
                 'tugas_id' => 3,
@@ -51,7 +49,6 @@ class TugasSeeder extends Seeder
                 'tugas_kuota' => 3,
                 'tugas_jam_kompen' => 12,
                 'tugas_tenggat' => '2024-11-17 23:59:00',
-                'kompetensi_id' => 9
             ],
         ];
         DB::table('t_tugas')->insert($data);

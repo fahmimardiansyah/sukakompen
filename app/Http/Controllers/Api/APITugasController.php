@@ -142,7 +142,7 @@ class APITugasController extends Controller
 
 
                 return [
-                    'apply_id' => $applyItem->apply_id,
+                    'progress_id' => $applyItem->progress_id,
                     'status' => true,
                     'tugas' => [
                         'tugas_id' => $tugas->tugas_id,

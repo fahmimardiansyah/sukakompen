@@ -50,7 +50,7 @@
                             title: 'Berhasil',
                             text: response.message
                         }).then(() => {
-                            window.location.href = "/notif";
+                            window.location.href = "/pesan";
                         });
                     } else {
                         $('.error-text').text('');

@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('t_kompetensi', function (Blueprint $table) {
             $table->id('kompetensi_id');
-            $table->unsignedBigInteger('jenis_id');
             $table->string('kompetensi_kode')->unique();
             $table->string('kompetensi_nama');
             $table->string('kompetensi_deskripsi');
             $table->timestamps();
-
-            $table->foreign('jenis_id')->references('jenis_id')->on('m_jenis');
         });
     }
 

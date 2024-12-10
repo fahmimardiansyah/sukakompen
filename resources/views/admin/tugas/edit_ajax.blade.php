@@ -42,16 +42,26 @@
                         </select>
                         <small id="error-jenis_id" class="error-text form-text text-danger"></small>
                     </div>
+
                     <div class="form-group">
                         <label>Kompetensi Tugas</label>
-                        <select name="kompetensi_id" id="kompetensi_id" class="form-control" required>
-                        <option value="">- Pilih Kompetensi -</option>
-                        @foreach ($kompetensi as $k)
-                            <option {{ $k->kompetensi_id == $tugas->kompetensi_id ? 'selected' : '' }} value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
-                        @endforeach
-                        </select>
+                        <div id="kompetensi-container">
+                            @foreach ($kompetensiTugas as $kt)
+                                <div class="kompetensi-group">
+                                    <select name="kompetensi_id[]" class="form-control kompetensi-select" required readonly>
+                                        <option value="">- Pilih Kompetensi -</option>
+                                        @foreach ($kompetensi as $k)
+                                            <option value="{{ $k->kompetensi_id }}" {{ $kt->kompetensi_id == $k->kompetensi_id ? 'selected' : '' }}>{{ $k->kompetensi_nama }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                                </div>
+                            @endforeach
+                        </div>
+                        <button type="button" id="add-kompetensi" class="btn btn-sm btn-success mt-2">Tambah Kompetensi</button>
                         <small id="error-kompetensi_id" class="error-text form-text text-danger"></small>
                     </div>
+                
                     <div class="form-group">
                         <label>Deskripsi Tugas</label>
                         <textarea name="tugas_deskripsi" id="tugas_deskripsi" class="form-control" rows="4" required>{{ $tugas->tugas_deskripsi }}</textarea>
@@ -77,7 +87,7 @@
 
                     <div class="form-group">
                         <label>Upload File Tugas</label>
-                        <input type="file" name="file_tugas" id="file_tugas" class="form-control" required>
+                        <input type="file" name="file_tugas" id="file_tugas" class="form-control">
                         <small id="error-file_tugas" class="error-text form-text text-danger"></small>
                     </div>
 
@@ -101,27 +111,49 @@
         </div>
     </form>
     <script>
-        $(document).ready(function() {
-            $('#jenis_id').on('change', function() {
-                let jenisId = $(this).val();
-                $('#kompetensi_id').empty().append('<option value="">- Pilih Kompetensi -</option>');
+        $(document).ready(function () {
+            const kompetensiOptions = @json($kompetensi);
 
-                if (jenisId) {
-                    $.ajax({
-                        url: `/tugas/getkompetensi/${jenisId}`,
-                        type: 'GET',
-                        success: function(response) {
-                            response.forEach(function(kompetensi) {
-                                $('#kompetensi_id').append(
-                                    `<option value="${kompetensi.kompetensi_id}">${kompetensi.kompetensi_nama}</option>`
-                                );
-                            });
-                        },
-                        error: function() {
-                            alert('Gagal mengambil data kompetensi');
-                        }
+            $('#add-kompetensi').click(function () {
+                const selectedCompetency = $('#kompetensi-container .kompetensi-select:last').val();  // Check last selected competency
+
+                if (!selectedCompetency) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Pilih Kompetensi Terlebih Dahulu',
+                        text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
                     });
+                    return;
                 }
+
+                const existingSelections = $('.kompetensi-select').map(function () {
+                    return $(this).val();
+                }).get();
+
+                const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k.kompetensi_id.toString()));
+
+                if (filteredOptions.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak Ada Kompetensi Tersisa',
+                        text: 'Semua kompetensi telah dipilih.'
+                    });
+                    return;
+                }
+
+                const newDropdown = $('<div class="kompetensi-group mt-2">')
+                    .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
+                    .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
+
+                filteredOptions.forEach(option => {
+                    newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+                });
+
+                $('#kompetensi-container').append(newDropdown);
+            });
+
+            $(document).on('click', '.remove-kompetensi', function () {
+                $(this).closest('.kompetensi-group').remove();
             });
         });
 
@@ -145,21 +177,19 @@
                         url: form.action,
                         type: form.method,
                         data: formData,
-                        processData: false, // Jangan proses data menjadi string
-                        contentType: false, // Jangan tentukan tipe konten
+                        processData: false, 
+                        contentType: false, 
                         success: function(response) {
                             if (response.status) {
+                                $('#myModal').modal('hide'); 
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message
-                                }).then(() => {
-                                    // Tutup modal
-                                    $('#modal-master').modal('hide');
-                                    
-                                    // Jika perlu, segarkan halaman atau elemen tertentu
-                                    location.reload(); // Atau segarkan bagian tertentu jika tidak ingin reload seluruh halaman
                                 });
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
                                 if (response.msgField) {
@@ -183,7 +213,7 @@
                         }
                     });
 
-                    return false; // Mencegah submit bawaan
+                    return false; 
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {

@@ -39,7 +39,15 @@
                             </tr>
                             <tr>
                                 <th>Prodi</th>
-                                <td>{{ $mahasiswa->prodi ?? 'N/A' }}</td>
+                                <td>{{ $mahasiswa->prodi->prodi_nama ?? 'N/A' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kompetensi</th>
+                                <td>
+                                    @foreach ($kompetensi as $data)
+                                        <li>{{ $data->kompetensi->kompetensi_nama }}</li>
+                                    @endforeach    
+                                </td>
                             </tr>
                             <tr>
                                 <th>Semester</th>

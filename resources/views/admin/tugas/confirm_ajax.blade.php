@@ -39,6 +39,10 @@
                             <td class="col-9">{{ $tugas->tugas_deskripsi }}</td>
                         </tr>
                         <tr>
+                            <th class="text-right col-3">Jenis Tugas :</th>
+                            <td class="col-9">{{ $tugas->jenis->jenis_nama }}</td>
+                        </tr>
+                        <tr>
                             <th class="text-right col-3">Tipe Tugas :</th>
                             <td class="col-9">{{ $tugas->tugas_tipe }}</td>
                         </tr>
@@ -48,11 +52,31 @@
                         </tr>
                         <tr>
                             <th class="text-right col-3">Jam Kompen :</th>
-                            <td class="col-9">{{ $tugas->tugas_jam_kompen }}</td>
+                            <td class="col-9">{{ $tugas->tugas_jam_kompen }} Jam</td>
                         </tr>
                         <tr>
                             <th class="text-right col-3">Tanggal Tenggat :</th>
                             <td class="col-9">{{ $tugas->tugas_tenggat }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Kompetensi Tugas :</th>
+                            <td class="col-9"> 
+                                @foreach ($kompetensi as $data)
+                                    <li>{{ $data->kompetensi->kompetensi_nama }}</li>
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">File Tugas :</th>
+                            <td class="col-9">
+                                @if($fileData)
+                                    <a href="{{ $fileData['path'] }}" class="btn btn-info" download>
+                                        <i class="{{ $fileData['icon'] }}"></i> {{ $fileData['name'] }}
+                                    </a>
+                                @else
+                                    <span>No file available for download.</span>
+                                @endif
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -74,13 +98,15 @@
                         data: $(form).serialize(),
                         success: function(response) {
                             if (response.status) {
-                                $('#myModal').modal('hide');
+                                $('#myModal').modal('hide'); 
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                dataKompetensi.ajax.reload();
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 2000);
                             } else {
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {
