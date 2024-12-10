@@ -56,7 +56,7 @@
             </div>
             <div class="deskripsi-download">
                 <div class="req-button">
-                    <a href="{{ url('task') }}" class="back-button">Back to Tugas List</a>
+                    <a href="{{ url('/dashboardmhs') }}" class="back-button">Back to Tugas List</a>
                     <button onclick="modalAction('{{ url('/task/' . $description->progress_id . '/kirim') }}')" class="request-button">Kirim</button>
                 </div>
             </div>

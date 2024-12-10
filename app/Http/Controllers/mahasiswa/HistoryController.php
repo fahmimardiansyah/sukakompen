@@ -14,9 +14,6 @@ use Endroid\QrCode\Builder\Builder;
 
 class HistoryController extends Controller
 {
-    /**
-     * Menampilkan halaman histori tugas mahasiswa.
-     */
     public function index()
     {
         $breadcrumb = (object) [
@@ -46,10 +43,7 @@ class HistoryController extends Controller
         ]);
     }
 
-    /**
-     * Mengekspor histori tugas mahasiswa ke dalam PDF.
-     */
-    public function export_pdf()
+    public function export_pdf($approval_id)
     {
         $user = Auth::user();
 
@@ -61,33 +55,26 @@ class HistoryController extends Controller
                 ->with('error', 'Data mahasiswa tidak ditemukan.');
         }
 
-        $history = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+        $approval = ApprovalModel::where('approval_id', $approval_id)
+            ->where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with([
                 'tugas' => function ($query) {
-                    $query->select('tugas_id', 'tugas_No', 'tugas_nama', 'tugas_jam_kompen', 'user_id')
-                        ->with(['users' => function ($query) {
-                            $query->select('user_id');
-                        }]);
+                    $query->select('tugas_id', 'tugas_No', 'tugas_nama', 'tugas_jam_kompen', 'user_id');
                 }
             ])
-            ->get();
+            ->first();
 
-        if ($history->isEmpty()) {
+        if (!$approval || !$approval->tugas) {
             return redirect()
                 ->route('history.index')
-                ->with('error', 'Tidak ada data yang dapat diekspor.');
+                ->with('error', 'Data tugas tidak ditemukan.');
         }
 
-        // Ambil pemberi tugas dari tugas pertama
-        $firstTugas = $history->first()->tugas;
+        $tugas = $approval->tugas;
 
-        if ($firstTugas) {
-            $admin = AdminModel::where('user_id', $firstTugas->user_id)->first();
-            $dosen = DosenModel::where('user_id', $firstTugas->user_id)->first();
-            $tendik = TendikModel::where('user_id', $firstTugas->user_id)->first();
-        } else {
-            $admin = $dosen = $tendik = null;
-        }
+        $admin = AdminModel::where('user_id', $tugas->user_id)->first();
+        $dosen = DosenModel::where('user_id', $tugas->user_id)->first();
+        $tendik = TendikModel::where('user_id', $tugas->user_id)->first();
 
         $pemberiTugas = null;
         $ni = null;
@@ -103,26 +90,20 @@ class HistoryController extends Controller
             $ni = $tendik->nip;
         }
 
-        $data = $history->map(function ($item) use ($pemberiTugas, $ni) {
-            return [
-                'tugas_No' => $item->tugas->tugas_No ?? '-',
-                'tugas_nama' => $item->tugas->tugas_nama ?? '-',
-                'tugas_jam_kompen' => $item->tugas->tugas_jam_kompen ?? 0,
-                'pemberi_tugas' => $pemberiTugas ?? '-',
-                'nomor_induk' => $ni ?? '-',
-                'mahasiswa_nama' => $item->mahasiswa->mahasiswa_nama ?? '-',
-                'nim' => $item->mahasiswa->nim ?? '-',
-                'semester' => $item->mahasiswa->semester ?? '-',
-            ];
-        })->first();
+        // Data untuk PDF
+        $data = [
+            'tugas_No' => $tugas->tugas_No ?? '-',
+            'tugas_nama' => $tugas->tugas_nama ?? '-',
+            'tugas_jam_kompen' => $tugas->tugas_jam_kompen ?? 0,
+            'pemberi_tugas' => $pemberiTugas ?? '-',
+            'nomor_induk' => $ni ?? '-',
+            'mahasiswa_nama' => $mahasiswa->mahasiswa_nama ?? '-',
+            'nim' => $mahasiswa->nim ?? '-',
+            'semester' => $mahasiswa->semester ?? '-',
+        ];
 
-        if (!$data) {
-            return redirect()
-                ->route('history.index')
-                ->with('error', 'Tidak ada data yang dapat diekspor.');
-        }
-
-        $qrContent = url('/history/export_pdf');
+        // Membuat QR Code
+        $qrContent = url('/history/export_pdf/' . $approval_id);
 
         $result = Builder::create()
             ->data($qrContent)
@@ -132,6 +113,7 @@ class HistoryController extends Controller
 
         $qrCode = base64_encode($result->getString());
 
+        // Membuat PDF
         $pdf = Pdf::loadView('mahasiswa.history.export_pdf', [
             'tugas_No' => $data['tugas_No'],
             'pemberi_tugas' => $data['pemberi_tugas'],
@@ -141,7 +123,7 @@ class HistoryController extends Controller
             'semester' => $data['semester'],
             'tugas_nama' => $data['tugas_nama'],
             'tugas_jam_kompen' => $data['tugas_jam_kompen'],
-            'qrCode' => $qrCode, 
+            'qrCode' => $qrCode,
         ]);
 
         $pdf->setPaper('a4', 'landscape');

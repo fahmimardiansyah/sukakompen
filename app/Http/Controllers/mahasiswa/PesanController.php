@@ -22,7 +22,7 @@ class PesanController extends Controller
             'list' => ['Home', 'Inbox']
         ];
 
-        $activeMenu = 'index';
+        $activeMenu = 'inbox';
 
         $user = Auth::user();
         

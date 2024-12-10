@@ -52,7 +52,7 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 }).then(() => {
-                                    window.location.href = "/task";
+                                    window.location.href = "{{ url('/task') }}";
                                 });
                             } else {
                                 $('.error-text').text('');

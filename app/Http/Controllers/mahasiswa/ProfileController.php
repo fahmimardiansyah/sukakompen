@@ -26,7 +26,7 @@ class ProfileController extends Controller
 
         $userId = auth()->id();
 
-        $activeMenu = 'profil'; 
+        $activeMenu = 'profilemhs'; 
 
         $user = UserModel::with('level')->find($userId);
 

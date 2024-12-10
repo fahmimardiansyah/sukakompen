@@ -29,7 +29,7 @@ class TugasController extends Controller
             'list' => ['Home', 'Tugas']
         ];
 
-        $activeMenu = 'kompen';
+        $activeMenu = 'task';
 
         $user = Auth::user();
 
@@ -88,7 +88,7 @@ class TugasController extends Controller
             'title' => 'Detail Tugas'
         ];
 
-        $activeMenu = 'tugas';
+        $activeMenu = 'task';
 
         return view('mahasiswa.task.detail', [
             'description' => $description,
@@ -124,6 +124,17 @@ class TugasController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'Anda sudah mendaftar untuk tugas ini.'
+                    ], 400);
+                }
+
+                $progress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                    ->where('status', 0)
+                    ->exists();
+
+                if ($progress) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Masih ada progress atau tugas yang belum diselesaikan.'
                     ], 400);
                 }
 
@@ -196,7 +207,7 @@ class TugasController extends Controller
         $fileTugas = null;
         if ($description && $description->file_mahasiswa) {
             $fileTugasPath = asset('storage/posts/pengumpulan/' . $description->file_mahasiswa);
-            $fileTugasName = explode('_', $description->file_tugas, 2)[1] ?? $description->file_mahasiswa;
+            $fileTugasName = explode('_', $description->file_mahasiswa, 2)[1] ?? $description->file_mahasiswa;
             $fileTugasExtension = pathinfo($fileTugasName, PATHINFO_EXTENSION);
             $icons = [
                 'pdf' => 'fas fa-file-pdf',
