@@ -436,6 +436,11 @@ background-color: #141450;
     margin-bottom: 40px;
 }
 
+.jumlah-alpa{
+    padding: 0 20px;
+    padding-bottom: 30px;
+}
+
 .table-alpa {
     /* overflow-x: auto; */
     padding: 0 20px;
