@@ -22,16 +22,13 @@
     <h2>Tugas</h2>
 </div>
 
-<!-- Tabs and Add Task Button -->
 <div class="content">
-        <!-- Admin Tab Content -->
         <div id="admin" class="tab-content active">
-                <!-- Tombol "Tambah Tugas" -->
             <div class="task-grid">
                 @foreach ($tugas as $item)
                     <div class="task-card">
                         <div class="card-header">
-                            <span class="task-category">Admin Task</span>
+                            <span class="task-category">{{ $item->jenis->jenis_nama }}</span>
                         </div>
                         <div class="card-body">
                             <img src="{{ asset('img/card.png') }}" alt="Tugas" class="task-image">

@@ -122,18 +122,15 @@ class ProfileController extends Controller
         $check = MahasiswaModel::where('user_id', $id)->first();
 
         if ($check) {
-            DB::beginTransaction(); // Start transaction
+            DB::beginTransaction(); 
 
             try {
-                // Update mahasiswa profile
                 $check->update([
                     'mahasiswa_nama' => $request->mahasiswa_nama,
                 ]);
 
-                // Delete old kompetensi data
                 KompetensiMhsModel::where('mahasiswa_id', $check->mahasiswa_id)->delete();
 
-                // Validate if there are duplicate kompetensi IDs
                 $kompetensiIds = $request->kompetensi_id;
                 if (count($kompetensiIds) !== count(array_unique($kompetensiIds))) {
                     return response()->json([
@@ -142,7 +139,6 @@ class ProfileController extends Controller
                     ]);
                 }
 
-                // Prepare new kompetensi data
                 $kompetensiData = [];
                 foreach ($kompetensiIds as $kompetensiId) {
                     $existing = KompetensiMhsModel::where('mahasiswa_id', $check->mahasiswa_id) 

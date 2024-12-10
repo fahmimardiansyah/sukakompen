@@ -157,6 +157,12 @@
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-phone"></span></div>
                     </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="admin_email" class="form-control" placeholder="Email SSO" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+                    </div>
                 </div>`;
         }
 
@@ -178,6 +184,12 @@
                     <input type="text" name="dosen_no_telp" class="form-control" placeholder="No. Telepon" required>
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-phone"></span></div>
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="dosen_email" class="form-control" placeholder="Email SSO" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
                     </div>
                 </div>`;
         }
@@ -201,6 +213,12 @@
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-phone"></span></div>
                     </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" name="tendik_email" class="form-control" placeholder="Email SSO" required>
+                    <div class="input-group-append">
+                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
+                    </div>
                 </div>`;
         }
 
@@ -219,18 +237,52 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="prodi" class="form-control" placeholder="Program Studi" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-book"></span></div>
-                    </div>
+                    <select name="prodi_id" id="prodi_id" class="form-control" required>
+                        <option value="">- Pilih Prodi -</option>
+                        @foreach($prodi as $p)
+                            <option value="{{ $p->prodi_id }}">{{ $p->prodi_nama }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="input-group mb-3">
                     <input type="number" name="semester" class="form-control" placeholder="Semester" required>
                     <div class="input-group-append">
                         <div class="input-group-text"><span class="fas fa-graduation-cap"></span></div>
                     </div>
+                </div>
+                <div class="input-group mb-3">
+                    <div id="kompetensi-container">
+                        <div class="kompetensi-group mb-2">
+                            <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
+                                <option value="">- Pilih Kompetensi -</option>
+                                @foreach ($kompetensi as $k)
+                                    <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <button type="button" id="add-kompetensi" class="btn btn-sm btn-success mt-2">Tambah Kompetensi</button>
                 </div>`;
         }
+
+        $(document).on('click', '#add-kompetensi', function () {
+            const kompetensiField = `
+                <div class="kompetensi-group mb-2">
+                    <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
+                        <option value="">- Pilih Kompetensi -</option>
+                        @foreach ($kompetensi as $k)
+                            <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
+                        @endforeach
+                    </select>
+                    <button type="button" class="btn btn-sm btn-danger mt-1 remove-kompetensi">Hapus</button>
+                </div>`;
+            $('#kompetensi-container').append(kompetensiField);
+        });
+
+        // Fungsi untuk menghapus kompetensi
+        $(document).on('click', '.remove-kompetensi', function () {
+            $(this).closest('.kompetensi-group').remove();
+        });
 
         function adminRules() {
             return {
@@ -260,8 +312,9 @@
             return {
                 nim: { required: true, maxlength: 20 },
                 mahasiswa_nama: { required: true, maxlength: 100 },
-                prodi: { required: true, maxlength: 100 },
-                semester: { required: true, number: true }
+                prodi_id: { required: true, number: true },
+                semester: { required: true, number: true, max: 8 },
+                kompetensi_id: { required: true, number: true },
             };
         }
     </script>

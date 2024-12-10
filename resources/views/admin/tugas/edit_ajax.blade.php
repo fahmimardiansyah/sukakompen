@@ -146,7 +146,7 @@
                     .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
 
                 filteredOptions.forEach(option => {
-                    newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+                    newDropdown.find('select').append(<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>);
                 });
 
                 $('#kompetensi-container').append(newDropdown);
