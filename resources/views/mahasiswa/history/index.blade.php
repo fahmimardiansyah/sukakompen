@@ -25,13 +25,13 @@
             @foreach($history as $data)
                 @if($data->status === 1)
                     <tr>
-                        <td>{{ $data->tugas->tugas_nama }}</td>
+                        <td>{{ optional($data->tugas)->tugas_nama }}</td>
                         <td>{{ $data->status ? 'Selesai' : 'Gagal dikerjakan' }}</td>
                         <td> <button class="btn-cetak" onclick="window.location.href='{{ url('/' . $data->approval_id . '/export_pdf') }}'">Cetak</button></td>               
                     </tr>
                 @elseif($data->status === 0)
                     <tr>
-                        <td>{{ $data->tugas->tugas_nama }}</td>
+                        <td>{{ optional($data->tugas)->tugas_nama }}</td>
                         <td>{{ $data->status ? 'Selesai' : 'Gagal dikerjakan' }}</td>             
                     </tr>
                 @endif 
