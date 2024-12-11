@@ -1171,8 +1171,8 @@ background-color: #344efa; /* Warna saat hover */
     padding-bottom: 10px;
     margin: 0; /* Hilangkan margin bawaan h2 */
 }
-.notif-title button {
-    padding: 8px 12px; /* Atur padding tombol */
+/* .notif-title button {
+    padding: 8px 12px;
     font-size: 14px;
     background-color: #1a237e;
     color: white;
@@ -1181,8 +1181,8 @@ background-color: #344efa; /* Warna saat hover */
     cursor: pointer;
 }
 .notif-title button:hover {
-    background-color: #3949ab; /* Warna saat hover */
-}
+    background-color: #3949ab;
+} */
 
 .notif {
     /* display: flex;  */

@@ -10,12 +10,7 @@
             <div class="modal-body"> 
                 <div class="form-group"> 
                     <label>Level Pengguna</label> 
-                    <select name="level_id" id="level_id" class="form-control" required> 
-                        <option value="">- Pilih Level -</option> 
-                        @foreach($level as $l) 
-                            <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option> 
-                        @endforeach 
-                    </select> 
+                    <p class="form-control">Admin</p>
                     <small id="error-level_id" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
@@ -28,7 +23,31 @@
                     <label>Password</label> 
                     <input value="" type="password" name="password" id="password" class="form-control" required> 
                     <small id="error-password" class="error-text form-text text-danger"></small> 
-                </div> 
+                </div>
+                <div class="form-group">
+                    <label>NIP</label>
+                    <input type="text" name="nip" class="form-control" required>
+                    <div class="input-group-append">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Nama</label> 
+                    <input type="text" name="admin_nama" class="form-control" required>
+                    <div class="input-group-append">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>No.Telepon</label> 
+                    <input type="text" name="admin_no_telp" class="form-control" required>
+                    <div class="input-group-append">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email SSO</label>
+                    <input type="text" name="admin_email" class="form-control" required>
+                    <div class="input-group-append">
+                    </div>
+                </div>
             </div> 
             <div class="modal-footer"> 
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button> 
@@ -43,7 +62,10 @@
             rules: { 
                 level_id: {required: true, number: true}, 
                 username: {required: true, minlength: 3, maxlength: 20}, 
-                password: {required: true, minlength: 5, maxlength: 20} 
+                password: {required: true, minlength: 5, maxlength: 20}
+                nip: { required: true, maxlength: 20 },
+                admin_nama: { required: true, maxlength: 100 },
+                admin_no_telp: { required: true, maxlength: 15 }
             }, 
             submitHandler: function(form) { 
                 $.ajax({ 

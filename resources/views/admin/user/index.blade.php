@@ -5,7 +5,8 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah User</button>
+                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-primary btn-sm mt-1" id="importButton">Import User</button>
+                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-success btn-sm mt-1">Tambah User</button>              
             </div>
         </div>
         <div class="row">

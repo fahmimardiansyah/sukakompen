@@ -65,6 +65,31 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
 
+
+    <style>
+        select {
+            color: #535353; 
+        }
+    
+        option {
+            color: #535353; 
+        }z
+        .form-control.kompetensi-select {
+        width: 320px; 
+        height: 40px; 
+        padding: 5px 10px;
+        font-size: 14px; 
+        color: rgb(255, 255, 255); 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        }
+
+        .form-control::placeholder {
+        color: rgb(255, 255, 255); 
+        }
+
+    </style>
+    
     <script>
         $(document).ready(function () {
             // Inisialisasi validasi
@@ -252,7 +277,11 @@
                 </div>
                 <div class="input-group mb-3">
                     <div id="kompetensi-container">
-                        <div class="kompetensi-group mb-2">
+                        <div class="kompetensi-group">
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <b>Kompetensi<b>
+                                <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">×</button>
+                            </h6>
                             <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
                                 <option value="">- Pilih Kompetensi -</option>
                                 @foreach ($kompetensi as $k)
@@ -268,13 +297,17 @@
         $(document).on('click', '#add-kompetensi', function () {
             const kompetensiField = `
                 <div class="kompetensi-group mb-2">
+                            <div class="kompetensi-group">
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <b>Kompetensi<b> 
+                                <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">×</button>
+                            </h6>
                     <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
                         <option value="">- Pilih Kompetensi -</option>
                         @foreach ($kompetensi as $k)
                             <option value="{{ $k->kompetensi_id }}">{{ $k->kompetensi_nama }}</option>
                         @endforeach
                     </select>
-                    <button type="button" class="btn btn-sm btn-danger mt-1 remove-kompetensi">Hapus</button>
                 </div>`;
             $('#kompetensi-container').append(kompetensiField);
         });

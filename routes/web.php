@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Admin\AlpaController::class, 'index']);
             Route::get('/import', [App\Http\Controllers\Admin\AlpaController::class, 'import']);
             Route::post('/import_ajax', [App\Http\Controllers\Admin\AlpaController::class, 'import_ajax']);
+            Route::post('/{id}/export_pdf', [App\Http\Controllers\Admin\AlpaController::class, 'export_pdf']);
         });
 
         Route::group(['prefix' => 'kompenma'], function () {

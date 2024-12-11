@@ -9,7 +9,10 @@
     </div>
     <div class="notif-title">
         <h2>Tabel Alpa Mahasiswa</h2>
-        <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-success" id="importButton">Import</button>
+        <div class="alpa-button">
+            <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-warning" id="importButton">Import</button>
+            <button href="{{ url('/alpam/export_pdf') }}" class="btn btn-success">Export</button>
+        </div>
     </div>
 
     <div class="table-alpa">

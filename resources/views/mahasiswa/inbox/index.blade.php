@@ -22,6 +22,7 @@
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Apply {{ $data->tugas->tugas_nama }} diterima.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @elseif($data->apply_status === false && $data->pengguna)
@@ -30,6 +31,7 @@
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Apply {{ $data->tugas->tugas_nama }} ditolak.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @endif
@@ -42,6 +44,7 @@
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, diterima.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @elseif($data->status === 0 && $data->pengguna)
@@ -50,6 +53,7 @@
                     <div class="text">
                         <h3>{{ $data->pengguna->dosen_nama ?? $data->pengguna->tendik_nama ?? $data->pengguna->admin_nama ?? 'N/A'}}</h3>
                         <p>Pekerjaan {{ $data->tugas->tugas_nama }} selesai, ditolak.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @endif
