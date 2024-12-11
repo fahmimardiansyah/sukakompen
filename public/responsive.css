@@ -296,15 +296,17 @@ background-color: #141450;
     margin-bottom: 20px; 
 }
 
-.recommended-tasks h2{
+.recommended-tasks h2 {
     margin: 20px;
-    font-weight: 600;}
+    font-weight: 600;
+}
 
 .task-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Layout responsive */
     gap: 50px;
     margin-top: 20px;
+    align-items: stretch; /* Membuat tinggi card seragam */
 }
 
 /* Styling Card */
@@ -314,14 +316,16 @@ background-color: #141450;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Menambahkan efek shadow */
-    height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.3s ease; /* Efek hover */
+    height: 100%; 
+    display: flex;
+    flex-direction: column; /* Mengatur tata letak card menjadi vertikal */
 }
 
 /* Hover Effect */
 .task-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2); /* Menambahkan efek shadow lebih kuat pada hover */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 /* Card Header */
@@ -339,78 +343,83 @@ background-color: #141450;
     width: 100%;
     height: auto;
     padding: 10px;
-    border-bottom: 1px solid #ddd; /* Menambahkan border bawah pada gambar */
+    border-bottom: 1px solid #ddd;
 }
 
 /* Isi Card */
 .task-card .card-body {
     padding: 15px 20px;
     text-align: left;
-    background-color: #f9f9f9; /* Warna latar belakang body card */
-    min-height: 100px;
-    max-height: 1000px;
-    flex-grow: 1;
+    background-color: #f9f9f9;
+    flex-grow: 1; /* Mengisi ruang kosong card */
+    min-height: 100px; /* Tinggi minimum */
 }
 
-/* Judul di dalam Card */
 .task-card .card-body h3 {
     font-size: 1.2rem;
     margin: 10px 0;
-    color: #333; /* Warna teks judul */
+    color: #333; /* Judul card */
+}
+
+/* Deskripsi Tugas */
+.task-card .card-body p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.5;
+    margin-bottom: 10px; /* Spasi antar paragraf */
 }
 
 /* Footer Card */
 .task-card .card-footer {
-    text-align: center;
-    padding: 20px 0;
+    display: flex; /* Flexbox untuk tombol */
+    justify-content: space-between; /* Ruang rata antara tombol */
+    align-items: center; /* Vertikal sejajar */
+    padding: 10px 20px;
     background-color: #f7f7f7;
-    border-top: 1px solid #ddd; /* Border atas pada footer */
-    height: 100%;
+    border-top: 1px solid #ddd;
+    margin-top: auto; /* Footer ke bagian bawah */
 }
 
-/* Tombol pada Card */
-.task-card .btn {
-    background-color: #FFBD59;
-    color: white;
+/* Tombol dalam Card */
+.task-card .btn,
+.task-card .btn-edit,
+.task-card .btn-delete {
+    flex: 1; /* Semua tombol ukuran sama */
+    margin: 0 5px; /* Jarak antar tombol */
+    text-align: center;
     border: none;
     border-radius: 10px;
     padding: 10px 20px;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s ease;
-    text-decoration: none; /* Menghilangkan underline pada tombol */
+    text-decoration: none; /* Hilangkan underline */
+}
+
+/* Tombol Utama */
+.task-card .btn {
+    background-color: #FFBD59;
+    color: white;
 }
 
 .task-card .btn:hover {
     background-color: #FFA931;
 }
 
+/* Tombol Edit */
 .task-card .btn-edit {
     background-color: #34B5FA;
     color: white;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    text-decoration: none; /* Menghilangkan underline pada tombol */
 }
 
 .task-card .btn-edit:hover {
     background-color: #344efa;
 }
 
+/* Tombol Delete */
 .task-card .btn-delete {
     background-color: #ff9393;
     color: #d90000;
-    border: none;
-    border-radius: 10px;
-    padding: 10px 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    text-decoration: none; /* Menghilangkan underline pada tombol */
 }
 
 .task-card .btn-delete:hover {
@@ -420,14 +429,25 @@ background-color: #141450;
 /* Responsivitas untuk Card */
 @media (max-width: 768px) {
     .task-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Menyesuaikan jumlah kolom pada layar kecil */
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Layout responsif */
         gap: 10px;
     }
 
     .task-card {
-        margin: 10px 0; /* Menambah margin vertikal */
+        margin: 10px 0; /* Margin vertikal */
+    }
+
+    .task-card .card-footer {
+        flex-direction: column; /* Tombol ditumpuk secara vertikal */
+    }
+
+    .task-card .btn,
+    .task-card .btn-edit,
+    .task-card .btn-delete {
+        margin: 5px 0; /* Spasi antar tombol */
     }
 }
+
 
 /* ALPA MAHASISWA */
 .card.card-outline.card-primary {
