@@ -60,13 +60,13 @@ class UserController extends Controller
                             </button>';
                 }
 
-                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
+                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info ml-1 mr-4" title="Detail">
                             <i class="fas fa-info-circle"></i>
                         </button>';
                 $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/edit_ajax') . '\')" class="btn btn-sm btn-warning" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>';
-                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/delete_ajax') . '\')" class="btn btn-sm btn-danger" title="Hapus">
+                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/delete_ajax') . '\')" class="btn btn-sm btn-danger ml-4" title="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </button>';
                 return $btn;
