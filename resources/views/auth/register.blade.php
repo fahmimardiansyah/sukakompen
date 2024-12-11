@@ -73,7 +73,8 @@
     
         option {
             color: #535353; 
-        }z
+        }
+        
         .form-control.kompetensi-select {
         width: 320px; 
         height: 40px; 

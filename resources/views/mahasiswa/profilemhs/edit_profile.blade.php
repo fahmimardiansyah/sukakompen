@@ -1,4 +1,4 @@
-@empty($mahasiswa)
+    @empty($mahasiswa)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,13 +41,18 @@
                             <div id="kompetensi-container">
                                 @foreach ($kompetensiMahasiswa as $kt)
                                     <div class="kompetensi-group">
+                                        <h6 class="d-flex justify-content-between align-items-center">
+                                            Kompetensi
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                                        </h6>
                                         <select name="kompetensi_id[]" class="form-control kompetensi-select" readonly>
                                             <option value="">- Pilih Kompetensi -</option>
                                             @foreach ($kompetensi as $k)
                                                 <option value="{{ $k->kompetensi_id }}" {{ $kt->kompetensi_id == $k->kompetensi_id ? 'selected' : '' }}>{{ $k->kompetensi_nama }}</option>
                                             @endforeach
                                         </select>
-                                        <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                                        {{-- <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button> --}}
                                     </div>
                                 @endforeach
                             </div>
@@ -74,51 +79,84 @@
             </div>
         </form>
         <script>
-            $(document).ready(function () {
-                const kompetensiOptions = @json($kompetensi);
+        $(document).ready(function() {
+            const kompetensiOptions = @json($kompetensi);
 
-                $('#add-kompetensi').click(function () {
-                    const selectedCompetency = $('#kompetensi-container .kompetensi-select:last').val();  // Check last selected competency
+            $('#add-kompetensi').click(function() {
+                const selectedCompetency = $('#kompetensi-container .kompetensi-select:last')
+                    .val(); // Check last selected competency
 
-                    if (!selectedCompetency) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Pilih Kompetensi Terlebih Dahulu',
-                            text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
-                        });
-                        return;
-                    }
-
-                    const existingSelections = $('.kompetensi-select').map(function () {
-                        return $(this).val();
-                    }).get();
-
-                    const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k.kompetensi_id.toString()));
-
-                    if (filteredOptions.length === 0) {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Tidak Ada Kompetensi Tersisa',
-                            text: 'Semua kompetensi telah dipilih.'
-                        });
-                        return;
-                    }
-
-                    const newDropdown = $('<div class="kompetensi-group mt-2">')
-                        .append('<select name="kompetensi_id[]" class="form-control kompetensi-select" required></select>')
-                        .append('<button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>');
-
-                    filteredOptions.forEach(option => {
-                        newDropdown.find('select').append(`<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`);
+                if (!selectedCompetency) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Pilih Kompetensi Terlebih Dahulu',
+                        text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
                     });
+                    return;
+                }
 
-                    $('#kompetensi-container').append(newDropdown);
+                const existingSelections = $('.kompetensi-select').map(function() {
+                    return $(this).val();
+                }).get();
+
+                const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k
+                    .kompetensi_id.toString()));
+
+                if (filteredOptions.length === 0) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Tidak Ada Kompetensi Tersisa',
+                        text: 'Semua kompetensi telah dipilih.'
+                    });
+                    return;
+                }
+
+                const newIndex = $('.kompetensi-group').length + 1;
+
+                // Buat elemen baru untuk kompetensi
+                const newDropdown = $(`
+        <div class="kompetensi-group mt-2">
+            <h6 class="d-flex justify-content-between align-items-center">
+                Kompetensi ${newIndex}
+                <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+            </h6>
+            <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
+                <option value="">- Pilih Kompetensi -</option>
+            </select>
+        </div>
+    `);
+
+                filteredOptions.forEach(option => {
+                    newDropdown.find('select').append(
+                        `<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`
+                    );
                 });
 
-                $(document).on('click', '.remove-kompetensi', function () {
-                    $(this).closest('.kompetensi-group').remove();
-                });
+                $('#kompetensi-container').append(newDropdown);
             });
+
+            $(document).on('click', '.remove-kompetensi', function() {
+                $(this).closest('.kompetensi-group').remove();
+
+                // Periksa dan sembunyikan tombol hapus jika hanya ada satu elemen
+                toggleRemoveButtonVisibility();
+            });
+
+            // Fungsi untuk menyembunyikan tombol hapus jika hanya ada satu elemen
+            function toggleRemoveButtonVisibility() {
+                if ($('.kompetensi-group').length === 1) {
+                    $('.remove-kompetensi').hide(); // Sembunyikan tombol hapus jika hanya satu
+                } else {
+                    $('.remove-kompetensi').show(); // Tampilkan tombol hapus jika lebih dari satu
+                }
+
+                $('.kompetensi-group:first .remove-kompetensi').hide();
+            }
+
+            // Panggil fungsi saat pertama kali halaman dimuat untuk menyembunyikan tombol hapus jika hanya satu
+            toggleRemoveButtonVisibility();
+        });
+
 
             $(document).ready(function() {
                 $("#form-edit").validate({
