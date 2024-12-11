@@ -44,7 +44,8 @@
                     <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
                         <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
-                        <p>Tugas melewati tenggat {{ $data->tugas->tugas_tenggat }}.</p>
+                        <p>Tugas melewati tenggat {{ $data->tugas->tugas_tenggat->format('d M Y, H:i') ?? 'N/A' }}.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @endif

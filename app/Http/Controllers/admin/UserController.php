@@ -14,6 +14,7 @@ use App\Models\ProdiModel;
 use App\Models\TendikModel;
 use App\Models\User;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -43,11 +44,11 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        $levelId = $request->query('level_id'); // Ambil level_id dari query string
+        $levelId = $request->query('level_id');
         $users = UserModel::select('user_id', 'username', 'level_id')
             ->with('level');
 
-        if ($levelId) { // Terapkan filter jika level_id ada
+        if ($levelId) {
             $users->where('level_id', $levelId);
         }
 
@@ -89,20 +90,44 @@ class UserController extends Controller
             $rules = [
                 'level_id' => 'required|integer',
                 'username' => 'required|string|min:3|unique:m_user,username',
-                'password' => 'required|min:5'
+                'password' => 'required|min:5',
+                'nip' => 'required|string',
+                'admin_nama' => 'required|string|max:100',
+                'admin_no_telp' => 'required|string|max:15',
+                'admin_email' => 'required|string|max:100'
             ];
 
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
+                $errors = $validator->errors();
+                $message = 'Validasi gagal.';
+
+                if ($errors->has('username')) {
+                    $message = 'Username sudah dipakai, silakan gunakan username lain.';
+                }
+
                 return response()->json([
-                    'status' => false, 
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors(), 
+                    'status' => false,
+                    'message' => $message,
+                    'msgField' => $errors
                 ]);
             }
 
-            UserModel::create($request->all());
+            $user = UserModel::create([
+                'level_id' => $request->level_id,
+                'username' => $request->username,
+                'password' => $request->password
+            ]);
+
+            AdminModel::create([
+                'user_id' => $user->user_id,
+                'nip' => $request->nip,
+                'admin_nama' => $request->admin_nama,
+                'admin_no_telp' => $request->admin_no_telp,
+                'admin_email' => $request->admin_email
+            ]);
+
             return response()->json([
                 'status' => true,
                 'message' => 'Data user berhasil disimpan'
@@ -131,24 +156,68 @@ class UserController extends Controller
             $rules = [
                 'level_id' => 'required|integer',
                 'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
-                'nama' => 'required|max:100',
-                'password' => 'nullable|min:5|max:20'
+                'password' => 'nullable|min:5|max:20',
+                'nidn' => 'nullable|max:20',
+                'nip' => 'nullable|max:20',
+                'nim' => 'nullable|max:20',
+                'dosen_nama' => 'nullable|max:100',
+                'tendik_nama' => 'nullable|max:100',
+                'mahasiswa_nama' => 'nullable|max:100',
+                'dosen_no_telp' => 'nullable|max:15',
+                'tendik_no_telp' => 'nullable|max:15',
+                'prodi_id' => 'nullable|integer',
+                'semester' => 'nullable|integer',
             ];
+
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
+                $errors = $validator->errors();
+                $message = 'Validasi gagal.';
+
+                if ($errors->has('username')) {
+                    $message = 'Username sudah dipakai, silakan gunakan username lain.';
+                }
+
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors() 
+                    'message' => $message,
+                    'msgField' => $errors
                 ]);
             }
-            $check = UserModel::find($id);
-            if ($check) {
-                if (!$request->filled('password')) {
-                    $request->request->remove('password');
+
+            $user = UserModel::find($id);
+
+            if ($user) {
+                $data = $request->except(['password']);
+                if ($request->filled('password')) {
+                    $data['password'] = bcrypt($request->password);
                 }
-                $check->update($request->all());
+
+                $user->update($data);
+
+                $dosen = DosenModel::where('user_id', $id);
+                $tendik = TendikModel::where('user_id', $id);
+                $mahasiswa = MahasiswaModel::where('user_id', $id);
+
+                if ($request->filled('nidn')) {
+                    $dosen->update([
+                        'dosen_nama' => $request->dosen_nama,
+                        'dosen_no_telp' => $request->dosen_no_telp
+                    ]);
+                } elseif ($request->filled('nip')) {
+                    $tendik->update([
+                        'tendik_nama' => $request->tendik_nama,
+                        'tendik_no_telp' => $request->tendik_no_telp
+                    ]);
+                } elseif ($request->filled('nim')) {
+                    $mahasiswa->update([
+                        'mahasiswa_nama' => $request->mahasiswa_nama,
+                        'prodi_id' => $request->prodi_id,
+                        'semester' => $request->semester
+                    ]);
+                }
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil diupdate'
@@ -166,20 +235,65 @@ class UserController extends Controller
     public function confirm_ajax(String $id){
         $user = UserModel::find($id);
 
-        return view('admin.user.confirm_ajax', ['user' => $user]);
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ]);
+        }
+
+        $admin = null;
+        $dosen = null;
+        $tendik = null;
+        $mahasiswa = null;
+        $kompetensi = null;
+
+        if ($user->level_id == 1) {
+            $admin = AdminModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 2) {
+            $dosen = DosenModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 3) {
+            $tendik = TendikModel::where('user_id', $user->user_id)->first();
+        } elseif ($user->level_id == 4) {
+            $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+            $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
+        }
+
+        return view('admin.user.confirm_ajax', ['user' => $user, 'admin' => $admin, 'dosen' => $dosen, 'tendik' => $tendik, 'mahasiswa' => $mahasiswa, 'kompetensi' => $kompetensi]);
     }
 
     public function delete_ajax(Request $request, $id)
     {
-        if($request->ajax() || $request->wantsJson()){
+        if ($request->ajax() || $request->wantsJson()) {
             $user = UserModel::find($id);
-            if($user){
+
+            $dosen = DosenModel::where('user_id', $id)->first();
+            $tendik = TendikModel::where('user_id', $id)->first();
+            $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
+
+            DB::table('t_kompetensi_mahasiswa')->where('mahasiswa_id', $mahasiswa->mahasiswa_id)->delete();
+
+            if ($user) {
+                if ($dosen) {
+                    $dosen->delete();
+                } elseif ($tendik) {
+                    $tendik->delete();
+                } elseif ($mahasiswa) {
+                    $mahasiswa->delete(); 
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Data tidak ditemukan'
+                    ]);
+                }
+
                 $user->delete();
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil dihapus'
                 ]);
-            }else{
+            } else {
                 return response()->json([
                     'status' => false,
                     'message' => 'Data tidak ditemukan'
@@ -220,77 +334,208 @@ class UserController extends Controller
         return view('admin.user.show_ajax', compact('user', 'admin', 'dosen', 'tendik', 'mahasiswa', 'kompetensi'));
     }
 
-    public function import()
+    public function importDosen()
     {
-        return view('admin.alpam.import');
+        return view('admin.user.import_dosen');
     }
 
-    public function import_ajax(Request $request)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = [
-            'file_alpa' => [
-                'required', 
-                'mimes:xlsx', 
-                'max:51200'
-            ]
-        ];
+    public function import_dosen(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_dosen' => [
+                    'required', 
+                    'mimes:xlsx', 
+                    'max:51200'
+                ]
+            ];
 
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi Gagal',
-                'msgField' => $validator->errors()
-            ]);
-        }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
 
-        $file = $request->file('file_alpa'); 
+            $file = $request->file('file_dosen'); 
 
-        $reader = IOFactory::createReader('Xlsx');  
-        $reader->setReadDataOnly(true);
-        $spreadsheet = $reader->load($file->getRealPath()); 
-        $sheet = $spreadsheet->getActiveSheet(); 
+            $reader = IOFactory::createReader('Xlsx');  
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath()); 
+            $sheet = $spreadsheet->getActiveSheet(); 
 
-        $data = $sheet->toArray(null, false, true, true); 
+            $data = $sheet->toArray(null, false, true, true); 
 
-        if (count($data) > 1) { 
-            foreach ($data as $baris => $value) {
-                if ($baris > 1) { 
-                    $existing = AlpaModel::where('mahasiswa_alpa_nim', $value['A'])
-                                         ->where('mahasiswa_alpa_nama', $value['B'])
-                                         ->first();
+            if (count($data) > 1) { 
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) {
+                        $user = UserModel::create([
+                            'level_id' => 2,
+                            'username' => $value['D'],
+                            'password' => '12345678'
+                        ]);
 
-                    $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])
-                                         ->where('mahasiswa_nama', $value['B'])
-                                         ->first();
-
-                    if ($existing) {
-                        $existing->increment('jam_alpa', $value['C']);
-                        $existingMahasiswa->increment('jumlah_alpa', $value['C']);
-                    } else {
-                        AlpaModel::create([
-                            'mahasiswa_alpa_nim' => $value['A'],
-                            'mahasiswa_alpa_nama' => $value['B'],
-                            'jam_alpa' => $value['C'],
+                        DosenModel::create([
+                            'user_id' => $user->user_id,
+                            'nidn' => $value['A'],
+                            'dosen_nama' => $value['B'],
+                            'dosen_no_telp' => $value['C'],
+                            'dosen_email' => $value['D'],
                             'created_at' => now(),
                         ]);
                     }
                 }
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
             }
-            
-            return response()->json([
-                'status' => true,
-                'message' => 'Data berhasil diimport'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tidak ada data yang diimport'
-            ]);
         }
+        return redirect('/');
     }
-    return redirect('/');
-}
+
+    public function importTendik()
+    {
+        return view('admin.user.import_tendik');
+    }
+
+    public function import_tendik(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_tendik' => [
+                    'required', 
+                    'mimes:xlsx', 
+                    'max:51200'
+                ]
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_tendik'); 
+
+            $reader = IOFactory::createReader('Xlsx');  
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath()); 
+            $sheet = $spreadsheet->getActiveSheet(); 
+
+            $data = $sheet->toArray(null, false, true, true); 
+
+            if (count($data) > 1) { 
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) {
+                        $user = UserModel::create([
+                            'level_id' => 3,
+                            'username' => $value['D'],
+                            'password' => '12345678'
+                        ]);
+
+                        TendikModel::create([
+                            'user_id' => $user->user_id,
+                            'nip' => $value['A'],
+                            'tendik_nama' => $value['B'],
+                            'tendik_no_telp' => $value['C'],
+                            'tendik_email' => $value['D'],
+                            'created_at' => now(),
+                        ]);
+                    }
+                }
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
+    public function importMahasiswa()
+    {
+        return view('admin.user.import_mahasiswa');
+    }
+
+    public function import_mahasiswa(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_mahasiswa' => [
+                    'required', 
+                    'mimes:xlsx', 
+                    'max:51200'
+                ]
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            $file = $request->file('file_mahasiswa'); 
+
+            $reader = IOFactory::createReader('Xlsx');  
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath()); 
+            $sheet = $spreadsheet->getActiveSheet(); 
+
+            $data = $sheet->toArray(null, false, true, true); 
+
+            if (count($data) > 1) { 
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) {
+                        $user = UserModel::create([
+                            'level_id' => 4,
+                            'username' => $value['A'],
+                            'password' => '12345678'
+                        ]);
+
+                        MahasiswaModel::create([
+                            'user_id' => $user->user_id,
+                            'nim' => $value['A'],
+                            'mahasiswa_nama' => $value['B'],
+                            'prodi_id' => $value['C'],
+                            'semester' => $value['D'],
+                            'created_at' => now(),
+                        ]);
+                    }
+                }
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
 
 }

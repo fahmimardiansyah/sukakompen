@@ -73,100 +73,107 @@ class AuthController extends Controller
     }
 
     public function postregister(Request $request)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = [
-            'level_id' => 'required|integer|in:1,2,3,4',
-        ];
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'level_id' => 'required|integer|in:1,2,3,4',
+            ];
 
-        switch ($request->level_id) {
-            case 1: 
-                $rules['nip'] = 'required|string|max:20|unique:m_admin,nip';
-                $rules['admin_nama'] = 'required|string|max:100';
-                $rules['admin_no_telp'] = 'required|string|max:15';
-                break;
-            case 2:
-                $rules['nidn'] = 'required|string|max:20|unique:m_dosen,nidn';
-                $rules['dosen_nama'] = 'required|string|max:100';
-                $rules['dosen_no_telp'] = 'required|string|max:15';
-                break;
-            case 3: 
-                $rules['nip'] = 'required|string|max:20|unique:m_tendik,nip';
-                $rules['tendik_nama'] = 'required|string|max:100';
-                $rules['tendik_no_telp'] = 'required|string|max:15';
-                break;
-            case 4:
-                $rules['nim'] = 'required|string|max:20|unique:m_mahasiswa,nim';
-                $rules['mahasiswa_nama'] = 'required|string|max:100';
-                $rules['prodi_id'] = 'required|integer|in:1,2,3';
-                $rules['semester'] = 'required|integer|min:1|max:8';
-                $rules['kompetensi_id'] = 'required|array';
-                $rules['kompetensi_id.*'] = 'integer|exists:t_kompetensi,kompetensi_id';
-                break;
-        }
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi Gagal',
-                'msgField' => $validator->errors(),
-            ]);
-        }
-
-        DB::beginTransaction(); // Start transaction
-        try {
-            $user = new UserModel();
-            $user->level_id = $request->level_id;
-
-            if ($request->level_id == 1) { 
-                $user->username = $request->nip;
-            } elseif ($request->level_id == 2) { 
-                $user->username = $request->nidn;
-            } elseif ($request->level_id == 3) { 
-                $user->username = $request->nip;
-            } elseif ($request->level_id == 4) { 
-                $user->username = $request->nim;
+            switch ($request->level_id) {
+                case 1: 
+                    $rules['nip'] = 'required|string|max:20|unique:m_admin,nip';
+                    $rules['admin_nama'] = 'required|string|max:100';
+                    $rules['admin_no_telp'] = 'required|string|max:15';
+                    break;
+                case 2:
+                    $rules['nidn'] = 'required|string|max:20|unique:m_dosen,nidn';
+                    $rules['dosen_nama'] = 'required|string|max:100';
+                    $rules['dosen_no_telp'] = 'required|string|max:15';
+                    break;
+                case 3: 
+                    $rules['nip'] = 'required|string|max:20|unique:m_tendik,nip';
+                    $rules['tendik_nama'] = 'required|string|max:100';
+                    $rules['tendik_no_telp'] = 'required|string|max:15';
+                    break;
+                case 4:
+                    $rules['nim'] = 'required|string|max:20|unique:m_mahasiswa,nim';
+                    $rules['mahasiswa_nama'] = 'required|string|max:100';
+                    $rules['prodi_id'] = 'required|integer|in:1,2,3';
+                    $rules['semester'] = 'required|integer|min:1|max:8';
+                    $rules['kompetensi_id'] = 'required|array';
+                    $rules['kompetensi_id.*'] = 'integer|exists:t_kompetensi,kompetensi_id';
+                    break;
             }
-            $user->password = bcrypt($user->username); 
-            $user->save();
 
-            if ($request->level_id == 4) { 
-                $mahasiswa = MahasiswaModel::create([
-                    'user_id' => $user->user_id,
-                    'nim' => $request->nim,
-                    'mahasiswa_nama' => $request->mahasiswa_nama,
-                    'prodi_id' => $request->prodi_id,
-                    'semester' => $request->semester,
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
                 ]);
+            }
 
-                $kompetensiData = [];
-                foreach ($request->kompetensi_id as $kompetensiId) {
-                    $kompetensiData[] = [
-                        'mahasiswa_id' => $mahasiswa->mahasiswa_id,
-                        'kompetensi_id' => $kompetensiId,
-                    ];
+            DB::beginTransaction(); // Start transaction
+            try {
+                $user = new UserModel();
+                $user->level_id = $request->level_id;
+
+                if ($request->level_id == 1) { 
+                    $user->username = $request->nip;
+                } elseif ($request->level_id == 2) { 
+                    $user->username = $request->nidn;
+                } elseif ($request->level_id == 3) { 
+                    $user->username = $request->nip;
+                } elseif ($request->level_id == 4) { 
+                    $user->username = $request->nim;
                 }
+                $user->password = bcrypt($user->username); 
+                $user->save();
 
-                KompetensiMhsModel::insert($kompetensiData);
+                if ($request->level_id == 4) { 
+                    $mahasiswa = MahasiswaModel::create([
+                        'user_id' => $user->user_id,
+                        'nim' => $request->nim,
+                        'mahasiswa_nama' => $request->mahasiswa_nama,
+                        'prodi_id' => $request->prodi_id,
+                        'semester' => $request->semester,
+                    ]);
 
-                $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
+                    $kompetensiData = [];
+                    foreach ($request->kompetensi_id as $kompetensiId) {
+                        $kompetensiData[] = [
+                            'mahasiswa_id' => $mahasiswa->mahasiswa_id,
+                            'kompetensi_id' => $kompetensiId,
+                        ];
+                    }
 
-                $mahasiswa->update([
-                    'jumlah_alpa' => $alpa->jam_alpa
-                ]);
+                    KompetensiMhsModel::insert($kompetensiData);
 
-                for ($i = 1; $i <= 8; $i++) {
-                    if ($alpa) {
-                        $akumulasi = $i == $mahasiswa->semester;
+                    $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
-                        if ($akumulasi) {
-                            AkumulasiModel::create([
-                                'mahasiswa_id' => $mahasiswa->mahasiswa_id,
-                                'semester' => $i,
-                                'jumlah_alpa' => $alpa->jam_alpa
-                            ]);
+                    $mahasiswa->update([
+                        'jumlah_alpa' => $alpa->jam_alpa
+                    ]);
+
+                    for ($i = 1; $i <= 8; $i++) {
+                        if ($alpa) {
+                            $akumulasi = $i == $mahasiswa->semester;
+
+                            if ($akumulasi) {
+                                AkumulasiModel::create([
+                                    'mahasiswa_id' => $mahasiswa->mahasiswa_id,
+                                    'semester' => $i,
+                                    'jumlah_alpa' => $alpa->jam_alpa
+                                ]);
+                            } else {
+                                AkumulasiModel::create([
+                                    'mahasiswa_id' => $mahasiswa->mahasiswa_id,
+                                    'semester' => $i,
+                                    'jumlah_alpa' => 0
+                                ]);
+                            }
                         } else {
                             AkumulasiModel::create([
                                 'mahasiswa_id' => $mahasiswa->mahasiswa_id,
@@ -174,33 +181,26 @@ class AuthController extends Controller
                                 'jumlah_alpa' => 0
                             ]);
                         }
-                    } else {
-                        AkumulasiModel::create([
-                            'mahasiswa_id' => $mahasiswa->mahasiswa_id,
-                            'semester' => $i,
-                            'jumlah_alpa' => 0
-                        ]);
                     }
                 }
+
+                DB::commit(); 
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data user berhasil disimpan',
+                    'redirect' => url('login'),
+                ]);
+            } catch (\Exception $e) {
+                DB::rollBack(); 
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+                ]);
             }
-
-            DB::commit(); 
-            return response()->json([
-                'status' => true,
-                'message' => 'Data user berhasil disimpan',
-                'redirect' => url('login'),
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack(); 
-            return response()->json([
-                'status' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
-            ]);
         }
-    }
 
-    return redirect('login');
-}
+        return redirect('login');
+    }
 
 
     private function getRedirectRoute($level_kode)

@@ -8,6 +8,7 @@ use App\Models\AlpaModel;
 use App\Models\MahasiswaModel;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class AlpaController extends Controller
 {
@@ -102,10 +103,17 @@ class AlpaController extends Controller
         return redirect('/');
     }
 
-public function export_pdf()
-{
+    public function export_pdf() {
+        $mahasiswa = AlpaModel::select('mahasiswa_alpa_nim', 'mahasiswa_alpa_nama', 'jam_kompen', 'jam_alpa')
+                ->orderBy('mahasiswa_alpa_nim')
+                ->get();
 
-}
+        $pdf = Pdf::loadView('admin.alpam.export_pdf', ['mahasiswa' => $mahasiswa]);
+        $pdf->setPaper('a4', 'portrait'); 
+        $pdf->setOption("isRemoteEnabled", true);
+        $pdf->render();
 
+        return $pdf->stream('Data Alpa Mahasiswa '.date('Y-m-d H:i:s').'.pdf');
+    }
 
 }

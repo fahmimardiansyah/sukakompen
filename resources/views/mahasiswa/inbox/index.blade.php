@@ -65,7 +65,8 @@
                     <i class="fas fa-user-circle" style="font-size: 50px;"></i>
                     <div class="text">
                         <h3>{{ $item->pengguna->dosen_nama ?? $item->pengguna->tendik_nama ?? $item->pengguna->admin_nama ?? 'N/A'}}</h3>
-                        <p>Tugas Melewati tenggat ( {{ $item->tugas->tugas_tenggat ?? 'error' }} ).</p>
+                        <p>Tugas Melewati tenggat ( {{ $item->tugas->tugas_tenggat->format('d M Y, H:i') ?? 'error' }} ).</p>
+                        <p>Waktu dibuat: {{ $item->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                 </div>
             @endif
