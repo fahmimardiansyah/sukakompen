@@ -341,7 +341,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Verifikasi berhasil. Password telah diperbarui.',
-                'redirect' => url('landing'), // Redirect to the correct page (e.g., dashboard or landing page)
+                'redirect' => url('login'), // Redirect to the correct page (e.g., dashboard or landing page)
             ]);
         } elseif ($tendik) {
             $tendik->update([
@@ -350,7 +350,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Verifikasi berhasil. Password telah diperbarui.',
-                'redirect' => url('landing'), // Redirect to the correct page for tendik
+                'redirect' => url('login'), // Redirect to the correct page for tendik
             ]);
         } else {
             return response()->json([
