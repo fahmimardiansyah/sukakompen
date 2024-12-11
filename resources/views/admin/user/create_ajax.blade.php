@@ -3,14 +3,15 @@
     <div id="modal-master" class="modal-dialog modal-lg" role="document"> 
         <div class="modal-content"> 
             <div class="modal-header"> 
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data User</h5> 
+                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Admin</h5> 
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span 
                 aria-hidden="true">&times;</span></button> 
             </div> 
             <div class="modal-body"> 
                 <div class="form-group"> 
                     <label>Level Pengguna</label> 
-                    <p class="form-control">Admin</p>
+                    <input value="Admin" type="text" name="level_nama" id="level_nama" class="form-control" readonly> 
+                    <input value="1" type="hidden" name="level_id" id="level_id" class="form-control"> 
                     <small id="error-level_id" class="error-text form-text text-danger"></small> 
                 </div> 
                 <div class="form-group"> 
@@ -26,27 +27,23 @@
                 </div>
                 <div class="form-group">
                     <label>NIP</label>
-                    <input type="text" name="nip" class="form-control" required>
-                    <div class="input-group-append">
-                    </div>
+                    <input type="text" name="nip" id="nip" class="form-control" required>
+                    <small id="error-nip" class="error-text form-text text-danger"></small> 
                 </div>
                 <div class="form-group">
                     <label>Nama</label> 
-                    <input type="text" name="admin_nama" class="form-control" required>
-                    <div class="input-group-append">
-                    </div>
+                    <input type="text" name="admin_nama" id="admin_nama" class="form-control" required>
+                    <small id="error-admin_nama" class="error-text form-text text-danger"></small> 
                 </div>
                 <div class="form-group">
                     <label>No.Telepon</label> 
-                    <input type="text" name="admin_no_telp" class="form-control" required>
-                    <div class="input-group-append">
-                    </div>
+                    <input type="tel" name="admin_no_telp" id="admin_no_telp" class="form-control" required>
+                    <small id="error-admin_no_telp" class="error-text form-text text-danger"></small> 
                 </div>
                 <div class="form-group">
                     <label>Email SSO</label>
-                    <input type="text" name="admin_email" class="form-control" required>
-                    <div class="input-group-append">
-                    </div>
+                    <input type="email" name="admin_email" id="admin_email" class="form-control" required>
+                    <small id="error-admin_email" class="error-text form-text text-danger"></small> 
                 </div>
             </div> 
             <div class="modal-footer"> 
@@ -62,10 +59,11 @@
             rules: { 
                 level_id: {required: true, number: true}, 
                 username: {required: true, minlength: 3, maxlength: 20}, 
-                password: {required: true, minlength: 5, maxlength: 20}
+                password: {required: true, minlength: 5, maxlength: 20},
                 nip: { required: true, maxlength: 20 },
                 admin_nama: { required: true, maxlength: 100 },
-                admin_no_telp: { required: true, maxlength: 15 }
+                admin_no_telp: { required: true, maxlength: 15 },
+                admin_email: { required: true, maxlength: 100 }
             }, 
             submitHandler: function(form) { 
                 $.ajax({ 

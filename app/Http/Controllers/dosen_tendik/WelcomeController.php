@@ -30,7 +30,7 @@ class WelcomeController extends Controller
         ->whereHas('tugas', function ($query) use ($user) {
             $query->where('user_id', $user->user_id);
         })
-        ->where('status', 0) 
+        ->where('status', null) 
         ->count();
 
         return view('dosen_tendik.landing', ['breadcrumb' => $breadcrumb, 'activeMenu' => $activeMenu, 'tugas' => $tugas, 'alpa' => $alpa, 'progress' => $progress]);

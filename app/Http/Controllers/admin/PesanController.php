@@ -11,6 +11,8 @@ use App\Models\ProgressModel;
 use Illuminate\Http\Request;
 use App\Models\TugasModel;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
+
 
 class PesanController extends Controller
 {
@@ -21,7 +23,7 @@ class PesanController extends Controller
             'list' => ['Home', 'Pesan Tugas']
         ];
 
-        $activeMenu = 'pesan';
+        $activeMenu = 'notif';
 
         $user = Auth::user();
         
@@ -41,11 +43,24 @@ class PesanController extends Controller
             ->with('mahasiswa')
             ->get();
 
+        $currentDate = Carbon::now();
+
+        $progress = ProgressModel::whereIn('tugas_id', $data->pluck('tugas_id'))
+            ->with(['tugas', 'mahasiswa'])
+            ->get();
+        
+        foreach ($progress as $item) {
+            if ($item->tugas->tugas_tenggat < $currentDate && $item->status !== 1) {
+                $item->update(['status' => false]); 
+            }
+        }
+
         return view('admin.pesan.index', [
             'breadcrumb' => $breadcrumb, 
             'activeMenu' => $activeMenu, 
             'apply' => $apply, 
-            'approval' => $approval
+            'approval' => $approval,
+            'progress' => $progress
         ]);
     }
 
@@ -66,7 +81,6 @@ class PesanController extends Controller
                 'apply_id' => $apply->apply_id,
                 'tugas_id' => $apply->tugas_id,
                 'mahasiswa_id' => $apply->mahasiswa_id,
-                'status' => false,
             ]);
 
             if ($apply) {

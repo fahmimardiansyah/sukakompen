@@ -5,11 +5,11 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #1d1f96; color: white;">Import Dosen</button>
-                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #2795d4; color: white;">Import Tendik</button>
-                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #ffd000; color: white;">Import Mahasiswa</button>
+                <button onclick="modalAction('{{ url('/user/importDosen') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #1d1f96; color: white;">Import Dosen</button>
+                <button onclick="modalAction('{{ url('/user/importTendik') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #2795d4; color: white;">Import Tendik</button>
+                <button onclick="modalAction('{{ url('/user/importMahasiswa') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #ffd000; color: white;">Import Mahasiswa</button>
                 
-                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-success btn-sm mt-1">Tambah User</button>              
+                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-success btn-sm mt-1">Tambah User Admin</button>              
             </div>
         </div>
         <div class="row">
@@ -61,19 +61,16 @@
         $('.tab').removeClass('active');
         $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
 
-        // Tentukan level_id berdasarkan tab
         let levelId = '';
         if (tabName === 'admin') levelId = 1;
         else if (tabName === 'dosen') levelId = 2;
         else if (tabName === 'tendik') levelId = 3;
         else if (tabName === 'mahasiswa') levelId = 4;
 
-        // Reload DataTable dengan level_id yang sesuai
         dataUser.ajax.url("{{ url('user/list') }}?level_id=" + levelId).load();
     }
 
     $(document).ready(function() {
-        // Inisialisasi DataTable
         dataUser = $('#table_user').DataTable({
             serverSide: true,
             ajax: {
@@ -102,11 +99,13 @@
                     data: "aksi",
                     orderable: false,
                     searchable: false
-                }
-            ]
+                },
+            ],
+            language: {
+                search: "Search by username:",
+            }
         });
 
-        // Tab default (Admin) langsung aktif
         showTab('admin');
     });
 </script>

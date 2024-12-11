@@ -8,7 +8,7 @@ use App\Models\KompetensiModel;
 use App\Models\KompetensiTgsModel;
 use App\Models\TugasModel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;

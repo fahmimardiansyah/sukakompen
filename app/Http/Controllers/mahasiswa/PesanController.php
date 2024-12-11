@@ -12,6 +12,7 @@ use App\Models\TendikModel;
 use App\Models\MahasiswaModel;
 use App\Models\AdminModel;
 use App\Models\ProgressModel;
+use Illuminate\Support\Carbon;
 
 class PesanController extends Controller
 {
@@ -34,6 +35,8 @@ class PesanController extends Controller
                 ->with('error', 'Mahasiswa tidak ditemukan');
         }
 
+        $currentDate = Carbon::now();
+
         $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with('tugas')
             ->whereNotIn('tugas_id', ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
@@ -42,7 +45,20 @@ class PesanController extends Controller
         $approval = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with('tugas')
             ->get();
- 
+
+        $progress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+            ->whereNotIn('tugas_id', ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
+            ->with(['tugas'])
+            ->get();
+        
+        foreach ($progress as $item) {
+            $item->tugas->tugas_tenggat >= $currentDate;
+        }        
+
+        foreach ($progress as $item) {
+            $item->update(['status' => false]);
+        }
+
         foreach ($apply as $item) {
             $item->pengguna = $this->getUserByUserId($item->tugas->user_id ?? null);
         }
@@ -51,11 +67,16 @@ class PesanController extends Controller
             $item->pengguna = $this->getUserByUserId($item->tugas->user_id ?? null);
         }
 
+        foreach ($progress as $item) {
+            $item->pengguna = $this->getUserByUserId($item->tugas->user_id ?? null);
+        }
+
         return view('mahasiswa.inbox.index', [
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu,
             'apply' => $apply,
-            'approval' => $approval
+            'approval' => $approval,
+            'progress' => $progress,
         ]);
     }
 

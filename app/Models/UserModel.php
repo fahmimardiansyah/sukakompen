@@ -54,11 +54,9 @@ class UserModel extends Authenticatable implements JWTSubject
         return $this->level->level_kode == $role;
     }
 
-    /**
-     * Mendapatkan kode role
-     */
     public function getRole(): string
     {
         return $this->level->level_kode;
     }
+
 }

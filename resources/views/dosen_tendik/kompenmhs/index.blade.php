@@ -41,7 +41,7 @@
 
             @foreach($progress as $item )
             <tr>
-                @if($item->status === 0)
+                @if($item->status === null)
                     <td>{{ $item->mahasiswa->mahasiswa_nama }}</td>
                     <td>{{ $item->mahasiswa->nim }}</td>
                     <td>{{ $item->tugas->tugas_nama }}</td>

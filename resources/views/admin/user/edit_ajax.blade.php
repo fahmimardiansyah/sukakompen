@@ -29,13 +29,14 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>Level Pengguna</label>
-                        <select name="level_id" id="level_id" class="form-control" required>
+                        <select name="level_id" id="level_id" class="form-control" disabled>
                             <option value="">- Pilih Level -</option>
                             @foreach ($level as $l)
                                 <option {{ $l->level_id == $user->level_id ? 'selected' : '' }}
                                     value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
                             @endforeach
                         </select>
+                        <input type="hidden" name="level_id" value="{{ $user->level_id }}">
                         <small id="error-level_id" class="error-text form-text textdanger"></small>
                     </div>
                     <div class="form-group">
@@ -89,14 +90,15 @@
                         </div>
                         <div class="form-group">
                             <label>Prodi</label>
-                            <select name="level_id" id="level_id" class="form-control" required>
+                            <select name="prodi_id" id="prodi_id" class="form-control" disabled>
                                 <option value="">- Pilih Level -</option>
                                 @foreach ($prodi as $p)
                                     <option {{ $p->prodi_id == $mahasiswa->prodi_id ? 'selected' : '' }}
                                         value="{{ $p->prodi_id }}">{{ $p->prodi_nama }}</option>
                                 @endforeach
                             </select>
-                            <small id="error-level_id" class="error-text form-text textdanger"></small>
+                            <input type="hidden" name="prodi_id" value="{{ $mahasiswa->prodi_id }}">
+                            <small id="error-prodi_id" class="error-text form-text textdanger"></small>
                         </div>
                         <div class="form-group">
                             <label>Semester</label>
@@ -142,19 +144,16 @@
                         type: form.method,
                         data: $(form).serialize(),
                         success: function(response) {
-                            console.log(response); 
                             if (response.status) {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 2000);
+                                setTimeout(() => location.reload(), 2000);
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function(prefix, val) {
+                                $.each(response.msgField, (prefix, val) => {
                                     $('#error-' + prefix).text(val[0]);
                                 });
                                 Swal.fire({
@@ -164,8 +163,8 @@
                                 });
                             }
                         },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', xhr.responseText); // Menampilkan error
+                        error: function(xhr) {
+                            console.error('Error:', xhr.responseText);
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Kesalahan',
@@ -180,13 +179,14 @@
                     error.addClass('invalid-feedback');
                     element.closest('.form-group').append(error);
                 },
-                highlight: function(element, errorClass, validClass) {
+                highlight: function(element) {
                     $(element).addClass('is-invalid');
                 },
-                unhighlight: function(element, errorClass, validClass) {
+                unhighlight: function(element) {
                     $(element).removeClass('is-invalid');
                 }
             });
         });
     </script>
+
 @endempty

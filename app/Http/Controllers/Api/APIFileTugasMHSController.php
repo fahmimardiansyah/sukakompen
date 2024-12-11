@@ -60,37 +60,29 @@ class APIFileTugasMHSController extends Controller
 
     public function download(Request $request)
     {
-        // Validasi request
         $validated = $request->validate([
             'progress_id' => 'required|integer',
         ]);
 
-        // Cari data berdasarkan progress_id
         $data = ProgressModel::where('progress_id', $validated['progress_id'])->first();
 
-        // Jika data atau file tidak ditemukan
         if (!$data || !$data->file_mahasiswa) {
             return response()->json(['message' => 'File tidak ditemukan'], 404);
         }
 
-        // Path file di server
         $filePath = storage_path('app/public/posts/' . $data->file_mahasiswa);
 
-        // Jika file tidak ada di server
         if (!file_exists($filePath)) {
             return response()->json(['message' => 'File tidak ada di server'], 404);
         }
 
-        // Mendapatkan mime type file
         $mimeType = mime_content_type($filePath);
 
-        // Header respons untuk file
         $headers = [
             'Content-Type' => $mimeType,
             'Content-Disposition' => 'attachment; filename="' . $data->file_mahasiswa . '"',
         ];
 
-        // Mengembalikan file sebagai respons unduhan
         return response()->file($filePath, $headers);
     }
 

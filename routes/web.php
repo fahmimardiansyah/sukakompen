@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 Route::pattern('id', '[0-9]+');
 Route::get('login', [AuthController::class, 'login'])->name('login');
@@ -29,13 +30,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/delete_ajax', [App\Http\Controllers\Admin\UserController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [App\Http\Controllers\Admin\UserController::class, 'delete_ajax']);
             Route::get('/{id}/show_ajax', [App\Http\Controllers\Admin\UserController::class, 'show_ajax']);
+            Route::get('/importDosen', [App\Http\Controllers\Admin\UserController::class, 'importDosen']);
+            Route::post('/import_dosen', [App\Http\Controllers\Admin\UserController::class, 'import_dosen']);
+            Route::get('/importTendik', [App\Http\Controllers\Admin\UserController::class, 'importTendik']);
+            Route::post('/import_tendik', [App\Http\Controllers\Admin\UserController::class, 'import_tendik']);
+            Route::get('/importMahasiswa', [App\Http\Controllers\Admin\UserController::class, 'importMahasiswa']);
+            Route::post('/import_mahasiswa', [App\Http\Controllers\Admin\UserController::class, 'import_mahasiswa']);
         });
 
         Route::group(['prefix' => 'alpam'], function () {
             Route::get('/', [App\Http\Controllers\Admin\AlpaController::class, 'index']);
             Route::get('/import', [App\Http\Controllers\Admin\AlpaController::class, 'import']);
             Route::post('/import_ajax', [App\Http\Controllers\Admin\AlpaController::class, 'import_ajax']);
-            Route::post('/{id}/export_pdf', [App\Http\Controllers\Admin\AlpaController::class, 'export_pdf']);
+            Route::get('/export_pdf', [App\Http\Controllers\Admin\AlpaController::class, 'export_pdf']);
         });
 
         Route::group(['prefix' => 'kompenma'], function () {
@@ -176,8 +183,10 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
-
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
+    URL::forceScheme('https');
+    
 });
+
+Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);

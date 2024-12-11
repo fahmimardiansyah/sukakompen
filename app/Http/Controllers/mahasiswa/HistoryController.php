@@ -103,7 +103,7 @@ class HistoryController extends Controller
         ];
 
         // Membuat QR Code
-        $qrContent = url('/history/export_pdf/' . $approval_id);
+        $qrContent = url( $approval_id . '/export_pdf');
 
         $result = Builder::create()
             ->data($qrContent)

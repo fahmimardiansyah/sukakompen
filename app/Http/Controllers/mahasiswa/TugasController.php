@@ -13,15 +13,17 @@ use App\Models\ProgressModel;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TugasModel;
 use Illuminate\Support\Facades\DB;
-use Illuminate\support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Prompts\Progress;
 
 class TugasController extends Controller
 {
+
     public function index()
     {
         $breadcrumb = (object) [
@@ -41,8 +43,11 @@ class TugasController extends Controller
                 ->with('error', 'Mahasiswa tidak ditemukan');
         }
 
+        $currentDate = Carbon::now();
+
         $tugas = TugasModel::with('jenis')
             ->whereNotIn('tugas_id', ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
+            ->where('tugas_tenggat', '>=', $currentDate) 
             ->get();
 
         $progressCounts = ProgressModel::whereIn('tugas_id', $tugas->pluck('tugas_id'))
@@ -62,6 +67,7 @@ class TugasController extends Controller
             'tugas' => $tampil,
         ]);
     }
+
 
     public function show()
     {

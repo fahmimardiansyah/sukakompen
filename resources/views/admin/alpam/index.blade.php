@@ -11,7 +11,7 @@
         <h2>Tabel Alpa Mahasiswa</h2>
         <div class="alpa-button">
             <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-warning" id="importButton">Import</button>
-            <button href="{{ url('/alpam/export_pdf') }}" class="btn btn-success">Export</button>
+            <a href="{{ url('/alpam/export_pdf') }}" class="btn btn-success"><i class="fa fa-file-pdf"></i> Export Data</a>
         </div>
     </div>
 
