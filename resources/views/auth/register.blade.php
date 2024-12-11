@@ -15,11 +15,35 @@
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('login.css') }}">
+    <link rel="stylesheet" href="{{ asset(path: 'login.css') }}">
 </head>
 
 <body class="hold-transition login-page">
     <div class="login-box">
+        <div class="modal fade" id="verificationModal" tabindex="-1" role="dialog" aria-labelledby="verificationModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verificationModalLabel">Verifikasi Kode</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p id="modal-verification-content">Masukkan kode verifikasi yang telah dikirim ke email Anda.</p>
+                        <div class="form-group">
+                            <!-- Single input for the verification code -->
+                            <input type="text" id="verification_code" class="form-control" maxlength="6" placeholder="Masukkan kode verifikasi" required>
+                        </div>
+                        <small id="verificationError" class="text-danger d-none">Kode verifikasi salah. Silakan coba lagi.</small>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-block" data-dismiss="modal">Batal</button>
+                        <button type="button" class="btn btn-info btn-block" id="submitVerification">Verifikasi</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card card-outline card-primary">
             <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a></div>
             <div class="card-body">
@@ -45,13 +69,17 @@
                             <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                         </div>
                     </div>
-                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('login') }}">Sign in</a></p>
+                    <p class="login-box-msg">Sudah Punya Akun? <a href="{{ url('/login') }}">Sign in</a></p>
                 </form>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </div>
+
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- jQuery -->
     <script src="{{ asset('adminlte/plugins/jquery/jquery.min.js') }}"></script>
@@ -67,13 +95,27 @@
 
 
     <style>
+        .verification-digit {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 18px;
+            border: 2px dashed #ccc;
+            margin-right: 5px;
+        }
+
+        .verification-digit:focus {
+            border-color: #007bff;
+        }
+        
         select {
             color: #535353; 
         }
     
         option {
             color: #535353; 
-        }z
+        }
+
         .form-control.kompetensi-select {
         width: 320px; 
         height: 40px; 
@@ -91,36 +133,49 @@
     </style>
     
     <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        function modalAction(url = '') {
+            $('#myModal').load(url, function() {
+                $('#myModal').modal('show');
+            });
+        }
+
         $(document).ready(function () {
-            // Inisialisasi validasi
+            // Form Validator
             const formValidator = $("#form-register").validate({
                 rules: {
                     level_id: { required: true, number: true },
                 },
                 submitHandler: function (form) {
+                    // Pendaftaran AJAX
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
                         success: function (response) {
                             if (response.status) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Berhasil',
-                                    text: response.message,
-                                }).then(function () {
-                                    window.location = response.redirect;
-                                });
+                                if (response.modal) {
+                                    // Tampilkan modal untuk verifikasi
+                                    $('#verificationModalLabel').text(response.modal.title);
+                                    $('#modal-verification-content').text(response.modal.content);
+                                    $('#verificationModal').modal('show');
+                                    
+                                    // Simpan URL tindakan (action_url) ke tombol submit
+                                    $('#submitVerification').data('action-url', response.modal.action_url);
+                                } else {
+                                    window.location.href = response.redirect;
+                                }
                             } else {
-                                showValidationErrors(response.msgField);
+                                console.error('Validasi gagal:', response.msgField);
                             }
                         },
                         error: function (xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: xhr.responseText
-                            });
+                            console.error('Terjadi kesalahan:', xhr.responseText);
                         }
                     });
                 },
@@ -137,15 +192,42 @@
                 }
             });
 
+            // Verifikasi Kode
+            $('#submitVerification').on('click', function () {
+                const verificationCode = $('#verification_code').val().trim();
+
+                if (verificationCode.length === 6) {
+                    $.ajax({
+                        url: '/verifikasi',  // Remove user_id from the URL
+                        type: 'POST',
+                        data: {
+                            verification_code: verificationCode,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function (response) {
+                            if (response.status) {
+                                alert('Verifikasi berhasil!');
+                                window.location.href = "{{ url('/login') }}";
+                            } else {
+                                $('#verificationError').removeClass('d-none');
+                            }
+                        },
+                        error: function (xhr) {
+                            console.error('Terjadi kesalahan:', xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#verificationError').removeClass('d-none').text('Silakan masukkan kode verifikasi lengkap.');
+                }
+            });
+
+            // Level ID Change Event
             $('#level_id').change(function () {
                 const levelId = $(this).val();
                 let biodataFields = '';
                 const rules = {};
 
-                if (levelId == 1) { // Admin
-                    biodataFields += generateAdminFields();
-                    $.extend(rules, adminRules());
-                } else if (levelId == 2) { // Dosen
+                if (levelId == 2) { // Dosen
                     biodataFields += generateDosenFields();
                     $.extend(rules, dosenRules());
                 } else if (levelId == 3) { // Tendik
@@ -163,87 +245,47 @@
             });
         });
 
-        function generateAdminFields() {
-            return `
-                <div class="input-group mb-3">
-                    <input type="text" name="nip" class="form-control" placeholder="NIP" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="admin_nama" class="form-control" placeholder="Nama" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-user"></span></div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="admin_no_telp" class="form-control" placeholder="No. Telepon" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="admin_email" class="form-control" placeholder="Email SSO" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
-                    </div>
-                </div>`;
-        }
-
         function generateDosenFields() {
             return `
                 <div class="input-group mb-3">
-                    <input type="text" name="nidn" class="form-control" placeholder="NIDN" required>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Email SSO">
                     <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
                     </div>
+                    <small id="error-username" class="error-text text-danger"></small>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="dosen_nama" class="form-control" placeholder="Nama" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                     <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="dosen_no_telp" class="form-control" placeholder="No. Telepon" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="dosen_email" class="form-control" placeholder="Email SSO" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
-                    </div>
+                    <small id="error-password" class="error-text text-danger"></small>
                 </div>`;
         }
 
         function generateTendikFields() {
             return `
                 <div class="input-group mb-3">
-                    <input type="text" name="nip" class="form-control" placeholder="NIP" required>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="Email SSO">
                     <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-id-badge"></span></div>
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
                     </div>
+                    <small id="error-username" class="error-text text-danger"></small>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" name="tendik_nama" class="form-control" placeholder="Nama" required>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="Password">
                     <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
                     </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="tendik_no_telp" class="form-control" placeholder="No. Telepon" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-phone"></span></div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" name="tendik_email" class="form-control" placeholder="Email SSO" required>
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
-                    </div>
+                    <small id="error-password" class="error-text text-danger"></small>
                 </div>`;
         }
 
@@ -317,14 +359,6 @@
             $(this).closest('.kompetensi-group').remove();
         });
 
-        function adminRules() {
-            return {
-                nip: { required: true, maxlength: 20 },
-                admin_nama: { required: true, maxlength: 100 },
-                admin_no_telp: { required: true, maxlength: 15 }
-            };
-        }
-
         function dosenRules() {
             return {
                 nidn: { required: true, maxlength: 20 },
@@ -350,6 +384,7 @@
                 kompetensi_id: { required: true, number: true },
             };
         }
+
     </script>
 </body>
 

@@ -94,21 +94,21 @@
                     username: {
                         required: true,
                         minlength: 4,
-                        maxlength: 20
+                        maxlength: 255
                     },
                     password: {
                         required: true,
                         minlength: 5,
-                        maxlength: 20
+                        maxlength: 255
                     }
                 },
-                submitHandler: function(form) { // ketika valid, maka bagian yg akan dijalankan 
+                submitHandler: function(form) { 
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
                         success: function(response) {
-                            if (response.status) { // jika sukses 
+                            if (response.status) { 
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Berhasil',
@@ -116,7 +116,7 @@
                                 }).then(function() {
                                     window.location = response.redirect;
                                 });
-                            } else { // jika error 
+                            } else { 
                                 $('.error-text').text('');
                                 $.each(response.msgField, function(prefix, val) {
                                     $('#error-' + prefix).text(val[0]);

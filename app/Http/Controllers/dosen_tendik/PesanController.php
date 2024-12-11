@@ -22,17 +22,29 @@ class PesanController extends Controller
             'list' => ['Home', 'Pesan Tugas']
         ];
 
-        $activeMenu = 'notif';
+        $activeMenu = 'notifikasi';
 
         $user = Auth::user();
         
         $data = TugasModel::where('user_id', $user->user_id)->get();
 
         if ($data->isEmpty()) {
-            return redirect()
-                ->route('dashboardmhs')
-                ->with('error', 'Data tidak ditemukan');
+            $apply = [];
+            $approval = [];
+            $progress = [];
+        
+            $message = 'Tidak ada data tugas terkait.';
+        
+            return view('dosen_tendik.notif.index', [
+                'breadcrumb' => $breadcrumb, 
+                'activeMenu' => $activeMenu, 
+                'apply' => $apply, 
+                'approval' => $approval,
+                'progress' => $progress,
+                'message' => $message 
+            ]);
         }
+        
 
         $apply = ApplyModel::whereIn('tugas_id', $data->pluck('tugas_id'))
             ->with('mahasiswa')

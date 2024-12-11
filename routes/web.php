@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
 
 Route::pattern('id', '[0-9]+');
 Route::get('login', [AuthController::class, 'login'])->name('login');
@@ -11,7 +12,14 @@ Route::post('login', [AuthController::class, 'postlogin']);
 Route::get('logout', [AuthController::class, 'logout'])->middleware('auth');
 Route::get('register', [AuthController::class,'register']);
 Route::post('register', [AuthController::class,'postregister']);
-
+Route::post('/verifikasi', [AuthController::class, 'verifikasi'])->name('verifikasi');
+Route::get('/test-email', function() {
+    $email = 'faizabiyu93@gmail.com';
+    Mail::raw('Test email content', function ($message) use ($email) {
+        $message->to($email)->subject('Test Email');
+    });
+    return 'Test email sent!';
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\Admin\WelcomeController::class, 'index']);
@@ -134,8 +142,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Dosen_tendik\KompenMhsController::class, 'index']);
         });
 
-        Route::group(['prefix' => 'notif'], function () {
-            Route::get('/', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'index']);
+        Route::group(['prefix' => 'notifikasi'], function () {
+            Route::get('/', [App\Http\Controllers\dosen_tendik\PesanController::class, 'index']);
             Route::get('/{id}/apply', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'apply']);
             Route::post('/{id}/acc', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'acc']);
             Route::post('/{id}/decline', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'decline']);
@@ -185,7 +193,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-    URL::forceScheme('https');
+    // URL::forceScheme('https');
     
 });
 

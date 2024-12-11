@@ -17,6 +17,8 @@ use App\Models\TendikModel;
 use App\Models\UserModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerificationCodeMail; 
 
 class AuthController extends Controller
 {
@@ -39,28 +41,49 @@ class AuthController extends Controller
 
             if (Auth::attempt($credentials)) {
                 $user = UserModel::with('level')->where('username', $request->username)->first();
-                Auth::login($user); 
-            
+
+                $dosen = DosenModel::where('user_id', $user->user_id)->first();
+                $tendik = TendikModel::where('user_id', $user->user_id)->first();
+
+                if ($dosen && is_null($dosen->status)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Akun Anda belum aktif. Silakan register untuk mengaktitfkan.',
+                    ]);
+                }
+
+                if ($tendik && is_null($tendik->status)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Akun Anda belum aktif. Silakan register untuk mengaktitfkan.',
+                    ]);
+                }
+
+                Auth::login($user);
+                
                 session([
                     'profile_img_path' => $user->foto,
                     'user_id' => $user->user_id,
                 ]);
-            
+                
                 $redirectRoute = $this->getRedirectRoute($user->getRole());
-            
+
                 return response()->json([
                     'status' => true,
                     'message' => 'Login Berhasil',
                     'redirect' => url($redirectRoute),
                 ]);
-            }        
+            }
+
             return redirect('login');
         }
     }
 
     public function register()
     {
-        $level = LevelModel::select('level_id', 'level_nama')->get();
+        $level = LevelModel::select('level_id', 'level_nama')
+            ->whereNot('level_id', 1)
+            ->get();
 
         $prodi = ProdiModel::select('prodi_id', 'prodi_nama')->get();
 
@@ -80,20 +103,10 @@ class AuthController extends Controller
             ];
 
             switch ($request->level_id) {
-                case 1: 
-                    $rules['nip'] = 'required|string|max:20|unique:m_admin,nip';
-                    $rules['admin_nama'] = 'required|string|max:100';
-                    $rules['admin_no_telp'] = 'required|string|max:15';
-                    break;
                 case 2:
-                    $rules['nidn'] = 'required|string|max:20|unique:m_dosen,nidn';
-                    $rules['dosen_nama'] = 'required|string|max:100';
-                    $rules['dosen_no_telp'] = 'required|string|max:15';
-                    break;
-                case 3: 
-                    $rules['nip'] = 'required|string|max:20|unique:m_tendik,nip';
-                    $rules['tendik_nama'] = 'required|string|max:100';
-                    $rules['tendik_no_telp'] = 'required|string|max:15';
+                case 3:
+                    $rules['username'] = 'required|string|max:255';
+                    $rules['password'] = 'required|string|max:255';
                     break;
                 case 4:
                     $rules['nim'] = 'required|string|max:20|unique:m_mahasiswa,nim';
@@ -115,19 +128,56 @@ class AuthController extends Controller
                 ]);
             }
 
-            DB::beginTransaction(); // Start transaction
+            if (in_array($request->level_id, [2, 3])) {
+                $existingUser = UserModel::where('username', $request->username)->first();
+    
+                if ($existingUser) {
+                    $verificationCode = rand(100000, 999999); 
+                    session(['verification_code_' . $existingUser->user_id => $verificationCode]);
+                    session(['verification_code_timestamp_' . $existingUser->user_id => now()]); 
+                    session(['existing_user_id' => $existingUser->user_id]);
+                    session(['new_password_' . $existingUser->user_id => $request->password]); // Store the password in session
+    
+                    try {
+                        $dosen = DosenModel::where('user_id', $existingUser->user_id)->first();
+                        $tendik = TendikModel::where('user_id', $existingUser->user_id)->first();
+    
+                        if ($dosen) {
+                            Mail::to($dosen->dosen_email)->send(new VerificationCodeMail($verificationCode)); 
+                        } elseif ($tendik) {
+                            Mail::to($tendik->tendik_email)->send(new VerificationCodeMail($verificationCode)); 
+                        }
+                    } catch (\Exception $e) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Gagal mengirimkan kode verifikasi melalui email: ' . $e->getMessage(),
+                        ]);
+                    }
+    
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'User sudah terdaftar. Silakan masukkan kode verifikasi.',
+                        'modal' => [
+                            'title' => 'Kode Verifikasi',
+                            'content' => 'Kami telah mengirimkan kode verifikasi ke email Anda. Silakan masukkan kode tersebut di bawah ini.',
+                            'action_url' => url('verifikasi/' . $existingUser->user_id),
+                        ],
+                    ]);
+                }
+            }
+
+            DB::beginTransaction(); 
             try {
                 $user = new UserModel();
                 $user->level_id = $request->level_id;
 
-                if ($request->level_id == 1) { 
-                    $user->username = $request->nip;
-                } elseif ($request->level_id == 2) { 
-                    $user->username = $request->nidn;
-                } elseif ($request->level_id == 3) { 
-                    $user->username = $request->nip;
-                } elseif ($request->level_id == 4) { 
+                if ($request->level_id == 4) { 
                     $user->username = $request->nim;
+                } else {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'role tidak ditemukan',
+                    ]);
                 }
                 $user->password = bcrypt($user->username); 
                 $user->save();
@@ -214,7 +264,7 @@ class AuthController extends Controller
             case 'MHS':
                 return '/dashboardmhs';
             default:
-                return '/'; // Default ke halaman home jika level_kode tidak dikenali
+                return '/';
         }
     }
 
@@ -226,6 +276,88 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('login');
+    }
+
+    public function verifikasi(Request $request)
+    {
+        $userId = session('existing_user_id');
+
+        if (!$userId) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User tidak ditemukan. Coba lagi.',
+            ]);
+        }
+
+        $user = UserModel::find($userId);
+
+        if (!$user) {
+            return response()->json([
+                'status' => false,
+                'message' => 'User tidak ada.',
+            ]);
+        }
+
+        $enteredCode = $request->verification_code;
+        $storedCode = session('verification_code_' . $user->user_id);
+        $timestamp = session('verification_code_timestamp_' . $user->user_id);
+
+        if (!$storedCode || !$timestamp) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Kode verifikasi tidak ditemukan. Pastikan Anda telah meminta kode verifikasi sebelumnya. Jika belum, silakan coba lagi.'
+            ]);
+        }
+
+        if (now()->diffInMinutes($timestamp) > 2) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Kode verifikasi telah kedaluwarsa. Mohon minta kode baru.'
+            ]);
+        }
+
+        if ($enteredCode != $storedCode) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Kode verifikasi salah.',
+            ]);
+        }
+
+        $newPassword = session('new_password_' . $user->user_id);
+        if ($newPassword) {
+            $user->password = bcrypt($newPassword);
+            $user->save();
+        }
+
+        session()->forget('new_password_' . $user->user_id);
+
+        $dosen = DosenModel::where('user_id', $user->user_id)->first();
+        $tendik = TendikModel::where('user_id', $user->user_id)->first();
+
+        if ($dosen) {
+            $dosen->update([
+                'status' => true
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Verifikasi berhasil. Password telah diperbarui.',
+                'redirect' => url('landing'), // Redirect to the correct page (e.g., dashboard or landing page)
+            ]);
+        } elseif ($tendik) {
+            $tendik->update([
+                'status' => true
+            ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Verifikasi berhasil. Password telah diperbarui.',
+                'redirect' => url('landing'), // Redirect to the correct page for tendik
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'tidak menemukan user yang perlu diverifikasi.',
+            ]);
+        }
     }
 
 }

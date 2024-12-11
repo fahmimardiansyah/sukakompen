@@ -18,7 +18,8 @@ class DosenModel extends Model
         'nidn',
         'dosen_nama',
         'dosen_no_telp',
-        'dosen_email'
+        'dosen_email', 
+        'status'
     ];
 
     public function user()

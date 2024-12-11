@@ -98,7 +98,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('notif') }}" class="nav-link {{ $activeMenu == 'notif' ? 'active' : '' }}">
+                    <a href="{{ url('/notifikasi') }}" class="nav-link {{ $activeMenu == 'notifikasi' ? 'active' : '' }}">
                         <i class="nav-icon fas fa-envelope"></i>
                         <p>Inbox</p>
                     </a>
