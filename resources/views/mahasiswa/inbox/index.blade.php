@@ -54,6 +54,18 @@
                 </div>
             @endif
         @endforeach
+
+        @foreach($progress as $item)
+            @if($item->status === false && $item->pengguna)
+                <div class="notification" style="background: linear-gradient(135deg, #ffffff, #ec3939);">
+                    <i class="fas fa-user-circle" style="font-size: 50px;"></i>
+                    <div class="text">
+                        <h3>{{ $item->pengguna->dosen_nama ?? $item->pengguna->tendik_nama ?? $item->pengguna->admin_nama ?? 'N/A'}}</h3>
+                        <p>Tugas Melewati tenggat ( {{ $item->tugas->tugas_tenggat ?? 'error' }} ).</p>
+                    </div>
+                </div>
+            @endif
+        @endforeach
     </section>
 </div>
 </div>

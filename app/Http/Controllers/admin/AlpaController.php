@@ -35,71 +35,71 @@ class AlpaController extends Controller
     }
 
     public function import_ajax(Request $request)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = [
-            'file_alpa' => [
-                'required', 
-                'mimes:xlsx', 
-                'max:51200'
-            ]
-        ];
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'file_alpa' => [
+                    'required', 
+                    'mimes:xlsx', 
+                    'max:51200'
+                ]
+            ];
 
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi Gagal',
-                'msgField' => $validator->errors()
-            ]);
-        }
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
 
-        $file = $request->file('file_alpa'); 
+            $file = $request->file('file_alpa'); 
 
-        $reader = IOFactory::createReader('Xlsx');  
-        $reader->setReadDataOnly(true);
-        $spreadsheet = $reader->load($file->getRealPath()); 
-        $sheet = $spreadsheet->getActiveSheet(); 
+            $reader = IOFactory::createReader('Xlsx');  
+            $reader->setReadDataOnly(true);
+            $spreadsheet = $reader->load($file->getRealPath()); 
+            $sheet = $spreadsheet->getActiveSheet(); 
 
-        $data = $sheet->toArray(null, false, true, true); 
+            $data = $sheet->toArray(null, false, true, true); 
 
-        if (count($data) > 1) { 
-            foreach ($data as $baris => $value) {
-                if ($baris > 1) { 
-                    $existing = AlpaModel::where('mahasiswa_alpa_nim', $value['A'])
-                                         ->where('mahasiswa_alpa_nama', $value['B'])
-                                         ->first();
+            if (count($data) > 1) { 
+                foreach ($data as $baris => $value) {
+                    if ($baris > 1) { 
+                        $existing = AlpaModel::where('mahasiswa_alpa_nim', $value['A'])
+                                            ->where('mahasiswa_alpa_nama', $value['B'])
+                                            ->first();
 
-                    $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])
-                                         ->where('mahasiswa_nama', $value['B'])
-                                         ->first();
+                        $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])
+                                            ->where('mahasiswa_nama', $value['B'])
+                                            ->first();
 
-                    if ($existing) {
-                        $existing->increment('jam_alpa', $value['C']);
-                        $existingMahasiswa->increment('jumlah_alpa', $value['C']);
-                    } else {
-                        AlpaModel::create([
-                            'mahasiswa_alpa_nim' => $value['A'],
-                            'mahasiswa_alpa_nama' => $value['B'],
-                            'jam_alpa' => $value['C'],
-                            'created_at' => now(),
-                        ]);
+                        if ($existing) {
+                            $existing->increment('jam_alpa', $value['C']);
+                            $existingMahasiswa->increment('jumlah_alpa', $value['C']);
+                        } else {
+                            AlpaModel::create([
+                                'mahasiswa_alpa_nim' => $value['A'],
+                                'mahasiswa_alpa_nama' => $value['B'],
+                                'jam_alpa' => $value['C'],
+                                'created_at' => now(),
+                            ]);
+                        }
                     }
                 }
+                
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data berhasil diimport'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Tidak ada data yang diimport'
+                ]);
             }
-            
-            return response()->json([
-                'status' => true,
-                'message' => 'Data berhasil diimport'
-            ]);
-        } else {
-            return response()->json([
-                'status' => false,
-                'message' => 'Tidak ada data yang diimport'
-            ]);
         }
+        return redirect('/');
     }
-    return redirect('/');
-}
 
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AboutController;
 use Illuminate\Support\Facades\Route;
+// use Illuminate\Support\Facades\URL;
 
 Route::pattern('id', '[0-9]+');
 Route::get('login', [AuthController::class, 'login'])->name('login');
@@ -175,8 +176,10 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
-
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
+    // URL::forceScheme('https');
+    
 });
+
+Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);

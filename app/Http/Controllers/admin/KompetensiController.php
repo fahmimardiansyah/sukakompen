@@ -7,7 +7,7 @@ use App\Models\JenisModel;
 use App\Models\KompetensiModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\support\Facades\Validator;
+use Illuminate\Support\Facades\Validator;
 
 class KompetensiController extends Controller
 {
