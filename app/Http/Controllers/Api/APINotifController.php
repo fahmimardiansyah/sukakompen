@@ -211,17 +211,17 @@ class APINotifController extends Controller
             return response()->json(['message' => 'Data mahasiswa tidak ditemukan untuk user ini'], 404);
         }
 
-        $apply = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+        $approval = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with(['tugas', 'tugas.users']) 
             ->get();
 
-        $applyGrouped = $apply->groupBy('status');
-        $applyAccepted = $applyGrouped->get(1, collect());
+        $approvalGrouped = $approval->groupBy('status');
+        $approvalAccepted = $approvalGrouped->get(1, collect());
 
         $result = [
-            'accept' => $applyAccepted->map(function ($applyItem) {
+            'accept' => $approvalAccepted->map(function ($approvalItem) {
 
-                $tugas = $applyItem->tugas; 
+                $tugas = $approvalItem->tugas; 
                 
                 if (!$tugas) {
                     return null; 
@@ -257,7 +257,7 @@ class APINotifController extends Controller
 
 
                 return [
-                    'apply_id' => $applyItem->apply_id,
+                    'approval_id' => $approvalItem->approval_id,
                     'status' => 'accept',
                     'tugas' => [
                         'tugas_id' => $tugas->tugas_id,
@@ -275,6 +275,7 @@ class APINotifController extends Controller
         return response()->json($result);
     }
 
+
     // notif di mhs untuk approval ditolak
     public function notifTolakTugas(Request $request)
     {
@@ -290,26 +291,26 @@ class APINotifController extends Controller
             return response()->json(['message' => 'Data mahasiswa tidak ditemukan untuk user ini'], 404);
         }
 
-        $apply = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+        $approval = ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
             ->with(['tugas', 'tugas.users'])
             ->get();
 
-        if ($apply->isEmpty()) {
-            return response()->json(['message' => 'No apply records found'], 404);
+        if ($approval->isEmpty()) {
+            return response()->json(['message' => 'No approval records found'], 404);
         }
 
-        $applyGrouped = $apply->groupBy('status');
+        $approvalGrouped = $approval->groupBy('status');
         
-        if (!$applyGrouped->has(0)) {
+        if (!$approvalGrouped->has(0)) {
             return response()->json(['message' => 'No accepted tasks found'], 404);
         }
 
-        $applyAccepted = $applyGrouped->get(0, collect());
+        $approvalAccepted = $approvalGrouped->get(0, collect());
 
         $result = [
-            'decline' => $applyAccepted->map(function ($applyItem) {
+            'decline' => $approvalAccepted->map(function ($approvalItem) {
 
-                $tugas = $applyItem->tugas;
+                $tugas = $approvalItem->tugas;
 
                 if (!$tugas) {
                     return null;
@@ -342,7 +343,7 @@ class APINotifController extends Controller
                 }
 
                 return [
-                    'apply_id' => $applyItem->apply_id,
+                    'approval_id' => $approvalItem->approval_id,
                     'status' => 'decline',
                     'tugas' => [
                         'tugas_id' => $tugas->tugas_id,

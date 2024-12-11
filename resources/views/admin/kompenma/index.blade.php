@@ -9,8 +9,11 @@
 </div>
 
 <div class="table-alpa">
-    <div class="card-header">
-        <h2>Tabel Kompen Mahasiswa</h2>
+        <div class="notif">
+            <h2>Tabel Kompen Mahasiswa</h2></div>
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('user')">User</button>
+        <button class="tab" onclick="showTab('all')">All User</button>
     </div>
     <table>
         <thead>
@@ -58,3 +61,15 @@
 </div>
 </div>
 @endsection
+
+@push('js')
+    <script>
+        function showTab(tabName) {
+            $('.tab').removeClass('active');
+            $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
+
+            $('.tab-content').removeClass('active');
+            $('#' + tabName).addClass('active');
+        }
+    </script>
+@endpush
