@@ -9,6 +9,7 @@ use App\Models\KompetensiMhsModel;
 use App\Models\KompetensiModel;
 use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
+use App\Models\AlpaModel;
 use App\Models\ProdiModel;
 use App\Models\TendikModel;
 use App\Models\User;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\DataTablesEditor;
 use Yajra\DataTables\Facades\DataTables;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class UserController extends Controller
 {
@@ -58,13 +60,13 @@ class UserController extends Controller
                             </button>';
                 }
 
-                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info" title="Detail">
+                $btn = '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/show_ajax') . '\')" class="btn btn-sm btn-info ml-1 mr-4" title="Detail">
                             <i class="fas fa-info-circle"></i>
                         </button>';
                 $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/edit_ajax') . '\')" class="btn btn-sm btn-warning" title="Edit">
                             <i class="fas fa-edit"></i>
                         </button>';
-                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/delete_ajax') . '\')" class="btn btn-sm btn-danger" title="Hapus">
+                $btn .= '<button onclick="modalAction(\'' . url('/user/' . $user->user_id . '/delete_ajax') . '\')" class="btn btn-sm btn-danger ml-4" title="Hapus">
                             <i class="fas fa-trash-alt"></i>
                         </button>';
                 return $btn;
@@ -217,5 +219,78 @@ class UserController extends Controller
 
         return view('admin.user.show_ajax', compact('user', 'admin', 'dosen', 'tendik', 'mahasiswa', 'kompetensi'));
     }
+
+    public function import()
+    {
+        return view('admin.alpam.import');
+    }
+
+    public function import_ajax(Request $request)
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'file_alpa' => [
+                'required', 
+                'mimes:xlsx', 
+                'max:51200'
+            ]
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+
+        $file = $request->file('file_alpa'); 
+
+        $reader = IOFactory::createReader('Xlsx');  
+        $reader->setReadDataOnly(true);
+        $spreadsheet = $reader->load($file->getRealPath()); 
+        $sheet = $spreadsheet->getActiveSheet(); 
+
+        $data = $sheet->toArray(null, false, true, true); 
+
+        if (count($data) > 1) { 
+            foreach ($data as $baris => $value) {
+                if ($baris > 1) { 
+                    $existing = AlpaModel::where('mahasiswa_alpa_nim', $value['A'])
+                                         ->where('mahasiswa_alpa_nama', $value['B'])
+                                         ->first();
+
+                    $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])
+                                         ->where('mahasiswa_nama', $value['B'])
+                                         ->first();
+
+                    if ($existing) {
+                        $existing->increment('jam_alpa', $value['C']);
+                        $existingMahasiswa->increment('jumlah_alpa', $value['C']);
+                    } else {
+                        AlpaModel::create([
+                            'mahasiswa_alpa_nim' => $value['A'],
+                            'mahasiswa_alpa_nama' => $value['B'],
+                            'jam_alpa' => $value['C'],
+                            'created_at' => now(),
+                        ]);
+                    }
+                }
+            }
+            
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diimport'
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Tidak ada data yang diimport'
+            ]);
+        }
+    }
+    return redirect('/');
+}
 
 }

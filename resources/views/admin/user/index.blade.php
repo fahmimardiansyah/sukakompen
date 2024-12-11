@@ -5,7 +5,11 @@
         <div class="card-header">
             <h3 class="card-title">{{ $page->title }}</h3>
             <div class="card-tools">
-                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah User</button>
+                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #1d1f96; color: white;">Import Dosen</button>
+                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #2795d4; color: white;">Import Tendik</button>
+                <button onclick="modalAction('{{ url('/alpam/import') }}')" class="btn btn-sm mt-1" id="importButton" style="background-color: #ffd000; color: white;">Import Mahasiswa</button>
+                
+                <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-success btn-sm mt-1">Tambah User</button>              
             </div>
         </div>
         <div class="row">
@@ -32,7 +36,7 @@
                         <th>ID</th>
                         <th>Username</th>
                         <th>Level Pengguna</th>
-                        <th>Aksi</th>
+                        <th style="text-align: center;">Aksi</th>
                     </tr>
                 </thead>
             </table>

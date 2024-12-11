@@ -13,10 +13,11 @@
         @foreach($apply as $data)
             @if(is_null($data->apply_status))
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
-                    <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
                         <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
                         <p>Apply pekerjaan {{ $data->tugas->tugas_nama }}.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                     <button onclick="modalAction('{{ url('/notif/' . $data->apply_id . '/apply') }}')" class="cek">Cek</button>
                 </div>
@@ -26,20 +27,21 @@
         @foreach($approval as $data)
             @if(is_null($data->status))
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
-                    <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
                         <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
                         <p>Mengumpulkan pekerjaan {{ $data->tugas->tugas_nama }}.</p>
+                        <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
                     <button onclick="modalAction('{{ url('/notif/' . $data->approval_id . '/tugas') }}')" class="cek">Cek</button>
                 </div>
             @endif
         @endforeach
-
+        
         @foreach($progress as $data)
-            @if($data->status === false)
+            @if($data->status === false || $data->status === 0)
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ca1717);">
-                    <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
                         <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
                         <p>Tugas melewati tenggat {{ $data->tugas->tugas_tenggat }}.</p>
@@ -47,7 +49,7 @@
                 </div>
             @endif
         @endforeach
-        
+
         <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
     </section>
 </div>
