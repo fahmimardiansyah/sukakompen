@@ -81,7 +81,6 @@ Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class
 
 Route::middleware('auth:api')->post('/profilemhs', [APIProfileMHSController::class, 'index']);
 Route::middleware('auth:api')->post('/profiledsn', [APIProfileDSNController::class, 'index']);
-Route::middleware('auth:api')->post('/profiletdk', [APIProfileTDKController::class, 'index']);
 
 /*
 |--------------------------------------------------------------------------

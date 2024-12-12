@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\DosenModel;
+use App\Models\TendikModel;
 
 class APIProfileDSNController extends Controller
 {
@@ -18,10 +19,27 @@ class APIProfileDSNController extends Controller
 
         $dosen = DosenModel::where('user_id', $user->user_id)->first();
 
-        if (!$dosen) {
-            return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
+        $tendik = TendikModel::where('user_id', $user->user_id)->first();
+
+        if (!$dosen && !$tendik) {
+            return response()->json(['error' => 'Data tidak ditemukan'], 404);
         }
 
-        return response()->json($dosen);
+        $userImageUrl = $user->image ?? null; 
+
+        if ($dosen) {
+            return response()->json([
+                'data' => $dosen,
+                'image_url' => $userImageUrl,
+            ]);
+        } elseif ($tendik) {
+            return response()->json([
+                'data' => $tendik,
+                'image_url' => $userImageUrl,
+            ]);
+        }
+
+        return response()->json(['error' => 'Terjadi kesalahan'], 500);
     }
+
 }

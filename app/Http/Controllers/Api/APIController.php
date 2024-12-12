@@ -39,7 +39,7 @@ class APIController extends Controller
             'user' => [
                 auth()->guard('api')->user(),
                 'level_id' => (int) $user->level_id,
-                'nama' => $user->nama,
+                'level_nama' => $user->level->level_nama,
             ],
             'token' => $token
         ], 200);

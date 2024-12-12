@@ -32,7 +32,7 @@ class APIFileTugasMHSController extends Controller
         }
 
         if ($data->file_mahasiswa) {
-            $oldFilePath = storage_path('app/public/posts/' . $data->file_mahasiswa);
+            $oldFilePath = storage_path('app/public/posts/pengumpulan/' . $data->file_mahasiswa);
             if (file_exists($oldFilePath)) {
                 unlink($oldFilePath);
             }
@@ -43,7 +43,7 @@ class APIFileTugasMHSController extends Controller
 
             $fileName = time() . '_' . $file->getClientOriginalName();
 
-            $file->storeAs('posts', $fileName, 'public');
+            $file->storeAs('posts/pengumpulan', $fileName, 'public');
 
             $data->file_mahasiswa = $fileName;
             $data->save();
@@ -70,7 +70,7 @@ class APIFileTugasMHSController extends Controller
             return response()->json(['message' => 'File tidak ditemukan'], 404);
         }
 
-        $filePath = storage_path('app/public/posts/' . $data->file_mahasiswa);
+        $filePath = storage_path('app/public/posts/pengumpulan/' . $data->file_mahasiswa);
 
         if (!file_exists($filePath)) {
             return response()->json(['message' => 'File tidak ada di server'], 404);
