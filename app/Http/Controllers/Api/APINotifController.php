@@ -59,6 +59,11 @@ class APINotifController extends Controller
             ->get();
 
         $applyGrouped = $apply->groupBy('apply_status');
+
+        if (!$applyGrouped->has(1)) {
+            return response()->json(['message' => 'apply diterima tidak ditemukan'], 404);
+        }
+
         $applyAccepted = $applyGrouped->get(1, collect());
 
         $result = [
@@ -138,6 +143,11 @@ class APINotifController extends Controller
             ->get();
 
         $applyGrouped = $apply->groupBy('apply_status');
+
+        if (!$applyGrouped->has(0)) {
+            return response()->json(['message' => 'apply ditolak tidak ditemukan'], 404);
+        }
+
         $applyAccepted = $applyGrouped->get(0, collect());
 
         $result = [
@@ -216,6 +226,11 @@ class APINotifController extends Controller
             ->get();
 
         $approvalGrouped = $approval->groupBy('status');
+
+        if (!$approvalGrouped->has(1)) {
+            return response()->json(['message' => 'Tugas diterima tidak ditemukan'], 404);
+        }
+
         $approvalAccepted = $approvalGrouped->get(1, collect());
 
         $result = [
@@ -296,13 +311,13 @@ class APINotifController extends Controller
             ->get();
 
         if ($approval->isEmpty()) {
-            return response()->json(['message' => 'No approval records found'], 404);
+            return response()->json(['message' => 'tidak ada records approval'], 404);
         }
 
         $approvalGrouped = $approval->groupBy('status');
         
         if (!$approvalGrouped->has(0)) {
-            return response()->json(['message' => 'No accepted tasks found'], 404);
+            return response()->json(['message' => 'tugas ditolak tidak ditemukan'], 404);
         }
 
         $approvalAccepted = $approvalGrouped->get(0, collect());

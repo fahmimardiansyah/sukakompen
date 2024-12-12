@@ -21,7 +21,16 @@ class APIProfileMHSController extends Controller
         if (!$mahasiswa) {
             return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
         }
+
+        $userImageUrl = $user->image ?? null;
+
+        if ($mahasiswa) {
+            return response()->json([
+                'data' => $mahasiswa,
+                'image_url' => $userImageUrl,
+            ]);
+        }
         
-        return response()->json($mahasiswa);
+        return response()->json(['error' => 'Terjadi kesalahan'], 500);
     }
 }

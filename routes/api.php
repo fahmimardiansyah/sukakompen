@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\APIApplyController;
 use App\Http\Controllers\Api\APIFileTugasMHSController;
 use App\Http\Controllers\Api\APINotifController;
 use App\Http\Controllers\Api\APIApprovalController;
+use App\Http\Controllers\Api\APIDownloadDosenController;
 
 // Authentication Routes
 Route::post('/login', [APIController::class, 'login']);
@@ -73,6 +74,7 @@ Route::post('/terima', [APIApprovalController::class, 'terima']);
 
 Route::post('/upload', [APIFileTugasMHSController::class, 'upload']);
 Route::post('/download', [APIFileTugasMHSController::class, 'download']);
+Route::post('/download_tugas', [APIDownloadDosenController::class, 'download_tugas']);
 
 // Kompen Routes
 Route::middleware('auth:api')->post('/kompen', [APIKompenController::class, 'index']);
