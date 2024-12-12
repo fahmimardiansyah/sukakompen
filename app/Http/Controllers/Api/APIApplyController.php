@@ -72,10 +72,9 @@ class APIApplyController extends Controller
             ];
         });
 
-        return response()->json($result);
+        return response()->json(['pending' => $result]);
     }
 
-    // function ketika apply ditolak
     public function decline(Request $request) {
         $data = ApplyModel::all()->where('apply_id', $request->apply_id)->first();
         $data->apply_status = false;
@@ -84,7 +83,6 @@ class APIApplyController extends Controller
         return 'Berhasil Mengubah Data';
     }
 
-    // function ketika apply diterima dan auto update untuk progress
     public function acc(Request $request) {
         $data = ApplyModel::all()->where('apply_id', $request->apply_id)->first();
         $data->apply_status = true;
@@ -94,7 +92,6 @@ class APIApplyController extends Controller
         $save->apply_id = $data->apply_id;
         $save->mahasiswa_id = $data->mahasiswa_id;
         $save->tugas_id = $data->tugas_id;
-        $save->status = false;
         $save->save();
 
         return 'Berhasil Mengubah Data';

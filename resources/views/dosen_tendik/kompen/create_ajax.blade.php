@@ -107,82 +107,78 @@
     });
 
     $(document).ready(function() {
-            const kompetensiOptions = @json($kompetensi);
+        const kompetensiOptions = @json($kompetensi);
 
-            $('#add-kompetensi').click(function() {
-                const selectedCompetency = $('#kompetensi-container .kompetensi-select:last')
-                    .val(); // Check last selected competency
+        $('#add-kompetensi').click(function() {
+            const selectedCompetency = $('#kompetensi-container .kompetensi-select:last')
+                .val(); 
 
-                if (!selectedCompetency) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Pilih Kompetensi Terlebih Dahulu',
-                        text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
-                    });
-                    return;
-                }
-
-                const existingSelections = $('.kompetensi-select').map(function() {
-                    return $(this).val();
-                }).get();
-
-                const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k
-                    .kompetensi_id.toString()));
-
-                if (filteredOptions.length === 0) {
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Tidak Ada Kompetensi Tersisa',
-                        text: 'Semua kompetensi telah dipilih.'
-                    });
-                    return;
-                }
-
-                const newIndex = $('.kompetensi-group').length + 1;
-
-                // Buat elemen baru untuk kompetensi
-                const newDropdown = $(`
-        <div class="kompetensi-group mt-2">
-            <h6 class="d-flex justify-content-between align-items-center">
-                Kompetensi ${newIndex}
-                <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
-            </h6>
-            <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
-                <option value="">- Pilih Kompetensi -</option>
-            </select>
-        </div>
-    `);
-
-                filteredOptions.forEach(option => {
-                    newDropdown.find('select').append(
-                        `<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`
-                    );
+            if (!selectedCompetency) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Pilih Kompetensi Terlebih Dahulu',
+                    text: 'Harap pilih kompetensi terlebih dahulu sebelum menambah kompetensi baru.'
                 });
-
-                $('#kompetensi-container').append(newDropdown);
-            });
-
-            $(document).on('click', '.remove-kompetensi', function() {
-                $(this).closest('.kompetensi-group').remove();
-
-                // Periksa dan sembunyikan tombol hapus jika hanya ada satu elemen
-                toggleRemoveButtonVisibility();
-            });
-
-            // Fungsi untuk menyembunyikan tombol hapus jika hanya ada satu elemen
-            function toggleRemoveButtonVisibility() {
-                if ($('.kompetensi-group').length === 1) {
-                    $('.remove-kompetensi').hide(); // Sembunyikan tombol hapus jika hanya satu
-                } else {
-                    $('.remove-kompetensi').show(); // Tampilkan tombol hapus jika lebih dari satu
-                }
-
-                $('.kompetensi-group:first .remove-kompetensi').hide();
+                return;
             }
 
-            // Panggil fungsi saat pertama kali halaman dimuat untuk menyembunyikan tombol hapus jika hanya satu
+            const existingSelections = $('.kompetensi-select').map(function() {
+                return $(this).val();
+            }).get();
+
+            const filteredOptions = kompetensiOptions.filter(k => !existingSelections.includes(k
+                .kompetensi_id.toString()));
+
+            if (filteredOptions.length === 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Tidak Ada Kompetensi Tersisa',
+                    text: 'Semua kompetensi telah dipilih.'
+                });
+                return;
+            }
+
+            const newIndex = $('.kompetensi-group').length + 1;
+
+            const newDropdown = $(`
+                <div class="kompetensi-group mt-2">
+                    <h6 class="d-flex justify-content-between align-items-center">
+                        Kompetensi ${newIndex}
+                        <button type="button" class="btn btn-sm btn-danger remove-kompetensi ml-2">Hapus</button>
+                    </h6>
+                    <select name="kompetensi_id[]" class="form-control kompetensi-select" required>
+                        <option value="">- Pilih Kompetensi -</option>
+                    </select>
+                </div>
+            `);
+
+            filteredOptions.forEach(option => {
+                newDropdown.find('select').append(
+                    `<option value="${option.kompetensi_id}">${option.kompetensi_nama}</option>`
+                );
+            });
+
+            $('#kompetensi-container').append(newDropdown);
+        });
+
+        $(document).on('click', '.remove-kompetensi', function() {
+            $(this).closest('.kompetensi-group').remove();
+
             toggleRemoveButtonVisibility();
         });
+
+        function toggleRemoveButtonVisibility() {
+            if ($('.kompetensi-group').length === 1) {
+                $('.remove-kompetensi').hide(); 
+            } else {
+                $('.remove-kompetensi').show(); 
+            }
+
+            $('.kompetensi-group:first .remove-kompetensi').hide();
+        }
+
+        toggleRemoveButtonVisibility();
+    });
 
     $(document).ready(function() {
         $("#form-tambah").validate({
