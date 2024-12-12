@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class APIDownloadDosenController extends Controller
 {
@@ -16,21 +17,21 @@ class APIDownloadDosenController extends Controller
 
         $data = TugasModel::where('tugas_id', $validated['tugas_id'])->first();
 
-        if (!$data || !$data->file_mahasiswa) {
+        if (!$data || !$data->file_tugas) {
             return response()->json(['message' => 'File tidak ditemukan'], 404);
         }
 
-        $filePath = storage_path('app/public/posts/tugas/' . $data->file_mahasiswa);
+        $filePath = storage_path('app/public/posts/tugas/' . $data->file_tugas);
 
-        if (!file_exists($filePath)) {
+        if (!File::exists($filePath)) {
             return response()->json(['message' => 'File tidak ada di server'], 404);
         }
 
-        $mimeType = mime_content_type($filePath);
+        $mimeType = File::mimeType($filePath);
 
         $headers = [
             'Content-Type' => $mimeType,
-            'Content-Disposition' => 'attachment; filename="' . $data->file_mahasiswa . '"',
+            'Content-Disposition' => 'attachment; filename="' . basename($data->file_tugas) . '"',
         ];
 
         return response()->file($filePath, $headers);

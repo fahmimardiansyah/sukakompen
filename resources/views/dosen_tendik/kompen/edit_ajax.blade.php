@@ -16,7 +16,7 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/tugas/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit"
+    <form action="{{ url('/kompen/' . $tugas->tugas_id . '/update_ajax') }}" method="POST" id="form-edit"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')

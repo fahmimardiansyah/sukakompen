@@ -142,8 +142,8 @@ Route::middleware('auth')->group(function () {
             Route::get('/', [App\Http\Controllers\Dosen_tendik\KompenMhsController::class, 'index']);
         });
 
-        Route::group(['prefix' => 'notifikasi'], function () {
-            Route::get('/', [App\Http\Controllers\dosen_tendik\PesanController::class, 'index']);
+        Route::group(['prefix' => 'notif'], function () {
+            Route::get('/', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'index']);
             Route::get('/{id}/apply', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'apply']);
             Route::post('/{id}/acc', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'acc']);
             Route::post('/{id}/decline', [App\Http\Controllers\Dosen_tendik\PesanController::class, 'decline']);
