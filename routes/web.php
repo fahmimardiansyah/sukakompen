@@ -193,7 +193,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-    // URL::forceScheme('https');
+    URL::forceScheme('https');
     
 });
 

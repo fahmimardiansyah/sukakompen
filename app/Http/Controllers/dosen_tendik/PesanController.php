@@ -22,7 +22,7 @@ class PesanController extends Controller
             'list' => ['Home', 'Pesan Tugas']
         ];
 
-        $activeMenu = 'notifikasi';
+        $activeMenu = 'notif';
 
         $user = Auth::user();
         

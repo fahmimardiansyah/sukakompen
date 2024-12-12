@@ -99,6 +99,7 @@ class APITugasDosenController extends Controller
 
             $save->save();
 
+            // Assuming kompetensi_id is passed as an array [1, 2]
             $kompetensiData = array_map(function ($kompetensiId) use ($save) {
                 return [
                     'tugas_id' => $save->tugas_id,
