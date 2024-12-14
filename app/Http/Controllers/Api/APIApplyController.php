@@ -9,6 +9,7 @@ use App\Models\ProgressModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Carbon;
 
 class APIApplyController extends Controller
 {
@@ -52,7 +53,6 @@ class APIApplyController extends Controller
 
         $tugasIds = $tugas->pluck('tugas_id');
 
-        // Add condition to only fetch apply items with apply_status = null
         $apply = ApplyModel::whereIn('tugas_id', $tugasIds)
             ->whereNull('apply_status')  // This ensures only records with apply_status = null are selected
             ->orderBy('apply_id')
