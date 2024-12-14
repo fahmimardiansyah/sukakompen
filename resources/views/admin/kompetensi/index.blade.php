@@ -29,6 +29,11 @@
     </div>
     @endforeach
     </section>
+    <div class="additional-actions" style="text-align: center; margin-top: 30px; margin-bottom: 30px">
+        <button class="btn" style="background-color: #ffc21c; color: #fff; border-radius: 30px; padding: 10px 20px;">
+            Lainnya
+        </button>
+    </div>
 </div>
 </div>
 

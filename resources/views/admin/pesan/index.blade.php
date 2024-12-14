@@ -15,11 +15,14 @@
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
                     <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
-                        <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                        <div style="display: flex; align-items: center;">
+                            <h3 style="margin-right: 10px;">{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                            <i class="fas fa-envelope-open" style="font-size: 20px; color: #000;"></i>
+                        </div>
                         <p>Apply pekerjaan {{ $data->tugas->tugas_nama }}.</p>
                         <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
-                    <button onclick="modalAction('{{ url('/pesan/' . $data->apply_id . '/apply') }}')" class="cek">Cek</button>
+                    <button onclick="modalAction('{{ url('/pesan/' . $data->apply_id . '/apply') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
                 </div>
             @endif
         @endforeach
@@ -29,11 +32,14 @@
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #3abf15);">
                     <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
-                        <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                        <div style="display: flex; align-items: center;">
+                            <h3 style="margin-right: 10px;">{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                            <i class="fas fa-envelope" style="font-size: 20px; color: #000;"></i>
+                        </div>
                         <p>Mengumpulkan pekerjaan {{ $data->tugas->tugas_nama }}.</p>
                         <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
-                    <button onclick="modalAction('{{ url('/pesan/' . $data->approval_id . '/tugas') }}')" class="cek">Cek</button>
+                    <button onclick="modalAction('{{ url('/pesan/' . $data->approval_id . '/tugas') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
                 </div>
             @endif
         @endforeach
@@ -41,9 +47,12 @@
         @foreach($progress as $data)
             @if($data->status === 0 || $data->status === false)
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ca1717);">
-                    <img alt="Profile picture of a person" height="50" src="https://storage.googleapis.com/a1aa/image/kTvDbmpMRv4cNFHDbuO8uVSwPlaijrMcHQzg7g4BiwmKzp7E.jpg" width="50"/>
+                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
                     <div class="pesan-info">
-                        <h3>{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                        <div style="display: flex; align-items: center;">
+                            <h3 style="margin-right: 10px;">{{ $data->mahasiswa->mahasiswa_nama }}</h3>
+                            <i class="fas fa-envelope" style="font-size: 20px; color: #000;"></i>
+                        </div>
                         <p>Tugas melewati tenggat {{ $data->tugas->tugas_tenggat->format('d M Y, H:i') ?? 'N/A' }}.</p>
                         <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>

@@ -197,4 +197,5 @@ Route::middleware('auth')->group(function () {
     
 });
 
+
 Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);
