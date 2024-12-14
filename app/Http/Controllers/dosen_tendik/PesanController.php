@@ -216,21 +216,32 @@ class PesanController extends Controller
                 ]);
             }
 
+            $bobotKompen = $approval->tugas->tugas_jam_kompen;
+
+            $jumlahAlpaBaru = $mahasiswa->jumlah_alpa - $bobotKompen;
+            if ($jumlahAlpaBaru < 0) {
+                $jumlahAlpaBaru = 0; 
+            }
+
             $approval->update([
                 'status' => true
             ]);
 
             $mahasiswa->update([
-                'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
+                'jumlah_alpa' => $jumlahAlpaBaru
             ]);
 
             $alpa->update([
-                'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
+                'jam_kompen' => $alpa->jam_kompen + $bobotKompen
             ]);
 
             return response()->json([
                 'status' => true,
-                'message' => 'Tugas Diterima'
+                'message' => 'Tugas Diterima',
+                'jumlah_alpa_awal' => $mahasiswa->jumlah_alpa,
+                'jumlah_alpa_baru' => $jumlahAlpaBaru,
+                'jam_kompen_awal' => $alpa->jam_kompen - $bobotKompen,
+                'jam_kompen_baru' => $alpa->jam_kompen
             ]);
         }
 

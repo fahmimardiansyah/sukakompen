@@ -61,6 +61,11 @@
                             <input value="{{ $dosen->dosen_no_telp }}" type="text" name="dosen_no_telp" id="dosen_no_telp" class="form-control" required>
                             <small id="error-dosen_no_telp" class="error-text form-text text-danger"></small>
                         </div>
+                        <div class="form-group">
+                            <label>Email SSO</label>
+                            <input value="{{ $dosen->dosen_email }}" type="text" name="dosen_email" id="dosen_email" class="form-control" required>
+                            <small id="error-dosen_email" class="error-text form-text text-danger"></small>
+                        </div>
                     @elseif($tendik)
                         <div class="form-group">
                             <label>NIP</label>
@@ -76,6 +81,11 @@
                             <label>No. Telp</label>
                             <input value="{{ $tendik->tendik_no_telp }}" type="text" name="tendik_no_telp" id="tendik_no_telp" class="form-control" required>
                             <small id="error-tendik_no_telp" class="error-text form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input value="{{ $tendik->tendik_email }}" type="text" name="tendik_email" id="tendik_email" class="form-control" required>
+                            <small id="error-tendik_email" class="error-text form-text text-danger"></small>
                         </div>
                     @elseif($mahasiswa)
                         <div class="form-group">
@@ -131,11 +141,11 @@
                     username: {
                         required: true,
                         minlength: 3,
-                        maxlength: 20
+                        maxlength: 255
                     },
                     password: {
                         minlength: 5,
-                        maxlength: 20
+                        maxlength: 255
                     }
                 },
                 submitHandler: function(form) {

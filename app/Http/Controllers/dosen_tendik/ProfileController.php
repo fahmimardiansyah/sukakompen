@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\LevelModel;
 use App\Models\TendikModel;
 use App\Models\UserModel;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ProfileController extends Controller
@@ -160,16 +161,16 @@ class ProfileController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'image'   => 'required|mimes:jpeg,png,jpg|max:4096'
+                'image' => 'required|mimes:jpeg,png,jpg|max:4096',
             ];
 
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false, 
+                    'status' => false,
                     'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors()
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
@@ -177,34 +178,38 @@ class ProfileController extends Controller
 
             if ($check) {
                 if ($request->hasFile('image')) {
+                    $oldImagePath = basename($check->image);
+
+                    if ($oldImagePath && Storage::disk('public')->exists('image/' . $oldImagePath)) {
+                        Storage::disk('public')->delete('image/' . $oldImagePath);
+                    }
                     $file = $request->file('image');
                     $extension = $file->getClientOriginalExtension();
-                    $filename = time() . auth()->user()->user_id . "." . $extension;
+                    $filename = time() . auth()->id() . "." . $extension;
 
                     $folderPath = 'image/';
-                    
-                    $path = $file->storeAs('public/' . $folderPath, $filename);
+                    $file->storeAs('public/' . $folderPath, $filename);
 
                     $check->update([
-                        'image' => 'storage/' . $folderPath . $filename
+                        'image' => 'storage/' . $folderPath . $filename,
                     ]);
 
                     session(['profile_img_path' => 'storage/' . $folderPath . $filename]);
 
                     return response()->json([
                         'status' => true,
-                        'message' => 'Data berhasil diupdate'
+                        'message' => 'Data berhasil diupdate',
                     ]);
                 }
 
                 return response()->json([
                     'status' => false,
-                    'message' => 'Tidak ada file yang diupload'
+                    'message' => 'Tidak ada file yang diupload',
                 ]);
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Data tidak ditemukan',
                 ]);
             }
         }

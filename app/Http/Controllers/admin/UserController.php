@@ -155,16 +155,18 @@ class UserController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'level_id' => 'required|integer',
-                'username' => 'required|max:20|unique:m_user,username,' . $id . ',user_id',
-                'password' => 'nullable|min:5|max:20',
-                'nidn' => 'nullable|max:20',
-                'nip' => 'nullable|max:20',
+                'username' => 'required|max:255|unique:m_user,username,' . $id . ',user_id',
+                'password' => 'nullable|min:5|max:255',
+                'nidn' => 'nullable|max:30',
+                'nip' => 'nullable|max:30',
                 'nim' => 'nullable|max:20',
                 'dosen_nama' => 'nullable|max:100',
                 'tendik_nama' => 'nullable|max:100',
                 'mahasiswa_nama' => 'nullable|max:100',
                 'dosen_no_telp' => 'nullable|max:15',
                 'tendik_no_telp' => 'nullable|max:15',
+                'dosen_email' => 'nullable|max:255',
+                'tendik_email' => 'nullable|max:255',
                 'prodi_id' => 'nullable|integer',
                 'semester' => 'nullable|integer',
             ];
@@ -203,12 +205,14 @@ class UserController extends Controller
                 if ($request->filled('nidn')) {
                     $dosen->update([
                         'dosen_nama' => $request->dosen_nama,
-                        'dosen_no_telp' => $request->dosen_no_telp
+                        'dosen_no_telp' => $request->dosen_no_telp,
+                        'dosen_email' => $request->dosen_email
                     ]);
                 } elseif ($request->filled('nip')) {
                     $tendik->update([
                         'tendik_nama' => $request->tendik_nama,
-                        'tendik_no_telp' => $request->tendik_no_telp
+                        'tendik_no_telp' => $request->tendik_no_telp,
+                        'tendik_email' => $request->tendik_email
                     ]);
                 } elseif ($request->filled('nim')) {
                     $mahasiswa->update([
@@ -267,39 +271,43 @@ class UserController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $user = UserModel::find($id);
 
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data pengguna tidak ditemukan'
+                ]);
+            }
+
+            // Cek relasi user dengan model dosen, tendik, atau mahasiswa
             $dosen = DosenModel::where('user_id', $id)->first();
             $tendik = TendikModel::where('user_id', $id)->first();
             $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
 
-            DB::table('t_kompetensi_mahasiswa')->where('mahasiswa_id', $mahasiswa->mahasiswa_id)->delete();
-
-            if ($user) {
-                if ($dosen) {
-                    $dosen->delete();
-                } elseif ($tendik) {
-                    $tendik->delete();
-                } elseif ($mahasiswa) {
-                    $mahasiswa->delete(); 
-                } else {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Data tidak ditemukan'
-                    ]);
-                }
-
-                $user->delete();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil dihapus'
-                ]);
+            // Hapus data di tabel relasi jika mahasiswa ditemukan
+            if ($mahasiswa) {
+                DB::table('t_kompetensi_mahasiswa')->where('mahasiswa_id', $mahasiswa->mahasiswa_id)->delete();
+                $mahasiswa->delete();
+            } elseif ($dosen) {
+                $dosen->delete();
+            } elseif ($tendik) {
+                $tendik->delete();
             } else {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'message' => 'Data terkait tidak ditemukan'
                 ]);
             }
+
+            // Hapus data user
+            $user->delete();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil dihapus'
+            ]);
         }
+
+        // Jika bukan permintaan AJAX, redirect ke halaman utama
         return redirect('/');
     }
 
@@ -369,29 +377,69 @@ class UserController extends Controller
             $data = $sheet->toArray(null, false, true, true); 
 
             if (count($data) > 1) { 
-                foreach ($data as $baris => $value) {
-                    if ($baris > 1) {
-                        $user = UserModel::create([
-                            'level_id' => 2,
-                            'username' => $value['D'],
-                            'password' => '12345678'
-                        ]);
+                DB::beginTransaction(); // Mulai transaksi untuk memastikan konsistensi data
 
-                        DosenModel::create([
-                            'user_id' => $user->user_id,
-                            'nidn' => $value['A'],
-                            'dosen_nama' => $value['B'],
-                            'dosen_no_telp' => $value['C'],
-                            'dosen_email' => $value['D'],
-                            'created_at' => now(),
-                        ]);
+                try {
+                    foreach ($data as $baris => $value) {
+                        if ($baris > 1) {
+                            $existingUser = UserModel::where('username', $value['D'])->first();
+                            
+                            if ($existingUser) {
+                                $existingUser->update([
+                                    'password' => '12345678'
+                                ]);
+
+                                $existingDosen = DosenModel::where('user_id', $existingUser->user_id)->first();
+                                if ($existingDosen) {
+                                    $existingDosen->update([
+                                        'nidn' => $value['A'],
+                                        'dosen_nama' => $value['B'],
+                                        'dosen_no_telp' => $value['C'],
+                                        'dosen_email' => $value['D'],
+                                        'updated_at' => now(),
+                                    ]);
+                                } else {
+                                    DosenModel::create([
+                                        'user_id' => $existingUser->user_id,
+                                        'nidn' => $value['A'],
+                                        'dosen_nama' => $value['B'],
+                                        'dosen_no_telp' => $value['C'],
+                                        'dosen_email' => $value['D'],
+                                        'created_at' => now(),
+                                    ]);
+                                }
+                            } else {
+                                $user = UserModel::create([
+                                    'level_id' => 2,
+                                    'username' => $value['D'],
+                                    'password' => '12345678'
+                                ]);
+
+                                DosenModel::create([
+                                    'user_id' => $user->user_id,
+                                    'nidn' => $value['A'],
+                                    'dosen_nama' => $value['B'],
+                                    'dosen_no_telp' => $value['C'],
+                                    'dosen_email' => $value['D'],
+                                    'created_at' => now(),
+                                ]);
+                            }
+                        }
                     }
+
+                    DB::commit(); // Jika semua berhasil, commit transaksi
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diimport atau diperbarui'
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollBack(); // Jika ada error, rollback transaksi
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan saat mengimpor data dosen',
+                        'error' => $e->getMessage() // Tampilkan pesan error untuk debugging
+                    ]);
                 }
-                
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diimport'
-                ]);
             } else {
                 return response()->json([
                     'status' => false,
@@ -437,29 +485,58 @@ class UserController extends Controller
             $data = $sheet->toArray(null, false, true, true); 
 
             if (count($data) > 1) { 
-                foreach ($data as $baris => $value) {
-                    if ($baris > 1) {
-                        $user = UserModel::create([
-                            'level_id' => 3,
-                            'username' => $value['D'],
-                            'password' => '12345678'
-                        ]);
+                DB::beginTransaction(); // Memulai transaksi database
 
-                        TendikModel::create([
-                            'user_id' => $user->user_id,
-                            'nip' => $value['A'],
-                            'tendik_nama' => $value['B'],
-                            'tendik_no_telp' => $value['C'],
-                            'tendik_email' => $value['D'],
-                            'created_at' => now(),
-                        ]);
+                try {
+                    foreach ($data as $baris => $value) {
+                        if ($baris > 1) {
+                            // Pengecekan apakah NIP dan email sudah ada
+                            $existingTendik = TendikModel::where('nip', $value['A'])
+                                                        ->orWhere('tendik_email', $value['D'])
+                                                        ->first();
+
+                            if ($existingTendik) {
+                                // Update jika sudah ada
+                                $existingTendik->update([
+                                    'nip' => $value['A'],
+                                    'tendik_nama' => $value['B'],
+                                    'tendik_no_telp' => $value['C'],
+                                    'tendik_email' => $value['D'],
+                                    'updated_at' => now(),
+                                ]);
+                            } else {
+                                // Menambahkan user dan tendik baru
+                                $user = UserModel::create([
+                                    'level_id' => 3,
+                                    'username' => $value['D'],
+                                    'password' => '12345678'
+                                ]);
+
+                                TendikModel::create([
+                                    'user_id' => $user->user_id,
+                                    'nip' => $value['A'],
+                                    'tendik_nama' => $value['B'],
+                                    'tendik_no_telp' => $value['C'],
+                                    'tendik_email' => $value['D'],
+                                    'created_at' => now(),
+                                ]);
+                            }
+                        }
                     }
+
+                    DB::commit(); // Commit transaksi jika berhasil
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diimport'
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollBack(); // Rollback jika ada error
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan saat mengimpor data tendik',
+                        'error' => $e->getMessage() // Pesan error untuk debugging
+                    ]);
                 }
-                
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diimport'
-                ]);
             } else {
                 return response()->json([
                     'status' => false,
@@ -505,29 +582,56 @@ class UserController extends Controller
             $data = $sheet->toArray(null, false, true, true); 
 
             if (count($data) > 1) { 
-                foreach ($data as $baris => $value) {
-                    if ($baris > 1) {
-                        $user = UserModel::create([
-                            'level_id' => 4,
-                            'username' => $value['A'],
-                            'password' => '12345678'
-                        ]);
+                DB::beginTransaction(); // Memulai transaksi database
 
-                        MahasiswaModel::create([
-                            'user_id' => $user->user_id,
-                            'nim' => $value['A'],
-                            'mahasiswa_nama' => $value['B'],
-                            'prodi_id' => $value['C'],
-                            'semester' => $value['D'],
-                            'created_at' => now(),
-                        ]);
+                try {
+                    foreach ($data as $baris => $value) {
+                        if ($baris > 1) {
+                            // Pengecekan apakah NIM sudah ada
+                            $existingMahasiswa = MahasiswaModel::where('nim', $value['A'])->first();
+
+                            if ($existingMahasiswa) {
+                                // Update jika sudah ada
+                                $existingMahasiswa->update([
+                                    'nim' => $value['A'],
+                                    'mahasiswa_nama' => $value['B'],
+                                    'prodi_id' => $value['C'],
+                                    'semester' => $value['D'],
+                                    'updated_at' => now(),
+                                ]);
+                            } else {
+                                // Menambahkan user dan mahasiswa baru
+                                $user = UserModel::create([
+                                    'level_id' => 4,
+                                    'username' => $value['A'],
+                                    'password' => '12345678'
+                                ]);
+
+                                MahasiswaModel::create([
+                                    'user_id' => $user->user_id,
+                                    'nim' => $value['A'],
+                                    'mahasiswa_nama' => $value['B'],
+                                    'prodi_id' => $value['C'],
+                                    'semester' => $value['D'],
+                                    'created_at' => now(),
+                                ]);
+                            }
+                        }
                     }
+
+                    DB::commit(); // Commit transaksi jika berhasil
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Data berhasil diimport'
+                    ]);
+                } catch (\Exception $e) {
+                    DB::rollBack(); // Rollback jika ada error
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Terjadi kesalahan saat mengimpor data mahasiswa',
+                        'error' => $e->getMessage() // Pesan error untuk debugging
+                    ]);
                 }
-                
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diimport'
-                ]);
             } else {
                 return response()->json([
                     'status' => false,

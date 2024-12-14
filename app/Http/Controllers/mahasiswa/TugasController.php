@@ -133,9 +133,20 @@ class TugasController extends Controller
                     ], 400);
                 }
 
-                $progress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
-                    ->where('status', 0)
+                $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                    ->whereNull('apply_status')
                     ->exists();
+
+                $progress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                    ->where('status', null)
+                    ->exists();
+
+                if ($apply) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Anda sudah apply tugas yang lain, tunggu sampai di respon.'
+                    ], 400);
+                }
 
                 if ($progress) {
                     return response()->json([
