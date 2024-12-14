@@ -66,7 +66,7 @@ class HistoryController extends Controller
 
         if (!$approval || !$approval->tugas) {
             return redirect()
-                ->route('history.index')
+                ->url('history/index')
                 ->with('error', 'Data tugas tidak ditemukan.');
         }
 

@@ -258,10 +258,8 @@ class TugasController extends Controller
                         ]);
                     }
 
-                    // Prepare new kompetensi data and check if it's already exists for this tugas_id
                     $kompetensiData = [];
                     foreach ($kompetensiIds as $kompetensiId) {
-                        // Check if the kompetensi_id already exists for this tugas_id
                         $existing = KompetensiTgsModel::where('tugas_id', $id)
                             ->where('kompetensi_id', $kompetensiId)
                             ->exists();
@@ -279,17 +277,16 @@ class TugasController extends Controller
                         ];
                     }
 
-                    // Insert new kompetensi
                     KompetensiTgsModel::insert($kompetensiData);
 
-                    DB::commit(); // Commit transaction
+                    DB::commit(); 
 
                     return response()->json([
                         'status' => true,
                         'message' => 'Data berhasil diupdate'
                     ]);
                 } catch (\Exception $e) {
-                    DB::rollBack(); // Rollback transaction if error
+                    DB::rollBack();
                     return response()->json([
                         'status' => false,
                         'message' => 'Terjadi kesalahan saat mengupdate data: ' . $e->getMessage()

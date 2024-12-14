@@ -58,8 +58,8 @@
         $("#form-tambah").validate({ 
             rules: { 
                 level_id: {required: true, number: true}, 
-                username: {required: true, minlength: 3, maxlength: 20}, 
-                password: {required: true, minlength: 5, maxlength: 20},
+                username: {required: true, minlength: 3, maxlength: 255}, 
+                password: {required: true, minlength: 5, maxlength: 255},
                 nip: { required: true, maxlength: 20 },
                 admin_nama: { required: true, maxlength: 100 },
                 admin_no_telp: { required: true, maxlength: 15 },

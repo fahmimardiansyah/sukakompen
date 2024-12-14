@@ -9,6 +9,7 @@ use App\Models\ProgressModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Carbon;
 
 class APIApplyController extends Controller
 {
@@ -52,27 +53,34 @@ class APIApplyController extends Controller
 
         $tugasIds = $tugas->pluck('tugas_id');
 
-        $apply = ApplyModel::whereIn('tugas_id', $tugasIds)->get();
+        $apply = ApplyModel::whereIn('tugas_id', $tugasIds)
+            ->whereNull('apply_status')  // This ensures only records with apply_status = null are selected
+            ->orderBy('apply_id')
+            ->get();
 
-        $applyFiltered = $apply->filter(function ($item) {
-            return $item->apply_status === null;
-        });
-
-        if ($applyFiltered->isEmpty()) {
-            return response()->json(['message' => 'Tidak ada apply dengan status null'], 404);
+        if ($apply->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada data apply'], 404);
         }
 
-        $result = $tugas->filter(function ($tugasItem) use ($applyFiltered) {
-            return $applyFiltered->contains('tugas_id', $tugasItem->tugas_id);
-        })->map(function ($tugasItem) use ($applyFiltered) {
-            $relatedApply = $applyFiltered->where('tugas_id', $tugasItem->tugas_id);
+        $result = $apply->map(function ($applyItem) use ($tugas) {
+            $tugasItem = $tugas->firstWhere('tugas_id', $applyItem->tugas_id);
+            $mahasiswa = MahasiswaModel::find($applyItem->mahasiswa_id);
+
             return [
-                'tugas' => $tugasItem,
-                'apply' => $relatedApply->values(),
+                'apply_id' => $applyItem->apply_id,
+                'tugas' => [
+                    'tugas_id' => $tugasItem->tugas_id ?? null,
+                    'tugas_nama' => $tugasItem->tugas_nama ?? null,
+                    'tugas_deskripsi' => $tugasItem->tugas_deskripsi ?? null,
+                ],
+                'mahasiswa' => [
+                    'nim' => $mahasiswa->nim ?? null,
+                    'mahasiswa_nama' => $mahasiswa->mahasiswa_nama ?? null,
+                ],
             ];
         });
 
-        return response()->json(['pending' => $result]);
+        return response()->json(['data' => $result]);
     }
 
     public function decline(Request $request) {
@@ -100,30 +108,80 @@ class APIApplyController extends Controller
     // apply untuk mahasiswa 
     public function apply(Request $request)
     {
-        $user = auth()->user();
-
-        if (!$user) {
-            return response()->json(['error' => 'User tidak terautentikasi'], 401);
+        try {
+            $user = auth()->user();
+    
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'User tidak terautentikasi'
+                ], 401);
+            }
+    
+            $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
+    
+            if (!$mahasiswa) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Mahasiswa tidak ditemukan'
+                ], 404);
+            }
+    
+            $validate = $request->validate([
+                'tugas_id' => 'required|exists:t_tugas,tugas_id',
+            ]);
+    
+            $tugas = TugasModel::findOrFail($validate['tugas_id']);
+    
+            $alreadyApplied = ApplyModel::where('tugas_id', $tugas->tugas_id)
+                ->where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                ->exists();
+    
+            if ($alreadyApplied) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Anda sudah mendaftar untuk tugas ini.'
+                ], 400);
+            }
+    
+            $pendingApply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                ->whereNull('apply_status')
+                ->exists();
+    
+            if ($pendingApply) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Anda sudah apply tugas lain, tunggu hingga diterima atau ditolak.'
+                ], 400);
+            }
+    
+            $unfinishedProgress = ProgressModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
+                ->whereNull('status')
+                ->exists();
+    
+            if ($unfinishedProgress) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Anda memiliki progress tugas yang belum selesai.'
+                ], 400);
+            }
+    
+            ApplyModel::create([
+                'tugas_id' => $tugas->tugas_id,
+                'mahasiswa_id' => $mahasiswa->mahasiswa_id,
+            ]);
+    
+            return response()->json([
+                'status' => true,
+                'message' => 'Pendaftaran tugas berhasil.'
+            ], 201);
+    
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan pada server: ' . $e->getMessage()
+            ], 500);
         }
-
-        $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
-
-        if (!$mahasiswa) {
-            return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
-        }
-
-        $validate = $request->validate([
-            'tugas_id' => 'required|exists:t_tugas,tugas_id',
-        ]);
-
-        $tugas = TugasModel::find($validate['tugas_id']);
-
-        $apply = new ApplyModel();
-        $apply->mahasiswa_id = $mahasiswa->mahasiswa_id;
-        $apply->tugas_id = $tugas->tugas_id;
-        $apply->save();
-
-        return response()->json(['message' => 'Berhasil menyimpan data'], 201);
-    }
+    }    
         
 }

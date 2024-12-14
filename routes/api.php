@@ -28,7 +28,6 @@ Route::post('/logout', [APIController::class, 'logout']);
 
 Route::middleware('auth:api')->post('dashboardmhs', [APIDashboardMHSController::class, 'index']);
 Route::middleware('auth:api')->post('dashboarddsn', [APIDashboardDSNController::class, 'index']);
-Route::middleware('auth:api')->post('dashboardtdk', [APIDashboardTDKController::class, 'index']);
 
 // akumulasi
 Route::middleware('auth:api')->post('/akumulasi', [APIAkumulasiController::class, 'index']);

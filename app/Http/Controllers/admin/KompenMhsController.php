@@ -32,11 +32,19 @@ class KompenMhsController extends Controller
             })
             ->get();
 
+        $approvalAll = ApprovalModel::with(['tugas', 'mahasiswa'])
+            ->get();
+
+        $progressAll = ProgressModel::with(['tugas', 'mahasiswa'])
+            ->get();
+
         return view('admin.kompenma.index', [
             'mahasiswa' => $approval,
             'breadcrumb' => $breadcrumb,
             'activeMenu' => $activeMenu,
-            'progress' => $progress
+            'progress' => $progress,
+            'approvalAll' => $approvalAll,
+            'progressAll' => $progressAll
         ]);
     }
 }
