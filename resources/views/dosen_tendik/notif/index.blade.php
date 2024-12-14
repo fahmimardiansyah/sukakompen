@@ -19,7 +19,7 @@
                         <p>Apply pekerjaan {{ $data->tugas->tugas_nama }}.</p>
                         <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
-                    <button onclick="modalAction('{{ url('/notif/' . $data->apply_id . '/apply') }}')" class="cek">Cek</button>
+                    <button onclick="modalAction('{{ url('/notif/' . $data->apply_id . '/apply') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
                 </div>
             @endif
         @endforeach
@@ -33,7 +33,7 @@
                         <p>Mengumpulkan pekerjaan {{ $data->tugas->tugas_nama }}.</p>
                         <p>Waktu dibuat: {{ $data->updated_at->format('d M Y, H:i') }}</p>
                     </div>
-                    <button onclick="modalAction('{{ url('/notif/' . $data->approval_id . '/tugas') }}')" class="cek">Cek</button>
+                    <button onclick="modalAction('{{ url('/notif/' . $data->approval_id . '/tugas') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
                 </div>
             @endif
         @endforeach
@@ -58,22 +58,6 @@
 
 @section('styles')
 <style>
-
-/* Button Cek */
-/* .cek {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 15px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.cek:hover {
-    background-color: #0056b3;
-} */
 
 /* Modal Styles */
 .modal {

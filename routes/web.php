@@ -193,8 +193,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-    URL::forceScheme('https');
+    // URL::forceScheme('https');
     
 });
+
 
 Route::get('/{id}/export_pdf', [App\Http\Controllers\Mahasiswa\HistoryController::class, 'export_pdf']);

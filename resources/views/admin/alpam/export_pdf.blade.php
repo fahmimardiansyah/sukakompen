@@ -32,7 +32,7 @@
         }
 
         .header img {
-            height: 70px;
+            height: 83px;
             position: absolute;
             top: 0;
         }
@@ -124,7 +124,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <img class="logo-left" src="{{ asset('polinema.jpg') }}" alt="Logo Polinema">
+            <img class="logo-left" src="{{ asset('img/polinema.jpg') }}" alt="Logo_Polinema">
             <p class="title">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</p>
             <p class="title">POLITEKNIK NEGERI MALANG</p>
             <p class="subtitle">Jl. Soekarno-Hatta No. 9 Malang 65141</p>
