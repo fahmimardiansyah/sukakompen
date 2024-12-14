@@ -25,7 +25,6 @@ class APIApplyController extends Controller
             return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
         }
 
-        // Format respons dengan data tambahan
         return response()->json([
             'tugas_nama' => $tugas->tugas_nama,
             'tugas_deskripsi' => $tugas->tugas_deskripsi,
