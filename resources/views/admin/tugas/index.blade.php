@@ -8,25 +8,6 @@
     <h1>Tugas</h1>
 </div>
 
-
-<!-- Search Bar -->
-<div class="search-bars">
-    <div class="filter">
-        <i class="fas fa-filter"></i>
-        <select>
-            <option value="">- Pilih Jenis -</option>
-        </select>
-    </div>
-</div>
-<div class="notif">
-    <h2>Tugas</h2>
-</div>
-
-    <!-- Recommended Tasks Section -->
-    {{-- <section class="recommended-tasks">
-        <h2>Tugas Kompen</h2> --}}
-
-<!-- Tabs and Add Task Button -->
 <div class="content">
     <div class="tabs">
         <button class="tab active" onclick="showTab('admin')">Admin</button>
