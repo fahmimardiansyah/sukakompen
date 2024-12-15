@@ -3,20 +3,18 @@
 @section('content')
 
 <div class="card card-outline card-primary">
-    <!-- Hero Section -->
-    <div class="hero">
-        <h1>Kompen Mahasiswa</h1>
+<!-- Hero Section -->
+<div class="hero">
+    <h1>Kompen Mahasiswa</h1>
+</div>
+<div class="search-bars">
+    <div class="filter">
+        <i class="fas fa-filter"></i>
+        <select>
+            <option value="">- Tahun Periode -</option>
+        </select>
     </div>
-
-    <div class="search-bars">
-        <div class="filter">
-            <i class="fas fa-filter"></i>
-            <select>
-                <option value="">- Periode Tahun -</option>
-            </select>
-        </div>
-    </div>
-
+</div>
     <div class="table-alpa">
         <div class="notif">
             <h2>Tabel Kompen Mahasiswa</h2>

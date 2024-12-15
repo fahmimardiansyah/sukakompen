@@ -61,13 +61,6 @@
             </tbody>
         </table>
     </div>
-    <div class="center">
-        <div class="total-alpa">
-            <i class="fas fa-clock"></i>
-            <span>Total Jumlah Alpa: XYZ Jam</span> <!-- Ganti XYZ dengan jumlah total alpa -->
-        </div>
-    </div>
-
 </div>
 
 @endsection

@@ -34,7 +34,7 @@ class APIApplyController extends Controller
         $tugasIds = $tugas->pluck('tugas_id');
 
         $apply = ApplyModel::whereIn('tugas_id', $tugasIds)
-            ->whereNull('apply_status')  // This ensures only records with apply_status = null are selected
+            ->whereNull('apply_status')
             ->orderBy('apply_id')
             ->get();
 
