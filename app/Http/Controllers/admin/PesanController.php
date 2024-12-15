@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\UserModel;
+use App\Models\KompetensiMhsModel;
+use App\Models\LevelModel;
 use App\Models\AlpaModel;
 use App\Models\ApplyModel;
 use App\Models\ApprovalModel;
@@ -216,6 +219,24 @@ class PesanController extends Controller
                 ]);
             }
         }
+        return redirect('/');
+    }
+
+    public function validasi()
+    {
+
+        $userId = auth()->id();
+
+        $activeMenu = 'profilemhs'; 
+
+        $user = UserModel::with('level')->find($userId);
+
+        $mahasiswa = MahasiswaModel::where('user_id', $userId)->first();
+
+        $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
+
+        $level = LevelModel::all(); 
+        
         return redirect('/');
     }
 }
