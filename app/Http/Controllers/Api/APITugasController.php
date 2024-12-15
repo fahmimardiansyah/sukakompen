@@ -15,6 +15,7 @@ use App\Models\AdminModel;
 use App\Models\ApplyModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
+use App\Models\KompetensiTgsModel;
 use App\Models\ProgressModel;
 use Illuminate\Support\Carbon;
 
@@ -77,8 +78,37 @@ class APITugasController extends Controller
 
     public function show(Request $request)
     {
-        $data = TugasModel::all()->where("tugas_id", $request->tugas_id)->first();
-        return $data;
+        $data = TugasModel::where("tugas_id", $request->tugas_id)->first();
+
+        if ($data) {
+            $pembuat_tugas = 'Unknown';
+
+            if ($data->users) {
+                $dosen = DosenModel::where('user_id', $data->users->user_id)->first();
+                $tendik = TendikModel::where('user_id', $data->users->user_id)->first();
+                $admin = AdminModel::where('user_id', $data->users->user_id)->first();
+
+                if ($dosen) {
+                    $pembuat_tugas = $dosen->dosen_nama;
+                } elseif ($tendik) {
+                    $pembuat_tugas = $tendik->tendik_nama;
+                } elseif ($admin) {
+                    $pembuat_tugas = $admin->admin_nama;
+                }
+            }
+
+            $data->pembuat_tugas = $pembuat_tugas;
+
+            $kompetensi_tugas = KompetensiTgsModel::where('tugas_id', $request->tugas_id)->get();
+
+            $data->kompetensi = $kompetensi_tugas->map(function ($item) {
+                return $item->kompetensi->kompetensi_nama ?? 'Unknown';
+            });
+        } else {
+            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
+        }
+
+        return response()->json($data, 200);
     }
 
     public function show_history(Request $request)
@@ -193,7 +223,7 @@ class APITugasController extends Controller
 
 
                 return [
-                    'progress_id' => $applyItem->progress_id,
+                    'approval_id' => $applyItem->approval_id,
                     'status' => true,
                     'tugas' => [
                         'tugas_id' => $tugas->tugas_id,

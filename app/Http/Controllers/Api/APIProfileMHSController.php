@@ -27,6 +27,7 @@ class APIProfileMHSController extends Controller
         if ($mahasiswa) {
             return response()->json([
                 'data' => $mahasiswa,
+                'prodi' => $mahasiswa->prodi->prodi_nama,
                 'image_url' => $userImageUrl,
             ]);
         }

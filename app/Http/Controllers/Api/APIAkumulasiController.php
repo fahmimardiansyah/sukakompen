@@ -23,7 +23,7 @@ class APIAkumulasiController extends Controller
             return response()->json(['error' => 'Mahasiswa tidak ditemukan'], 404);
         }
 
-        $akumulasi = AkumulasiModel::all();
+        $akumulasi = AkumulasiModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
 
         return response()->json([
             'mahasiswa' => $mahasiswa,

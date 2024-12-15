@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminModel;
 use App\Models\ApplyModel;
+use App\Models\DosenModel;
 use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
+use App\Models\TendikModel;
 use App\Models\TugasModel;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -13,28 +16,6 @@ use Illuminate\Support\Carbon;
 
 class APIApplyController extends Controller
 {
-    public function show(Request $request)
-    {
-        $validate = $request->validate([
-            'tugas_id' => 'required|exists:t_tugas,tugas_id',
-        ]);
-
-        $tugas = TugasModel::find($validate['tugas_id']);
-
-        if (!$tugas) {
-            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
-        }
-
-        return response()->json([
-            'tugas_nama' => $tugas->tugas_nama,
-            'tugas_deskripsi' => $tugas->tugas_deskripsi,
-            'tugas_tenggat' => $tugas->tugas_tenggat,
-            'tugas_tipe' => $tugas->tugas_tipe,
-            'tugas_jam_kompen' => $tugas->tugas_jam_kompen,
-            'tugas_alpha' => '-' . $tugas->tugas_jam_kompen . ' Jam Alpha',
-        ], 200);
-    }
-
     // untuk tampilan apply approval dosen/tendik
     public function index(Request $request)
     {
@@ -90,18 +71,42 @@ class APIApplyController extends Controller
         return 'Berhasil Mengubah Data';
     }
 
-    public function acc(Request $request) {
-        $data = ApplyModel::all()->where('apply_id', $request->apply_id)->first();
-        $data->apply_status = true;
-        $data->save();
+    public function acc(Request $request)
+    {
+        try {
+            $validate = $request->validate([
+                'apply_id' => 'required|exists:t_apply,apply_id',
+            ]);
 
-        $save = new ProgressModel;
-        $save->apply_id = $data->apply_id;
-        $save->mahasiswa_id = $data->mahasiswa_id;
-        $save->tugas_id = $data->tugas_id;
-        $save->save();
+            $data = ApplyModel::where('apply_id', $request->apply_id)->first();
 
-        return 'Berhasil Mengubah Data';
+            if (!$data) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data apply tidak ditemukan',
+                ], 404);
+            }
+            $data->apply_status = true;
+            $data->save();
+
+            $save = new ProgressModel();
+            $save->apply_id = $data->apply_id;
+            $save->mahasiswa_id = $data->mahasiswa_id;
+            $save->tugas_id = $data->tugas_id;
+            $save->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Berhasil mengubah data dan menambahkan progress',
+                'apply' => $data,
+                'progress' => $save,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     // apply untuk mahasiswa 

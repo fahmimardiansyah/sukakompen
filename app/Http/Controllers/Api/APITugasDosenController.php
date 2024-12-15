@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AdminModel;
+use App\Models\DosenModel;
 use App\Models\KompetensiTgsModel;
 use App\Models\TugasModel;
 use App\Models\JenisModel;
 use App\Models\KompetensiModel;
+use App\Models\TendikModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -37,6 +40,26 @@ class APITugasDosenController extends Controller
                     'message' => 'Data tidak ditemukan untuk user ini',
                 ], 404);
             }
+
+            $data = $data->map(function ($task) {
+                $pembuat_tugas = 'Unknown';
+                if ($task->users) {
+                    $dosen = DosenModel::where('user_id', $task->users->user_id)->first();
+                    $tendik = TendikModel::where('user_id', $task->users->user_id)->first();
+                    $admin = AdminModel::where('user_id', $task->users->user_id)->first();
+
+                    if ($dosen) {
+                        $pembuat_tugas = $dosen->dosen_nama;
+                    } elseif ($tendik) {
+                        $pembuat_tugas = $tendik->tendik_nama;
+                    } elseif ($admin) {
+                        $pembuat_tugas = $admin->admin_nama;
+                    }
+                }
+
+                $task->pembuat_tugas = $pembuat_tugas;
+                return $task;
+            });
 
             return response()->json([
                 'status' => 'success',
@@ -99,7 +122,6 @@ class APITugasDosenController extends Controller
 
             $save->save();
 
-            // Assuming kompetensi_id is passed as an array [1, 2]
             $kompetensiData = array_map(function ($kompetensiId) use ($save) {
                 return [
                     'tugas_id' => $save->tugas_id,
@@ -132,8 +154,22 @@ class APITugasDosenController extends Controller
     // untuk detail tugas dosen/tendik
     public function show(Request $request)
     {
-        $data = TugasModel::all()->where("tugas_id", $request->tugas_id)->first();
-        return $data;
+        $data = TugasModel::where("tugas_id", $request->tugas_id)->first();
+
+        if (!$data) {
+            return response()->json(['message' => 'Data tugas tidak ditemukan'], 404);
+        }
+
+        $kompetensi = KompetensiTgsModel::where('tugas_id', $request->tugas_id)->get();
+
+        $kompetensi_nama = $kompetensi->map(function ($item) {
+            return $item->kompetensi->kompetensi_nama ?? 'Unknown';
+        });
+
+        return response()->json([
+            'tugas' => $data,
+            'kompetensi' => $kompetensi_nama
+        ], 200);
     }
 
     // untuk edit tugas dosen/tendik

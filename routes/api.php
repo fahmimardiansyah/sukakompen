@@ -55,7 +55,6 @@ Route::post('/alpa', [APIAlpaController::class, 'index']);
 
 // Apply Routes
 Route::middleware('auth:api')->post('/apply', [APIApplyController::class, 'apply']);
-Route::get('/tugas/show', [APIApplyController::class, 'show']);
 Route::middleware('auth:api')->post('/apply_mahasiswa', [APIApplyController::class, 'index']);
 Route::post('/decline', [APIApplyController::class, 'decline']);
 Route::post('/acc', [APIApplyController::class, 'acc']);

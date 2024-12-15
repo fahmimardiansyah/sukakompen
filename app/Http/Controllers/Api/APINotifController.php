@@ -55,7 +55,8 @@ class APINotifController extends Controller
         }
 
         $apply = ApplyModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)
-            ->with(['tugas', 'tugas.users']) 
+            ->with('tugas')
+            ->whereNotIn('tugas_id', ApprovalModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->pluck('tugas_id'))
             ->get();
 
         $applyGrouped = $apply->groupBy('apply_status');
