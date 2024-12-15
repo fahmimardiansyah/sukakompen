@@ -48,7 +48,7 @@
             <div class="card-header text-center"><a href="{{ url('/') }}" class="h1"><b>Admin</b>LTE</a></div>
             <div class="card-body">
                 <p class="login-box-msg">Sign up to start your session</p>
-                <form action="{{ url('register') }}" method="POST" id="form-register">
+                <form action="{{ url('register') }}" method="POST" id="form-register"  enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
                         <label>Level Pengguna</label>
@@ -152,11 +152,15 @@
                     level_id: { required: true, number: true },
                 },
                 submitHandler: function (form) {
+                    var formData = new FormData(form);
+
                     // Pendaftaran AJAX
                     $.ajax({
                         url: form.action,
                         type: form.method,
-                        data: $(form).serialize(),
+                        data: formData,
+                        processData: false, 
+                        contentType: false,
                         success: function (response) {
                             if (response.status) {
                                 if (response.modal) {
@@ -317,6 +321,10 @@
                         <div class="input-group-text"><span class="fas fa-graduation-cap"></span></div>
                     </div>
                 </div>
+                <div class="form-group">
+                    <input type="file" name="ktm" id="ktm" class="form-control" placeholder="Ktm" required>
+                    <small id="error-ktm" class="error-text form-text text-danger"></small>
+                </div>
                 <div class="input-group mb-3">
                     <div id="kompetensi-container">
                         <div class="kompetensi-group">
@@ -382,8 +390,18 @@
                 prodi_id: { required: true, number: true },
                 semester: { required: true, number: true, max: 8 },
                 kompetensi_id: { required: true, number: true },
+                ktm: { required: true, extension: "jpg|jpeg|png|pdf" }
             };
         }
+
+        $(document).ready(function() {
+            // Menangani perubahan pada input file
+            $('input[type="file"]').on('change', function(e) {
+                var inputFile = e.target;
+                var fileName = inputFile.files[0] ? inputFile.files[0].name : 'No file selected';
+                $(inputFile).siblings('input').val(fileName);  // Menampilkan nama file di field input
+            });
+        });
 
     </script>
 </body>

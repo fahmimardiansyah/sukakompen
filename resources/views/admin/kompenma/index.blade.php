@@ -11,19 +11,22 @@
 <div class="search-bars">
     <div class="filter">
         <i class="fas fa-filter"></i>
-        <select>
-            <option value="">- Tahun Periode -</option>
-        </select>
+        <form method="GET" action="{{ url('kompenma') }}">
+            <select name="tahun" onchange="this.form.submit()">
+                @foreach($years as $year)
+                    <option value="{{ $year }}" {{ $year == $selectedYear ? 'selected' : '' }}>
+                        {{ $year }}
+                    </option>
+                @endforeach
+            </select>
+        </form>
     </div>
 </div>
 <div class="notif">
-    <h2>Tugas</h2>
+    <h2>Tabel Kompen Mahasiswa</h2>
 </div>
 
 <div class="table-alpa">
-    <div class="notif">
-        <h2>Tabel Kompen Mahasiswa</h2>
-    </div>
     <div class="tabs">
         <button class="tab active" onclick="showTab('user')">User</button>
         <button class="tab" onclick="showTab('all')">All User</button>

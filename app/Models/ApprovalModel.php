@@ -19,6 +19,8 @@ class ApprovalModel extends Model
         'status',
     ];
 
+    public $timestamps = true;
+
     public function progress()
     {
         return $this->belongsTo(ProgressModel::class, 'progress_id', 'progress_id');

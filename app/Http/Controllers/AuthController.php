@@ -44,6 +44,7 @@ class AuthController extends Controller
 
                 $dosen = DosenModel::where('user_id', $user->user_id)->first();
                 $tendik = TendikModel::where('user_id', $user->user_id)->first();
+                $mahasiswa = MahasiswaModel::where('user_id', $user->user_id)->first();
 
                 if ($dosen && is_null($dosen->status)) {
                     return response()->json([
@@ -56,6 +57,13 @@ class AuthController extends Controller
                     return response()->json([
                         'status' => false,
                         'message' => 'Akun Anda belum aktif. Silakan register untuk mengaktitfkan.',
+                    ]);
+                }
+
+                if ($mahasiswa && is_null($mahasiswa->status)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Akun Anda belum aktif. Tunggu Admin untuk validasi.',
                     ]);
                 }
 
@@ -115,6 +123,7 @@ class AuthController extends Controller
                     $rules['semester'] = 'required|integer|min:1|max:8';
                     $rules['kompetensi_id'] = 'required|array';
                     $rules['kompetensi_id.*'] = 'integer|exists:t_kompetensi,kompetensi_id';
+                    $rules['ktm'] = 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
                     break;
             }
 
@@ -136,7 +145,7 @@ class AuthController extends Controller
                     session(['verification_code_' . $existingUser->user_id => $verificationCode]);
                     session(['verification_code_timestamp_' . $existingUser->user_id => now()]); 
                     session(['existing_user_id' => $existingUser->user_id]);
-                    session(['new_password_' . $existingUser->user_id => $request->password]); // Store the password in session
+                    session(['new_password_' . $existingUser->user_id => $request->password]); 
     
                     try {
                         $dosen = DosenModel::where('user_id', $existingUser->user_id)->first();
@@ -166,7 +175,7 @@ class AuthController extends Controller
                 }
             }
 
-            DB::beginTransaction(); 
+            DB::beginTransaction();
             try {
                 $user = new UserModel();
                 $user->level_id = $request->level_id;
@@ -183,12 +192,19 @@ class AuthController extends Controller
                 $user->save();
 
                 if ($request->level_id == 4) { 
+                    if ($request->hasFile('ktm')) {
+                        $ktmFile = $request->file('ktm');
+                        $ktmPath = $ktmFile->storeAs('ktm', $request->nim . '_ktm.' . $ktmFile->getClientOriginalExtension(), 'public');
+                    }
+
                     $mahasiswa = MahasiswaModel::create([
                         'user_id' => $user->user_id,
                         'nim' => $request->nim,
                         'mahasiswa_nama' => $request->mahasiswa_nama,
                         'prodi_id' => $request->prodi_id,
                         'semester' => $request->semester,
+                        'jumlah_alpa' => 0,
+                        'ktm' => $ktmPath ?? null,
                     ]);
 
                     $kompetensiData = [];
@@ -203,9 +219,11 @@ class AuthController extends Controller
 
                     $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
-                    $mahasiswa->update([
-                        'jumlah_alpa' => $alpa->jam_alpa
-                    ]);
+                    if ($alpa) {
+                        $mahasiswa->update([
+                            'jumlah_alpa' => $alpa->jam_alpa
+                        ]);
+                    }
 
                     for ($i = 1; $i <= 8; $i++) {
                         if ($alpa) {
@@ -234,14 +252,14 @@ class AuthController extends Controller
                     }
                 }
 
-                DB::commit(); 
+                DB::commit();
                 return response()->json([
                     'status' => true,
                     'message' => 'Data user berhasil disimpan',
                     'redirect' => url('login'),
                 ]);
             } catch (\Exception $e) {
-                DB::rollBack(); 
+                DB::rollBack();
                 return response()->json([
                     'status' => false,
                     'message' => 'Terjadi kesalahan: ' . $e->getMessage(),

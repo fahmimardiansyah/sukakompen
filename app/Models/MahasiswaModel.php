@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class MahasiswaModel extends Model
 {
@@ -17,7 +18,13 @@ class MahasiswaModel extends Model
      * @var array
      * 
      */
-    protected $fillable = ['user_id', 'nim', 'mahasiswa_nama', 'jumlah_alpa', 'prodi_id', 'semester'];
+    protected $fillable = ['user_id', 'nim', 'mahasiswa_nama', 'jumlah_alpa', 'prodi_id', 'semester', 'ktm', 'status'];
+
+    protected function ktm(): Attribute {
+        return Attribute::make(
+            get: fn ($ktm)=> $ktm ? url($ktm) : null,
+        );
+    }
 
     public function user()
     {
