@@ -96,6 +96,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/{id}/tugas', [App\Http\Controllers\Admin\PesanController::class, 'tugas']);
             Route::post('/{id}/acc_tugas', [App\Http\Controllers\Admin\PesanController::class, 'acc_tugas']);
             Route::post('/{id}/decline_tugas', [App\Http\Controllers\Admin\PesanController::class, 'decline_tugas']);
+            Route::get('/{id}/validasi', [App\Http\Controllers\Admin\PesanController::class, 'validasi']);
         });
         
         Route::group(['prefix' => 'profil'], function() {

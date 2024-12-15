@@ -21,6 +21,7 @@ class APIDashboardDSNController extends Controller
         }
 
         $dosen = DosenModel::where('user_id', $user->user_id)->first();
+
         $tendik = TendikModel::where('user_id', $user->user_id)->first();
 
         if (!$dosen && !$tendik) {
@@ -36,12 +37,20 @@ class APIDashboardDSNController extends Controller
 
         $tugas = TugasModel::where('user_id', $user->user_id)->get();
 
+        if ($tugas->isEmpty()) {
+            return response()->json(['message' => 'Data tugas tidak ditemukan untuk user ini'], 404);
+        }
+
         $tugasIds = $tugas->pluck('tugas_id');
 
         $apply = ApplyModel::whereIn('tugas_id', $tugasIds)
-            ->whereNull('apply_status')
+            ->whereNull('apply_status') 
             ->orderBy('apply_id')
             ->get();
+
+        if ($apply->isEmpty()) {
+            return response()->json(['message' => 'Tidak ada data apply'], 404);
+        }
 
         $result = $apply->map(function ($applyItem) use ($tugas) {
             $tugasItem = $tugas->firstWhere('tugas_id', $applyItem->tugas_id);
@@ -62,10 +71,8 @@ class APIDashboardDSNController extends Controller
         });
 
         return response()->json([
-            'user' => $userData,
-            'message' => $tugas->isEmpty() ? 'Data tugas tidak ditemukan untuk user ini' : 'Data apply tidak ditemukan',
-            'data' => $result,
+            'user' => $userData, 
+            'data' => $result
         ]);
     }
-
 }

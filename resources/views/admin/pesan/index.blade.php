@@ -9,7 +9,13 @@
     <h2>Pesan</h2>
 </div>
 
+<div class="tabs">
+    <button class="tab active" onclick="showTab('inbox')">Inbox</button>
+    <button class="tab" onclick="showTab('ktm')">Validasi</button>
+</div>
+
     <section class="recommended-tasks">
+        <div id="inbox" class="tab-content active">
         @foreach($apply as $data)
             @if(is_null($data->apply_status))
                 <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
@@ -59,6 +65,24 @@
                 </div>
             @endif
         @endforeach
+        </div>
+
+        <div id="ktm" class="tab-content active">
+            @foreach($apply as $data)
+            @if(is_null($data->apply_status))
+                <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
+                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
+                    <div class="pesan-info">
+                        <div style="display: flex; align-items: center;">
+                            <h3 style="margin-right: 10px;">Fahmi Mardiansyah</h3>
+                            <i class="fas fa-envelope-open" style="font-size: 20px; color: #000;"></i>
+                        </div>
+                    </div>
+                    <button onclick="modalAction('{{ url('/pesan/' . $data->apply_id . '/validasi') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
+                </div>
+            @endif
+        @endforeach
+        </div>
         
         <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
     </section>
@@ -68,23 +92,6 @@
 @section('styles')
 <style>
 
-/* Button Cek */
-/* .cek {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 15px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.cek:hover {
-    background-color: #0056b3;
-} */
-
-/* Modal Styles */
 .modal {
     display: flex;
     justify-content: center;
@@ -152,6 +159,15 @@ button {
         $('#myModal').load(url, function() {
             $('#myModal').modal('show');
         });
+    }
+    function showTab(tabName) {
+        // Remove 'active' class from all tabs and tab contents
+        $('.tab').removeClass('active');
+        $('.tab-content').removeClass('active');
+
+        // Add 'active' class to the clicked tab and corresponding tab content
+        $('[onclick="showTab(\'' + tabName + '\')"]').addClass('active');
+        $('#' + tabName).addClass('active');
     }
 </script>
 @endpush
