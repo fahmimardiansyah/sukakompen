@@ -171,34 +171,47 @@ class PesanController extends Controller
 
             $approval = ApprovalModel::find($id);
 
-            $mahasiswa= MahasiswaModel::find($approval->mahasiswa_id);
+            if (!$approval) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Approval tidak ditemukan'
+                ]);
+            }
+
+            $mahasiswa = MahasiswaModel::find($approval->mahasiswa_id);
+
+            if (!$mahasiswa) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Mahasiswa tidak ditemukan'
+                ]);
+            }
 
             $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
-            if ($approval && $mahasiswa && $alpa) {
-                $approval->update([
-                    'status' => true
-                ]);
+            // Update approval status
+            $approval->update([
+                'status' => true
+            ]);
 
-                $mahasiswa->update([
-                    'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
-                ]);
+            // Update mahasiswa's jumlah_alpa
+            $mahasiswa->update([
+                'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
+            ]);
 
+            // Update jam_kompen only if $alpa exists
+            if ($alpa) {
                 $alpa->update([
                     'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
                 ]);
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Tugas Diterima'
-                ]);
-            } else {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
-                ]);
             }
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Tugas Diterima'
+            ]);
         }
+
         return redirect('/');
     }
 

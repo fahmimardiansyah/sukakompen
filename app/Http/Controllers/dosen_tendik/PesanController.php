@@ -196,7 +196,7 @@ class PesanController extends Controller
             if (!$approval) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data approval tidak ditemukan'
+                    'message' => 'Approval tidak ditemukan'
                 ]);
             }
 
@@ -205,45 +205,32 @@ class PesanController extends Controller
             if (!$mahasiswa) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Data mahasiswa tidak ditemukan'
+                    'message' => 'Mahasiswa tidak ditemukan'
                 ]);
             }
 
             $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
-            if (!$alpa) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data alpa tidak ditemukan'
-                ]);
-            }
-
-            $bobotKompen = $approval->tugas->tugas_jam_kompen;
-
-            $jumlahAlpaBaru = $mahasiswa->jumlah_alpa - $bobotKompen;
-            if ($jumlahAlpaBaru < 0) {
-                $jumlahAlpaBaru = 0; 
-            }
-
+            // Update approval status
             $approval->update([
                 'status' => true
             ]);
 
+            // Update mahasiswa's jumlah_alpa
             $mahasiswa->update([
-                'jumlah_alpa' => $jumlahAlpaBaru
+                'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
             ]);
 
-            $alpa->update([
-                'jam_kompen' => $alpa->jam_kompen + $bobotKompen
-            ]);
+            // Update jam_kompen only if $alpa exists
+            if ($alpa) {
+                $alpa->update([
+                    'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
+                ]);
+            }
 
             return response()->json([
                 'status' => true,
-                'message' => 'Tugas Diterima',
-                'jumlah_alpa_awal' => $mahasiswa->jumlah_alpa,
-                'jumlah_alpa_baru' => $jumlahAlpaBaru,
-                'jam_kompen_awal' => $alpa->jam_kompen - $bobotKompen,
-                'jam_kompen_baru' => $alpa->jam_kompen
+                'message' => 'Tugas Diterima'
             ]);
         }
 
