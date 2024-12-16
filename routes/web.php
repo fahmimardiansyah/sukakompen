@@ -137,6 +137,7 @@ Route::middleware('auth')->group(function () {
     
         Route::group(['prefix' => 'alpha'], function () {
             Route::get('/', [App\Http\Controllers\Dosen_tendik\AlpaController::class, 'index']);
+            Route::get('/export_pdf', [App\Http\Controllers\Dosen_tendik\AlpaController::class, 'export_pdf']);
         });
     
         Route::group(['prefix' => 'kompenmhs'], function () {
