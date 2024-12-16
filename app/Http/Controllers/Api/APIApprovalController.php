@@ -130,56 +130,38 @@ class APIApprovalController extends Controller
     }
 
     // function ketika tugas diterima
-    public function terima(Request $request)
-    {
-        if ($request->ajax() || $request->wantsJson()) {
-            $approval = ApprovalModel::find($request->approval_id);
+    public function terima(Request $request) {
+        $data = ApprovalModel::all()->where('approval_id', $request->approval_id)->first();
+        $data->status = true;
+        $data->save();
 
-            if (!$approval) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data approval tidak ditemukan'
-                ], 404);
-            }
+        $mahasiswa = MahasiswaModel::where('mahasiswa_id', $data->mahasiswa_id);
 
-            $mahasiswa = MahasiswaModel::find($approval->mahasiswa_id);
+        $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
 
-            if (!$mahasiswa) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data mahasiswa tidak ditemukan'
-                ], 404);
-            }
-
-            $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
-
-            if (!$alpa) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Data alpa tidak ditemukan'
-                ], 404);
-            }
-
-            $approval->update([
+        if ($data && $mahasiswa && $alpa) {
+            $data->update([
                 'status' => true
-            ]);
-            $mahasiswa->update([
-                'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
-            ]);
+                ]);
 
-            $alpa->update([
-                'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
-            ]);
+                $mahasiswa->update([
+                    'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $data->tugas->tugas_jam_kompen)
+                ]);
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Tugas berhasil diterima dan data diperbarui'
-            ]);
-        }
+                $alpa->update([
+                    'jam_kompen' => ($alpa->jam_kompen + $data->tugas->tugas_jam_kompen)
+                ]);
 
-        return response()->json([
-            'status' => false
-        ], 400);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Tugas Diterima'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
     }
 
 }
