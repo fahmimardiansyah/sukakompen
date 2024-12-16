@@ -53,7 +53,17 @@ class APICetakController extends Controller
             $ni = $tendik->nip;
         }
 
-        $qrContent = url( $request->approval_id . '/export_pdf');
+        $qrContent = json_encode([
+            'approval_id' => $request->approval_id,
+            'pemberi_tugas' => $pemberiTugas ?? '-',
+            'nip_pemberi' => $ni ?? '-',
+            'nama_mahasiswa' => $mahasiswa->mahasiswa_nama ?? '-',
+            'nim' => $mahasiswa->nim ?? '-',
+            'semester' => $mahasiswa->semester ?? '-',
+            'pekerjaan' => $tugas->tugas_nama ?? '-',
+            'jumlah_jam' => $tugas->tugas_jam_kompen ?? 0,
+            'tanggal' => now()->format('d F Y')
+        ]);
 
         $result = Builder::create()
             ->data($qrContent)

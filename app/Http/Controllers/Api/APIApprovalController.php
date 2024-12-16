@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlpaModel;
 use App\Models\ApprovalModel;
 use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
@@ -129,12 +130,56 @@ class APIApprovalController extends Controller
     }
 
     // function ketika tugas diterima
-    public function terima(Request $request) {
-        $data = ApprovalModel::all()->where('approval_id', $request->approval_id)->first();
-        $data->status = true;
-        $data->save();
+    public function terima(Request $request)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $approval = ApprovalModel::find($request->approval_id);
 
-        return 'Berhasil Mengubah Data';
+            if (!$approval) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data approval tidak ditemukan'
+                ], 404);
+            }
+
+            $mahasiswa = MahasiswaModel::find($approval->mahasiswa_id);
+
+            if (!$mahasiswa) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data mahasiswa tidak ditemukan'
+                ], 404);
+            }
+
+            $alpa = AlpaModel::where('mahasiswa_alpa_nim', $mahasiswa->nim)->first();
+
+            if (!$alpa) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data alpa tidak ditemukan'
+                ], 404);
+            }
+
+            $approval->update([
+                'status' => true
+            ]);
+            $mahasiswa->update([
+                'jumlah_alpa' => ($mahasiswa->jumlah_alpa - $approval->tugas->tugas_jam_kompen)
+            ]);
+
+            $alpa->update([
+                'jam_kompen' => ($alpa->jam_kompen + $approval->tugas->tugas_jam_kompen)
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Tugas berhasil diterima dan data diperbarui'
+            ]);
+        }
+
+        return response()->json([
+            'status' => false
+        ], 400);
     }
 
 }

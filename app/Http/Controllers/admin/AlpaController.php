@@ -8,7 +8,7 @@ use App\Models\AlpaModel;
 use App\Models\MahasiswaModel;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AlpaController extends Controller
 {
