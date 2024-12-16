@@ -97,6 +97,8 @@ Route::middleware('auth')->group(function () {
             Route::post('/{id}/acc_tugas', [App\Http\Controllers\Admin\PesanController::class, 'acc_tugas']);
             Route::post('/{id}/decline_tugas', [App\Http\Controllers\Admin\PesanController::class, 'decline_tugas']);
             Route::get('/{id}/validasi', [App\Http\Controllers\Admin\PesanController::class, 'validasi']);
+            Route::post('/{id}/acc_mahasiswa', [App\Http\Controllers\Admin\PesanController::class, 'acc_mahasiswa']);
+            Route::post('/{id}/decline_mahasiswa', [App\Http\Controllers\Admin\PesanController::class, 'decline_mahasiswa']);
         });
         
         Route::group(['prefix' => 'profil'], function() {
@@ -194,7 +196,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/about', [AboutController::class, 'index'])->name('about');
 
-    // URL::forceScheme('https');
+    URL::forceScheme('https');
     
 });
 

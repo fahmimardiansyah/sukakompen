@@ -67,6 +67,13 @@ class AuthController extends Controller
                     ]);
                 }
 
+                if ($mahasiswa && ($mahasiswa->status === false || $mahasiswa->status === 0)) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'Akun Anda ditolak untuk aktif.',
+                    ]);
+                }
+
                 Auth::login($user);
                 
                 session([
@@ -194,7 +201,7 @@ class AuthController extends Controller
                 if ($request->level_id == 4) { 
                     if ($request->hasFile('ktm')) {
                         $ktmFile = $request->file('ktm');
-                        $ktmPath = $ktmFile->storeAs('ktm', $request->nim . '_ktm.' . $ktmFile->getClientOriginalExtension(), 'public');
+                        $ktmPath = $ktmFile->storeAs('storage/ktm' ,$request->nim . '_ktm.' . $ktmFile->getClientOriginalExtension(), 'public');
                     }
 
                     $mahasiswa = MahasiswaModel::create([

@@ -28,6 +28,36 @@
                 <div class="modal-body text-center">
                     <h2>{{ $apply->tugas->tugas_nama }}</h2>
                     <p>Mahasiswa {{ $apply->mahasiswa->mahasiswa_nama }} ingin mengerjakan tugas {{ $apply->tugas->tugas_nama }}, terima?</p>
+                    <table>
+                        <tr>
+                            <th class="text-right col-3">NIM :</th>
+                            <td class="col-9">{{ $apply->mahasiswa->nim }}</td>
+                        </tr> 
+                        <tr>
+                            <th class="text-right col-3">Nama :</th>
+                            <td class="col-9">{{ $apply->mahasiswa->mahasiswa_nama }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Jumlah Alpa :</th>
+                            <td class="col-9">{{ $apply->mahasiswa->jumlah_alpa ?? '0'}} Jam</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Prodi :</th>
+                            <td class="col-9">{{ $apply->mahasiswa->prodi->prodi_nama }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Kompetensi :</th>
+                            <td class="col-9">
+                                @foreach ($kompetensi as $data)
+                                    <li>{{ $data->kompetensi->kompetensi_nama }}</li>
+                                @endforeach
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-right col-3">Semester :</th>
+                            <td class="col-9">{{ $apply->mahasiswa->semester }}</td>
+                        </tr>
+                    </table>
                     <div class="mt-4">
                         <button type="button" id="btn-tolak" class="btn btn-danger" onclick="submitForm('{{ url('/notif/' . $apply->apply_id . '/decline') }}')">Tolak</button>
 

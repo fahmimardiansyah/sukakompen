@@ -58,20 +58,24 @@ class PesanController extends Controller
             }
         }
 
+        $mahasiswa = MahasiswaModel::all();
+
         return view('admin.pesan.index', [
             'breadcrumb' => $breadcrumb, 
             'activeMenu' => $activeMenu, 
             'apply' => $apply, 
             'approval' => $approval,
-            'progress' => $progress
+            'progress' => $progress,
+            'mahasiswa' => $mahasiswa
         ]);
     }
 
     public function apply($id)
     {
         $apply = ApplyModel::where('apply_id', $id)->first();
+        $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $apply->mahasiswa->mahasiswa_id)->get();
 
-        return view('admin.pesan.show_ajax', ['apply' => $apply]);
+        return view('admin.pesan.show_ajax', ['apply' => $apply, 'kompetensi' => $kompetensi]);
     }
 
     public function acc(Request $request, $id)
@@ -222,21 +226,59 @@ class PesanController extends Controller
         return redirect('/');
     }
 
-    public function validasi()
+    public function validasi($id)
     {
-
-        $userId = auth()->id();
-
-        $activeMenu = 'profilemhs'; 
-
-        $user = UserModel::with('level')->find($userId);
-
-        $mahasiswa = MahasiswaModel::where('user_id', $userId)->first();
-
+        $mahasiswa = MahasiswaModel::where('mahasiswa_id', $id)->first();
         $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $mahasiswa->mahasiswa_id)->get();
 
-        $level = LevelModel::all(); 
-        
+        return view('admin.pesan.detail', ['mahasiswa' => $mahasiswa, 'kompetensi' => $kompetensi]);
+    }
+
+    public function acc_mahasiswa(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $mahasiswa = MahasiswaModel::find($id);
+
+            if ($mahasiswa) {
+                $mahasiswa->update([
+                    'status' => true
+                ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Akun Diterima'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
+        return redirect('/');
+    }
+
+    public function decline_mahasiswa(Request $request, $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+
+            $mahasiswa = MahasiswaModel::find($id);
+
+            if ($mahasiswa) {
+                $mahasiswa->update([
+                    'status' => false
+                ]);
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Akun Ditolak'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
+                ]);
+            }
+        }
         return redirect('/');
     }
 }

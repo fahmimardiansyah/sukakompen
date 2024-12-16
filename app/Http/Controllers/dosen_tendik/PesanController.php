@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AlpaModel;
 use App\Models\ApplyModel;
 use App\Models\ApprovalModel;
+use App\Models\KompetensiMhsModel;
 use App\Models\MahasiswaModel;
 use App\Models\ProgressModel;
 use App\Models\TugasModel;
@@ -78,8 +79,9 @@ class PesanController extends Controller
     public function apply($id)
     {
         $apply = ApplyModel::where('apply_id', $id)->first();
+        $kompetensi = KompetensiMhsModel::where('mahasiswa_id', $apply->mahasiswa->mahasiswa_id)->get();
 
-        return view('dosen_tendik.notif.show_ajax', ['apply' => $apply]);
+        return view('dosen_tendik.notif.show_ajax', ['apply' => $apply, 'kompetensi' => $kompetensi]);
     }
 
     public function acc(Request $request, $id)

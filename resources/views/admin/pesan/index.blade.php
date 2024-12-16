@@ -67,21 +67,20 @@
         @endforeach
         </div>
 
-        <div id="ktm" class="tab-content active">
-            @foreach($apply as $data)
-            @if(is_null($data->apply_status))
-                <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, #ffea2f);">
-                    <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
-                    <div class="pesan-info">
-                        <div style="display: flex; align-items: center;">
-                            <h3 style="margin-right: 10px;">Fahmi Mardiansyah</h3>
-                            <i class="fas fa-envelope-open" style="font-size: 20px; color: #000;"></i>
+        <div id="ktm" class="tab-content">
+            @foreach($mahasiswa as $data)
+                @if(is_null($data->status))
+                    <div class="pesan-card" style="background: linear-gradient(135deg, #ffffff, skyblue);">
+                        <img alt="Profile picture of a person" height="50" src="img/usericon.png" width="50"/>
+                        <div class="pesan-info">
+                            <div style="display: flex; align-items: center;">
+                                <h3 style="margin-right: 10px;">{{ $data->mahasiswa_nama }}</h3>
+                            </div>
                         </div>
+                        <button onclick="modalAction('{{ url('/pesan/' . $data->mahasiswa_id . '/validasi') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
                     </div>
-                    <button onclick="modalAction('{{ url('/pesan/' . $data->apply_id . '/validasi') }}')" class="btn" style="background-color: #ffffff; color:#000000; border: 2px solid #000000; border-radius: 30px; padding: 10px 20px; font-weight:bold">Cek</button>
-                </div>
-            @endif
-        @endforeach
+                @endif
+            @endforeach
         </div>
         
         <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
