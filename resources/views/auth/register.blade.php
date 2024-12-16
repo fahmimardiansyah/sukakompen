@@ -322,6 +322,9 @@
                     </div>
                 </div>
                 <div class="form-group">
+                            <h6 class="d-flex justify-content-between align-items-center">
+                                <b>Upload KTM<b>
+                            </h6>
                     <input type="file" name="ktm" id="ktm" class="form-control" placeholder="Ktm" required>
                     <small id="error-ktm" class="error-text form-text text-danger"></small>
                 </div>
